@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Unity Library folder (contains large generated files)
+**/Library/
+**/Temp/
+**/Obj/
+**/Build/
+**/Builds/
+**/Logs/
+**/UserSettings/
+**/MemoryCaptures/
