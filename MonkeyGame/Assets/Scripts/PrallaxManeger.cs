@@ -23,8 +23,7 @@ public class PrallaxManeger : MonoBehaviour
         foreach (ParallaxLayer layer in parallaxLayers)
         {
             float moveX = cameraDelta.x * layer.parallaxFactor;
-            float moveY = cameraDelta.y * layer.parallaxFactor;
-            layer.layerTransform.position += new Vector3(moveX, moveY, 0);
+            layer.layerTransform.position += new Vector3(moveX, 0, 0);
         }
 
         lastCameraPosition = cameraTransform.position;
