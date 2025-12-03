@@ -360,7 +360,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   target: {fileID: 2023892872}
-  offset: {x: 0, y: 0, z: -10}
 --- !u!1 &578302095
 GameObject:
   m_ObjectHideFlags: 0
