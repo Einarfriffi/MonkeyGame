@@ -7,7 +7,14 @@ public class MonkeyMovements : MonoBehaviour
     [SerializeField] private float jumpForce = 5f;
 
     [Header("Jumps")]
-    [SerializeField] private int maxJumps = 2; 
+    [SerializeField] private int maxJumps = 2;
+
+    // animator
+    [SerializeField] Animator animator;
+    // get the sprite child
+    [SerializeField] SpriteRenderer _monkey_sprite;
+
+    [SerializeField] float monkey_death_time = 3f;
 
     private GroundController _groundController;
     private Rigidbody2D _rigidbody2D;
@@ -17,6 +24,8 @@ public class MonkeyMovements : MonoBehaviour
 
     private int _jumpsRemaining;
     private bool _wasGrounded;
+
+    private bool dead = false;
 
     private void Start()
     {
@@ -32,28 +41,48 @@ public class MonkeyMovements : MonoBehaviour
         _jumpPressed -= JumpButtonPressed;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        bool isGrounded = _groundController != null && _groundController.IsGrounded;
-
-        if (isGrounded && !_wasGrounded)
+        if (!dead)
         {
-            _jumpsRemaining = maxJumps;
+            bool isGrounded = _groundController != null && _groundController.IsGrounded;
+
+            if (isGrounded && !_wasGrounded)
+            {
+                _jumpsRemaining = maxJumps;
+                animator.SetBool("is_jumping", false);
+            }
+
+            _wasGrounded = isGrounded;
+
+            Vector2 velocity = _rigidbody2D.linearVelocity;
+            velocity.x = _moveInput.x * speed;
+
+            if (_jumpTriggered && _jumpsRemaining > 0)
+            {
+                velocity.y = jumpForce;
+                _jumpsRemaining--;
+                _jumpTriggered = false;
+            }
+
+            // sets the speed to the velocity of the player for animator
+            animator.SetFloat("player_speed", Mathf.Abs(velocity.x));
+            // set the falling speed of the player for animator
+            animator.SetFloat("y_movment", Mathf.Sign(velocity.y));
+            // checks if player is going left or right
+            if (_rigidbody2D.linearVelocity.x > 0.01f)
+            {
+                _monkey_sprite.flipX = false;
+            }
+            else if (_rigidbody2D.linearVelocity.x < -0.01f)
+            {
+                _monkey_sprite.flipX = true;
+            }
+
+
+            _rigidbody2D.linearVelocity = velocity;
+
         }
-
-        _wasGrounded = isGrounded;
-
-        Vector2 velocity = _rigidbody2D.linearVelocity;
-        velocity.x = _moveInput.x * speed;
-
-        if (_jumpTriggered && _jumpsRemaining > 0)
-        {
-            velocity.y = jumpForce;
-            _jumpsRemaining--;
-            _jumpTriggered = false;
-        }
-
-        _rigidbody2D.linearVelocity = velocity;
     }
 
     private void OnMove(InputValue value)
@@ -69,11 +98,22 @@ public class MonkeyMovements : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Hazards"))
+        {
+            dead = true;
+            animator.SetBool("is_dead", true);
+            Destroy(gameObject, monkey_death_time);
+        }
+    }
+
     private void JumpButtonPressed()
     {
         if (_jumpsRemaining > 0)
         {
             _jumpTriggered = true;
+            animator.SetBool("is_jumping", true);
         }
     }
 }
