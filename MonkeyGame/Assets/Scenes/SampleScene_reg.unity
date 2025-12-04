@@ -1478,7 +1478,7 @@ MonoBehaviour:
   - layerTransform: {fileID: 855064426}
     parallaxFactor: 0.8
   - layerTransform: {fileID: 1468264278}
-    parallaxFactor: 0.9
+    parallaxFactor: 1
   - layerTransform: {fileID: 474028096}
     parallaxFactor: 1
   cameraTransform: {fileID: 519420032}

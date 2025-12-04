@@ -17,7 +17,7 @@ public class PrallaxManeger : MonoBehaviour
         lastCameraPosition = cameraTransform.position;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         Vector3 cameraDelta = cameraTransform.position - lastCameraPosition;
         foreach (ParallaxLayer layer in parallaxLayers)
