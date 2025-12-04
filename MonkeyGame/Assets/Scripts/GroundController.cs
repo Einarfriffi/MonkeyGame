@@ -1,7 +1,8 @@
 using UnityEngine;
 
 public class GroundController : MonoBehaviour
-{    [SerializeField] private LayerMask _groundLayerMask;
+{
+    [SerializeField] private LayerMask _groundLayerMask;
 
     private CapsuleCollider2D _capsuleCollider2D;
 
@@ -10,7 +11,10 @@ public class GroundController : MonoBehaviour
 
     private void Awake()
     {
-        _capsuleCollider2D = GetComponent<CapsuleCollider2D>();
+        //_capsuleCollider2D = GetComponent<CapsuleCollider2D>();
+
+        // new
+        _capsuleCollider2D = transform.Find("ground_collider").GetComponent<CapsuleCollider2D>();
     }
 
     private void Update()
@@ -21,7 +25,7 @@ public class GroundController : MonoBehaviour
     }
 
 
-    private void OnDrawGizmosSelected()
+    /* private void OnDrawGizmosSelected()
     {
         if (_capsuleCollider2D == null) return;
 
@@ -31,5 +35,5 @@ public class GroundController : MonoBehaviour
 
         Gizmos.color = IsGrounded ? Color.green : Color.red;
         Gizmos.DrawWireSphere(origin, radius);
-    }
+    } */
 }
