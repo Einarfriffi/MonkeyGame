@@ -341,7 +341,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 4, z: -10}
+  m_LocalPosition: {x: 0, y: 2, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3333,15 +3333,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PrallaxManeger
   parallaxLayers:
   - layerTransform: {fileID: 2023892872}
-    parallaxFactor: 0.1
+    parallaxFactor: 0.05
   - layerTransform: {fileID: 875839395}
-    parallaxFactor: 0.1
+    parallaxFactor: 0.05
   - layerTransform: {fileID: 578302097}
-    parallaxFactor: 0.6
-  - layerTransform: {fileID: 659016393}
-    parallaxFactor: 0.7
-  - layerTransform: {fileID: 855064426}
     parallaxFactor: 0.8
+  - layerTransform: {fileID: 659016393}
+    parallaxFactor: 0.85
+  - layerTransform: {fileID: 855064426}
+    parallaxFactor: 0.9
   - layerTransform: {fileID: 1468264278}
     parallaxFactor: 1
   - layerTransform: {fileID: 474028096}
