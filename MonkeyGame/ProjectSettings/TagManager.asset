@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Hazards
+  - missile
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - laser_ignore
   - 
   - 
   - 
