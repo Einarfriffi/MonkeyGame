@@ -1,9 +1,7 @@
 using UnityEngine;
 
 public class GroundController : MonoBehaviour
-{
-    [SerializeField] private float _groundDistanceTolerance = 0.1f;
-    [SerializeField] private LayerMask _groundLayerMask;
+{    [SerializeField] private LayerMask _groundLayerMask;
 
     private CapsuleCollider2D _capsuleCollider2D;
 
@@ -17,30 +15,11 @@ public class GroundController : MonoBehaviour
 
     private void Update()
     {
-        float radius = (_capsuleCollider2D.size.x * 0.5f) - 0.05f;
+        IsGrounded = _capsuleCollider2D.IsTouchingLayers(_groundLayerMask);
 
-        Vector2 origin = (Vector2)transform.position -
-                         new Vector2(0, _capsuleCollider2D.size.y * 0.5f - radius);
-
-        RaycastHit2D hit = Physics2D.CircleCast(
-            origin,
-            radius,
-            Vector2.down,
-            _groundDistanceTolerance + 0.01f,
-            _groundLayerMask
-        );
-
-        if (hit.collider != null)
-        {
-            DistanceToGround = hit.distance;
-            IsGrounded = hit.distance <= _groundDistanceTolerance;
-        }
-        else
-        {
-            DistanceToGround = null;
-            IsGrounded = false;
-        }
+        DistanceToGround = null;
     }
+
 
     private void OnDrawGizmosSelected()
     {
