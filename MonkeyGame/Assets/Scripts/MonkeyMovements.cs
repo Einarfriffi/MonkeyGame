@@ -103,13 +103,14 @@ public class MonkeyMovements : MonoBehaviour
         if (other.CompareTag("Hazards"))
         {
             dead = true;
+            animator.SetBool("is_dead", true);
+
+            // stop movement
             _rigidbody2D.linearVelocity = Vector2.zero;
             _moveInput = Vector2.zero;
 
-            animator.SetFloat("player_speed", 0f);
-            animator.SetBool("is_jumping", false);
-            animator.SetBool("is_dead", true);
-            Destroy(gameObject, monkey_death_time);
+            GetComponent<PlayerInput>().enabled = false;
+            GetComponent<Collider2D>().enabled = false;
         }
     }
 
