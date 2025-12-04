@@ -451,6 +451,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   target: {fileID: 985168100}
+  minX: 0
+  maxX: 95
 --- !u!1 &578302095
 GameObject:
   m_ObjectHideFlags: 0
