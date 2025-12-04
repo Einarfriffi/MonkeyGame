@@ -119,7 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+<<<<<<< HEAD
+--- !u!1 &813459790
+=======
 --- !u!1 &250443888
+>>>>>>> dev
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,6 +131,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< HEAD
+  - component: {fileID: 813459793}
+  - component: {fileID: 813459792}
+  - component: {fileID: 813459791}
+=======
   - component: {fileID: 250443890}
   - component: {fileID: 250443889}
   m_Layer: 0
@@ -357,6 +366,7 @@ GameObject:
   - component: {fileID: 712726322}
   - component: {fileID: 712726321}
   - component: {fileID: 712726324}
+>>>>>>> dev
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -364,21 +374,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+<<<<<<< HEAD
+--- !u!81 &813459791
+=======
 --- !u!81 &712726321
+>>>>>>> dev
 AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
+  m_GameObject: {fileID: 813459790}
+  m_Enabled: 1
+--- !u!20 &813459792
+=======
   m_GameObject: {fileID: 712726320}
   m_Enabled: 1
 --- !u!20 &712726322
+>>>>>>> dev
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
+  m_GameObject: {fileID: 813459790}
+=======
   m_GameObject: {fileID: 712726320}
+>>>>>>> dev
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
@@ -423,13 +447,21 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+<<<<<<< HEAD
+--- !u!4 &813459793
+=======
 --- !u!4 &712726323
+>>>>>>> dev
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
+  m_GameObject: {fileID: 813459790}
+=======
   m_GameObject: {fileID: 712726320}
+>>>>>>> dev
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
@@ -438,6 +470,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
+=======
 --- !u!114 &712726324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -840,12 +874,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+>>>>>>> dev
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+<<<<<<< HEAD
+  - {fileID: 813459793}
+=======
   - {fileID: 712726323}
   - {fileID: 250443890}
   - {fileID: 1653590553}
   - {fileID: 2111897727}
   - {fileID: 1158558432}
+>>>>>>> dev
