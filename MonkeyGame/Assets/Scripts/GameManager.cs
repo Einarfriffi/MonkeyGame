@@ -1,8 +1,13 @@
+using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    public int currentLevel = 0;
+
+
 
     void Awake()
     {
@@ -24,6 +29,26 @@ public class GameManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        
+    }
+
+    public void RestartLevel()
+    {
+        
+    }
+
+    public void LevelWon()
+    {
+        
+    }
+
+    public void StartGame()
+    {
+        
+    }
+
+    public void PauseGame()
     {
         
     }
