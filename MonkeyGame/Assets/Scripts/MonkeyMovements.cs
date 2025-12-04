@@ -103,6 +103,11 @@ public class MonkeyMovements : MonoBehaviour
         if (other.CompareTag("Hazards"))
         {
             dead = true;
+            _rigidbody2D.linearVelocity = Vector2.zero;
+            _moveInput = Vector2.zero;
+
+            animator.SetFloat("player_speed", 0f);
+            animator.SetBool("is_jumping", false);
             animator.SetBool("is_dead", true);
             Destroy(gameObject, monkey_death_time);
         }
