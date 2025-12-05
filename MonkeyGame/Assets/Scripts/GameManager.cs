@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    // Game manager vars
     public static GameManager Instance { get; private set; }
     public int currentLevel = 1;
     public GameObject deathPanel;
@@ -19,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        // Singleton
+        // Iniciate Singleton Instance
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -51,11 +53,15 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    // Filling game manager on each scene load depending on what is needed for each scene
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log("Scene lodade: " + scene.name);
+
+        // fetch Level scenes GameManager components
         if (scene.name.StartsWith("Level"))
-        {
+        {   
+            // fetch deathUI for game manager
             GameObject deathUIfound = GameObject.FindWithTag("DeathUI");
             if (deathUIfound != null)
             {
@@ -70,6 +76,7 @@ public class GameManager : MonoBehaviour
                 }
             }
 
+            // Fetch HUD for game manager
             if (HUDCanvas != null && currentHUD == null)
             {
                 currentHUD = Instantiate(HUDCanvas);
@@ -79,6 +86,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            // Reset level HUD for next level
             if (currentHUD != null)
             {
                 Destroy(currentHUD);
@@ -88,6 +96,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Slow Down for death
+    // eventually pause
+    // show death ui
     private IEnumerator DeathSlowdownRoutine()
     {
         float duration = 1.5f;
@@ -109,27 +120,33 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // call death routine
+    // call this when player dies
     public void ShowDeathScreen()
     {
         StartCoroutine(DeathSlowdownRoutine());
     }
 
+    // Level Reset, reloads current level scene
     public void RestartLevel()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    // Call this for Winning screen
     public void LevelWon()
     {
         SceneManager.LoadScene("DevSplash");
     }
 
+    // Return game time to normal
     public void StartGame()
     {
         Time.timeScale = 1f;
     }
 
+    // Freeze game time
     public void PauseGame()
     {
         Time.timeScale = 0f;

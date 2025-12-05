@@ -3,17 +3,22 @@ using UnityEngine.Tilemaps;
 
 public class BananaBotMovements : MonoBehaviour
 {
+    // Variable for path control and speed control
     [SerializeField] private float speed = 3f;
     [SerializeField] private float minX = -5f;
     [SerializeField] private float maxX = 5f;
 
+    // iniate direction, body and renderer
     private int direction = 1;
     private Rigidbody2D rb;
     private SpriteRenderer sr;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Fetch Componenets
         rb = GetComponent<Rigidbody2D>();
+        // lock body rotation
         rb.freezeRotation = true;
         sr = GetComponentInChildren<SpriteRenderer>();
     }
