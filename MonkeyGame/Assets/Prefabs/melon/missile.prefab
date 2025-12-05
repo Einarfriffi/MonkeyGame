@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::missile_controller
   acceleration: 3
   maxSpeed: 8
-  maxRange: 50
+  maxRange: 200
 --- !u!50 &123283521729023137
 Rigidbody2D:
   serializedVersion: 5
