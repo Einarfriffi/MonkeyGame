@@ -405,8 +405,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2678870444408319765, guid: fe9653eba776744b49625b7b19ee7cc0, type: 3}
+      propertyPath: m_Url
+      value: https://einarfriffi.github.io/MonkeyGame/Video/Logo_Animation_With_Electricity_Surge.mp4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2678870444408319765, guid: fe9653eba776744b49625b7b19ee7cc0, type: 3}
       propertyPath: m_VideoClip
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2678870444408319765, guid: fe9653eba776744b49625b7b19ee7cc0, type: 3}
+      propertyPath: m_DataSource
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2678870444408319765, guid: fe9653eba776744b49625b7b19ee7cc0, type: 3}
       propertyPath: m_TargetCamera

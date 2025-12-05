@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class SplashVideo : MonoBehaviour
 {
     public VideoPlayer videoPlayer;
-    public VideoClip customClip;
+    public string webglVideoUrl = "https://einarfriffi.github.io/MonkeyGame/Video/Logo_Animation_With_Electricity_Surge.mp4";
     public GameObject fadeCanvasPrefab;
     private Image fadeImage;
     public string nextScene = "LevelOne";
@@ -19,16 +19,14 @@ public class SplashVideo : MonoBehaviour
         GameObject fadeCanvas = Instantiate(fadeCanvasPrefab);
         fadeImage = fadeCanvas.GetComponentInChildren<Image>();
 
-        if (customClip != null)
-        {
-            videoPlayer.clip = customClip;
-        }
-        if (!videoPlayer.isPlaying)
-        {
-            videoPlayer.Play();
-        }
+        videoPlayer.source = VideoSource.Url;
+        videoPlayer.url = webglVideoUrl;
+
+        videoPlayer.Prepare();
+        videoPlayer.prepareCompleted += (vp) => vp.Play();
 
         videoPlayer.loopPointReached += OnVideoEnd;
+
     }
 
     // Update is called once per frame
