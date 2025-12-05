@@ -13,9 +13,6 @@ public class MonkeyMovements : MonoBehaviour
     [SerializeField] Animator animator;
     // get the sprite child
     [SerializeField] SpriteRenderer _monkey_sprite;
-
-    [SerializeField] float monkey_death_time = 3f;
-
     private GroundController _groundController;
     private Rigidbody2D _rigidbody2D;
     private Vector2 _moveInput;
@@ -111,6 +108,12 @@ public class MonkeyMovements : MonoBehaviour
 
             GetComponent<PlayerInput>().enabled = false;
             GetComponent<Collider2D>().enabled = false;
+            GameManager.Instance.ShowDeathScreen();
+        }
+
+        if (other.CompareTag("Win"))
+        {
+            GameManager.Instance.LevelWon();
         }
     }
 
