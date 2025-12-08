@@ -3092,6 +3092,11 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!50 &1294369255 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 7689730117615502500, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+  m_PrefabInstance: {fileID: 6629821928811611323}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1468264276
 GameObject:
   m_ObjectHideFlags: 0
@@ -13882,9 +13887,69 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 34574203592506411, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_UseLimits
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 34574203592506411, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_AngleLimits.m_LowerAngle
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 34574203592506411, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_AngleLimits.m_UpperAngle
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1073066587463447378, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
       propertyPath: m_Name
       value: VineRoot
+      objectReference: {fileID: 0}
+    - target: {fileID: 1492319920380543577, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_UseLimits
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1492319920380543577, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_AngleLimits.m_LowerAngle
+      value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1492319920380543577, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_AngleLimits.m_UpperAngle
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1882540887476725108, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_UseLimits
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1882540887476725108, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_AngleLimits.m_LowerAngle
+      value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1882540887476725108, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_AngleLimits.m_UpperAngle
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3419750005604300296, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_UseLimits
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3419750005604300296, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: -0.008999944
+      objectReference: {fileID: 0}
+    - target: {fileID: 3419750005604300296, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: -0.30999994
+      objectReference: {fileID: 0}
+    - target: {fileID: 3419750005604300296, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_ConnectedRigidBody
+      value: 
+      objectReference: {fileID: 1294369255}
+    - target: {fileID: 3419750005604300296, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_AngleLimits.m_LowerAngle
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3419750005604300296, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_AngleLimits.m_UpperAngle
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7824197245941414981, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
       propertyPath: m_LocalPosition.x
