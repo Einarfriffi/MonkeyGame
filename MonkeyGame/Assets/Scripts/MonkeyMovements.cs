@@ -10,9 +10,11 @@ public class MonkeyMovements : MonoBehaviour
     [SerializeField] private int maxJumps = 2;
 
     [Header("Vine")]
-    [SerializeField] private string vineTag = "Vine";     
-    [SerializeField] private float vineSwingForce = 10f;  
+    [SerializeField] private string vineTag = "Vine";      // Tag used on vine segments
+    [SerializeField] private float vineSwingForce = 10f;   // Left/right push while hanging
+    [SerializeField] private float vineReattachDelay = 0.25f; // cooldown before we can stick again
 
+    // Animator / visuals
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer _monkey_sprite;
 
@@ -26,8 +28,12 @@ public class MonkeyMovements : MonoBehaviour
     private bool _wasGrounded;
 
     private bool dead = false;
+
+    // Vine state
     private bool _attachedToVine;
     private HingeJoint2D _vineJoint;
+    private bool _canAttachToVine = true;
+    private float _vineCooldownTimer;
 
     private void Start()
     {
@@ -37,15 +43,28 @@ public class MonkeyMovements : MonoBehaviour
 
         _jumpsRemaining = maxJumps;
 
-        // Prepare the hinge we use to attach the monkey to the vines
+        // Prepare the hinge we use to attach to vines (disabled by default)
         _vineJoint = gameObject.AddComponent<HingeJoint2D>();
         _vineJoint.enabled = false;
-        _vineJoint.autoConfigureConnectedAnchor = false;
+        _vineJoint.autoConfigureConnectedAnchor = true; // let Unity choose nice anchors
     }
 
     private void OnDestroy()
     {
         _jumpPressed -= JumpButtonPressed;
+    }
+
+    private void Update()
+    {
+        // Handle vine re-attach cooldown
+        if (!_canAttachToVine)
+        {
+            _vineCooldownTimer -= Time.deltaTime;
+            if (_vineCooldownTimer <= 0f)
+            {
+                _canAttachToVine = true;
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -55,7 +74,7 @@ public class MonkeyMovements : MonoBehaviour
         // === HANGING ON VINE ===
         if (_attachedToVine)
         {
-            // The monkey can swing while hanging on vine
+            // Use left/right input to pump the swing a bit
             _rigidbody2D.AddForce(
                 new Vector2(_moveInput.x * vineSwingForce, 0f),
                 ForceMode2D.Force
@@ -74,6 +93,7 @@ public class MonkeyMovements : MonoBehaviour
                 _jumpTriggered = false;
             }
 
+            // Update animator while hanging
             animator.SetFloat("player_speed", Mathf.Abs(_rigidbody2D.linearVelocity.x));
             animator.SetFloat("y_movment", Mathf.Sign(_rigidbody2D.linearVelocity.y));
 
@@ -82,7 +102,7 @@ public class MonkeyMovements : MonoBehaviour
             else if (_rigidbody2D.linearVelocity.x < -0.01f)
                 _monkey_sprite.flipX = true;
 
-            return; 
+            return; // important: no normal ground movement this frame
         }
 
         // === NORMAL GROUND / AIR MOVEMENT ===
@@ -155,10 +175,9 @@ public class MonkeyMovements : MonoBehaviour
         }
     }
 
-    // Called when jump input happens
     private void JumpButtonPressed()
     {
-        // While on vine, jump = let go
+        // While on vine, jump = let go of vine
         if (_attachedToVine)
         {
             _jumpTriggered = true;
@@ -178,28 +197,21 @@ public class MonkeyMovements : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (_attachedToVine) return;
+        if (!_canAttachToVine) return;    
         if (!collision.collider.CompareTag(vineTag)) return;
         if (collision.rigidbody == null) return;
 
-        // Use first contact point where monkey hits the vine
-        var contact = collision.GetContact(0);
-        Vector2 contactPoint = contact.point;
-
-        AttachToVine(collision.rigidbody, contactPoint);
+        AttachToVine(collision.rigidbody);
     }
 
-    private void AttachToVine(Rigidbody2D vineBody, Vector2 contactPoint)
+    private void AttachToVine(Rigidbody2D vineBody)
     {
         _attachedToVine = true;
 
         _rigidbody2D.linearVelocity = Vector2.zero;
 
         _vineJoint.connectedBody = vineBody;
-
-        _vineJoint.anchor = transform.InverseTransformPoint(contactPoint);
-        _vineJoint.connectedAnchor = vineBody.transform.InverseTransformPoint(contactPoint);
-
-        _vineJoint.enabled = true;
+        _vineJoint.enabled = true;  
     }
 
     private void DetachFromVine()
@@ -207,5 +219,9 @@ public class MonkeyMovements : MonoBehaviour
         _attachedToVine = false;
         _vineJoint.enabled = false;
         _vineJoint.connectedBody = null;
+
+        // short delay so we don't re-stick immediately
+        _canAttachToVine = false;
+        _vineCooldownTimer = vineReattachDelay;
     }
 }
