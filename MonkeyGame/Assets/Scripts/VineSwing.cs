@@ -3,8 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class VineSwing : MonoBehaviour
 {
-    [SerializeField] private float idleTorque = 0.2f;     
-    [SerializeField] private float hitTorque = 5f;
+    [SerializeField] private float idleTorque = 0.05f;     
+    [SerializeField] private float hitTorque = 1.5f;
     [SerializeField] private string monkeyTag = "Player";
 
     private Rigidbody2D _rb;
