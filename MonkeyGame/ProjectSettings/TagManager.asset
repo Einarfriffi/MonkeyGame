@@ -8,6 +8,8 @@ TagManager:
   - missile
   - DeathUI
   - Win
+  - Tag 4 Vine
+  - Vine
   layers:
   - Default
   - TransparentFX

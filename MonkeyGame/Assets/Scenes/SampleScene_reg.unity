@@ -13899,6 +13899,10 @@ PrefabInstance:
       propertyPath: m_AngleLimits.m_UpperAngle
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 268211570591378758, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_TagString
+      value: Vine
+      objectReference: {fileID: 0}
     - target: {fileID: 1073066587463447378, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
       propertyPath: m_Name
       value: VineRoot
@@ -13927,6 +13931,10 @@ PrefabInstance:
       propertyPath: m_AngleLimits.m_UpperAngle
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 2398055002737031408, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_TagString
+      value: Vine
+      objectReference: {fileID: 0}
     - target: {fileID: 3419750005604300296, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
       propertyPath: m_UseLimits
       value: 1
@@ -13950,6 +13958,14 @@ PrefabInstance:
     - target: {fileID: 3419750005604300296, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
       propertyPath: m_AngleLimits.m_UpperAngle
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4931416554321717926, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_TagString
+      value: Vine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6252316376947671864, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
+      propertyPath: m_TagString
+      value: Vine
       objectReference: {fileID: 0}
     - target: {fileID: 7824197245941414981, guid: 4934de2c0aeb746caa48f7016036be0a, type: 3}
       propertyPath: m_LocalPosition.x
