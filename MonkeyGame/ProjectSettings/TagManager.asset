@@ -50,5 +50,8 @@ TagManager:
   - name: 'Background '
     uniqueID: 371288357
     locked: 0
+  - name: Main Menu
+    uniqueID: 2374545657
+    locked: 0
   m_RenderingLayers:
   - Default
