@@ -27,6 +27,9 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 wallJumpDirection = new Vector2(1f, 1f);
     public LayerMask wallLayer;
 
+    [Header("Wall stick control")]
+    public float wallStickCooldown = 0.2f;
+
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private float currentVelocityX;
@@ -37,12 +40,12 @@ public class PlayerMovement : MonoBehaviour
     private bool isTouchingWall;
     private bool previousWallTouch;
     private float wallStickCounter;
-    private float originalGravityScale;
+    private bool canWallStick = true;
+    private float wallStickCooldownTimer;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        originalGravityScale = rb.gravityScale;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -130,15 +133,28 @@ public class PlayerMovement : MonoBehaviour
         {
             finalVelocity.x = 0f;
             finalVelocity.y = 0f;
-            rb.gravityScale = 0f;
+            // rb.gravityScale = 0f;
         }
         else
         {
             finalVelocity.y = newYVelocity;
-            rb.gravityScale = originalGravityScale;
+            // rb.gravityScale = originalGravityScale;
         }
 
         rb.linearVelocity = finalVelocity;
+
+        // Flip player based on movement if not wall sticking
+        if (wallStickCounter <= 0f || IsGrounded())
+        {
+            if (moveInput.x > 0.01f)
+            {
+                transform.localScale = new Vector3(1f, 1f, 1f); // face right
+            }
+            else if (moveInput.x < -0.01f)
+            {
+                transform.localScale = new Vector3(-1f, 1f, 1f);
+            }
+        }
     }
 
     private void CheckGround()
@@ -147,6 +163,8 @@ public class PlayerMovement : MonoBehaviour
         {
             coyoteTimeCounter = coyoteTime;
             extraJumpsLeft = maxExtraJumps;
+            canWallStick = true;
+            wallStickCooldownTimer = 0f;
         }
         else
         {
@@ -163,7 +181,12 @@ public class PlayerMovement : MonoBehaviour
 
         Debug.DrawRay(wallCheck.position, direction * wallCheckDistance, Color.green);
 
-        if (isTouchingWall && !IsGrounded())
+        if (wallStickCooldownTimer > 0f)
+            wallStickCooldownTimer -= Time.fixedDeltaTime;
+
+        bool cooldownActive = wallStickCooldownTimer > 0f;
+
+        if (canWallStick && !cooldownActive && isTouchingWall && !IsGrounded())
         {
             if (!previousWallTouch)
             {
@@ -173,13 +196,19 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 wallStickCounter -= Time.fixedDeltaTime;
+
+                if (wallStickCounter <= 0f)
+                {
+                    canWallStick = false;
+                    wallStickCooldownTimer = wallStickCooldown;
+                }
             }
         }
-        else
+        else if (!isTouchingWall || IsGrounded())
         {
             wallStickCounter = 0f;
         }
-
+        
         previousWallTouch = isTouchingWall;
     }
 
