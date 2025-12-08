@@ -14,6 +14,11 @@ public class MonkeyMovements : MonoBehaviour
     [SerializeField] private float vineSwingForce = 10f;   // Left/right push while hanging
     [SerializeField] private float vineReattachDelay = 0.25f; // cooldown before we can stick again
 
+    [SerializeField] private Collider2D monkeyCollider;   // assign in Inspector (or get in Start)
+
+    private Collider2D _currentVineCollider;
+
+
     // Animator / visuals
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer _monkey_sprite;
@@ -43,11 +48,18 @@ public class MonkeyMovements : MonoBehaviour
 
         _jumpsRemaining = maxJumps;
 
-        // Prepare the hinge we use to attach to vines (disabled by default)
         _vineJoint = gameObject.AddComponent<HingeJoint2D>();
         _vineJoint.enabled = false;
-        _vineJoint.autoConfigureConnectedAnchor = true; // let Unity choose nice anchors
+
+        // Let’s control anchors ourselves so the monkey holds the vine “in the middle”
+        _vineJoint.autoConfigureConnectedAnchor = false;
+        _vineJoint.anchor = Vector2.zero;          // center of monkey body
+        _vineJoint.connectedAnchor = Vector2.zero; // center of vine body
+
+        if (monkeyCollider == null)
+            monkeyCollider = GetComponent<Collider2D>();
     }
+
 
     private void OnDestroy()
     {
@@ -197,21 +209,30 @@ public class MonkeyMovements : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (_attachedToVine) return;
-        if (!_canAttachToVine) return;    
+        if (!_canAttachToVine) return;
         if (!collision.collider.CompareTag(vineTag)) return;
         if (collision.rigidbody == null) return;
 
-        AttachToVine(collision.rigidbody);
+        AttachToVine(collision.rigidbody, collision.collider);
     }
 
-    private void AttachToVine(Rigidbody2D vineBody)
+
+    private void AttachToVine(Rigidbody2D vineBody, Collider2D vineCollider)
     {
         _attachedToVine = true;
 
         _rigidbody2D.linearVelocity = Vector2.zero;
 
         _vineJoint.connectedBody = vineBody;
-        _vineJoint.enabled = true;  
+        _vineJoint.enabled = true;
+
+        // Remember this vine collider and disable collision so the monkey can “sit” on the vine
+        _currentVineCollider = vineCollider;
+
+        if (monkeyCollider != null && _currentVineCollider != null)
+        {
+            Physics2D.IgnoreCollision(monkeyCollider, _currentVineCollider, true);
+        }
     }
 
     private void DetachFromVine()
@@ -220,7 +241,13 @@ public class MonkeyMovements : MonoBehaviour
         _vineJoint.enabled = false;
         _vineJoint.connectedBody = null;
 
-        // short delay so we don't re-stick immediately
+        // Re-enable collision with that vine segment
+        if (monkeyCollider != null && _currentVineCollider != null)
+        {
+            Physics2D.IgnoreCollision(monkeyCollider, _currentVineCollider, false);
+            _currentVineCollider = null;
+        }
+
         _canAttachToVine = false;
         _vineCooldownTimer = vineReattachDelay;
     }
