@@ -9,10 +9,20 @@ public class MonkeyMovements : MonoBehaviour
     [Header("Jumps")]
     [SerializeField] private int maxJumps = 2;
 
-    // animator
-    [SerializeField] Animator animator;
-    // get the sprite child
-    [SerializeField] SpriteRenderer _monkey_sprite;
+    [Header("Vine")]
+    [SerializeField] private string vineTag = "Vine";      // Tag used on vine segments
+    [SerializeField] private float vineSwingForce = 10f;   // Left/right push while hanging
+    [SerializeField] private float vineReattachDelay = 0.25f; // cooldown before we can stick again
+
+    [SerializeField] private Collider2D monkeyCollider;   // assign in Inspector (or get in Start)
+
+    private Collider2D _currentVineCollider;
+
+
+    // Animator / visuals
+    [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer _monkey_sprite;
+
     private GroundController _groundController;
     private Rigidbody2D _rigidbody2D;
     private Vector2 _moveInput;
@@ -24,6 +34,12 @@ public class MonkeyMovements : MonoBehaviour
 
     private bool dead = false;
 
+    // Vine state
+    private bool _attachedToVine;
+    private HingeJoint2D _vineJoint;
+    private bool _canAttachToVine = true;
+    private float _vineCooldownTimer;
+
     private void Start()
     {
         _groundController = GetComponent<GroundController>();
@@ -31,55 +47,110 @@ public class MonkeyMovements : MonoBehaviour
         _jumpPressed += JumpButtonPressed;
 
         _jumpsRemaining = maxJumps;
+
+        _vineJoint = gameObject.AddComponent<HingeJoint2D>();
+        _vineJoint.enabled = false;
+
+        // Let’s control anchors ourselves so the monkey holds the vine “in the middle”
+        _vineJoint.autoConfigureConnectedAnchor = false;
+        _vineJoint.anchor = Vector2.zero;          // center of monkey body
+        _vineJoint.connectedAnchor = Vector2.zero; // center of vine body
+
+        if (monkeyCollider == null)
+            monkeyCollider = GetComponent<Collider2D>();
     }
+
 
     private void OnDestroy()
     {
         _jumpPressed -= JumpButtonPressed;
     }
 
+    private void Update()
+    {
+        // Handle vine re-attach cooldown
+        if (!_canAttachToVine)
+        {
+            _vineCooldownTimer -= Time.deltaTime;
+            if (_vineCooldownTimer <= 0f)
+            {
+                _canAttachToVine = true;
+            }
+        }
+    }
+
     private void FixedUpdate()
     {
-        if (!dead)
+        if (dead) return;
+
+        // === HANGING ON VINE ===
+        if (_attachedToVine)
         {
-            bool isGrounded = _groundController != null && _groundController.IsGrounded;
+            // Use left/right input to pump the swing a bit
+            _rigidbody2D.AddForce(
+                new Vector2(_moveInput.x * vineSwingForce, 0f),
+                ForceMode2D.Force
+            );
 
-            if (isGrounded && !_wasGrounded)
+            // Jump while on vine -> detach + jump impulse
+            if (_jumpTriggered)
             {
-                _jumpsRemaining = maxJumps;
-                animator.SetBool("is_jumping", false);
-            }
+                DetachFromVine();
 
-            _wasGrounded = isGrounded;
+                Vector2 vel = _rigidbody2D.linearVelocity;
+                vel.y = jumpForce;
+                _rigidbody2D.linearVelocity = vel;
 
-            Vector2 velocity = _rigidbody2D.linearVelocity;
-            velocity.x = _moveInput.x * speed;
-
-            if (_jumpTriggered && _jumpsRemaining > 0)
-            {
-                velocity.y = jumpForce;
-                _jumpsRemaining--;
+                animator.SetBool("is_jumping", true);
                 _jumpTriggered = false;
             }
 
-            // sets the speed to the velocity of the player for animator
-            animator.SetFloat("player_speed", Mathf.Abs(velocity.x));
-            // set the falling speed of the player for animator
-            animator.SetFloat("y_movment", Mathf.Sign(velocity.y));
-            // checks if player is going left or right
+            // Update animator while hanging
+            animator.SetFloat("player_speed", Mathf.Abs(_rigidbody2D.linearVelocity.x));
+            animator.SetFloat("y_movment", Mathf.Sign(_rigidbody2D.linearVelocity.y));
+
             if (_rigidbody2D.linearVelocity.x > 0.01f)
-            {
                 _monkey_sprite.flipX = false;
-            }
             else if (_rigidbody2D.linearVelocity.x < -0.01f)
-            {
                 _monkey_sprite.flipX = true;
-            }
 
-
-            _rigidbody2D.linearVelocity = velocity;
-
+            return; // important: no normal ground movement this frame
         }
+
+        // === NORMAL GROUND / AIR MOVEMENT ===
+        bool isGrounded = _groundController != null && _groundController.IsGrounded;
+
+        if (isGrounded && !_wasGrounded)
+        {
+            _jumpsRemaining = maxJumps;
+            animator.SetBool("is_jumping", false);
+        }
+
+        _wasGrounded = isGrounded;
+
+        Vector2 velocity = _rigidbody2D.linearVelocity;
+        velocity.x = _moveInput.x * speed;
+
+        if (_jumpTriggered && _jumpsRemaining > 0)
+        {
+            velocity.y = jumpForce;
+            _jumpsRemaining--;
+            _jumpTriggered = false;
+        }
+
+        animator.SetFloat("player_speed", Mathf.Abs(velocity.x));
+        animator.SetFloat("y_movment", Mathf.Sign(velocity.y));
+
+        if (_rigidbody2D.linearVelocity.x > 0.01f)
+        {
+            _monkey_sprite.flipX = false;
+        }
+        else if (_rigidbody2D.linearVelocity.x < -0.01f)
+        {
+            _monkey_sprite.flipX = true;
+        }
+
+        _rigidbody2D.linearVelocity = velocity;
     }
 
     private void OnMove(InputValue value)
@@ -102,7 +173,6 @@ public class MonkeyMovements : MonoBehaviour
             dead = true;
             animator.SetBool("is_dead", true);
 
-            // stop movement
             _rigidbody2D.linearVelocity = Vector2.zero;
             _moveInput = Vector2.zero;
 
@@ -119,10 +189,66 @@ public class MonkeyMovements : MonoBehaviour
 
     private void JumpButtonPressed()
     {
+        // While on vine, jump = let go of vine
+        if (_attachedToVine)
+        {
+            _jumpTriggered = true;
+            return;
+        }
+
+        // Normal jumping
         if (_jumpsRemaining > 0)
         {
             _jumpTriggered = true;
             animator.SetBool("is_jumping", true);
         }
+    }
+
+    // ===== VINE ATTACH / DETACH =====
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (_attachedToVine) return;
+        if (!_canAttachToVine) return;
+        if (!collision.collider.CompareTag(vineTag)) return;
+        if (collision.rigidbody == null) return;
+
+        AttachToVine(collision.rigidbody, collision.collider);
+    }
+
+
+    private void AttachToVine(Rigidbody2D vineBody, Collider2D vineCollider)
+    {
+        _attachedToVine = true;
+
+        _rigidbody2D.linearVelocity = Vector2.zero;
+
+        _vineJoint.connectedBody = vineBody;
+        _vineJoint.enabled = true;
+
+        // Remember this vine collider and disable collision so the monkey can “sit” on the vine
+        _currentVineCollider = vineCollider;
+
+        if (monkeyCollider != null && _currentVineCollider != null)
+        {
+            Physics2D.IgnoreCollision(monkeyCollider, _currentVineCollider, true);
+        }
+    }
+
+    private void DetachFromVine()
+    {
+        _attachedToVine = false;
+        _vineJoint.enabled = false;
+        _vineJoint.connectedBody = null;
+
+        // Re-enable collision with that vine segment
+        if (monkeyCollider != null && _currentVineCollider != null)
+        {
+            Physics2D.IgnoreCollision(monkeyCollider, _currentVineCollider, false);
+            _currentVineCollider = null;
+        }
+
+        _canAttachToVine = false;
+        _vineCooldownTimer = vineReattachDelay;
     }
 }
