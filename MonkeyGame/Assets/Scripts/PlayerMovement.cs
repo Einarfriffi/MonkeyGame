@@ -195,21 +195,9 @@ public class PlayerMovement : MonoBehaviour
     private void CheckWall()
     {
         // Raycast in the direction the player is facing
-        Vector2 direction = Vector2.right * Mathf.Sign(transform.localScale.x);
-        Vector2 boxSize = new Vector2(0.2f, 1f);
-
-        RaycastHit2D hit = Physics2D.BoxCast(
-            wallCheck.position,
-            boxSize,
-            0f,
-            direction,
-            wallCheckDistance,
-            wallLayer
-        );
-
-        isTouchingWall = hit.collider != null;
-
-        Debug.DrawRay(wallCheck.position, direction * wallCheckDistance, Color.green);
+        Vector2 boxSize = new Vector2(1f, 1f);
+        Collider2D hit = Physics2D.OverlapBox(wallCheck.position, boxSize, 0f, wallLayer);
+        isTouchingWall = hit != null;
 
         if (wallStickCooldownTimer > 0f)
             wallStickCooldownTimer -= Time.fixedDeltaTime;
@@ -252,24 +240,6 @@ public class PlayerMovement : MonoBehaviour
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        if (groundCheck != null)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-        }
-
-        if (wallCheck != null)
-        {
-            Gizmos.color = Color.red;
-            Vector3 dir = Vector3.right * Mathf.Sign(transform.localScale.x);
-            Vector3 center = wallCheck.position + dir * wallCheckDistance * 0.5f;
-            Vector3 size = new Vector3(0.2f, 1f, 0f);
-
-            Gizmos.DrawWireCube(center, size);
-        }
-    }
 
     private void AimAtMouse()
     {
@@ -289,5 +259,20 @@ public class PlayerMovement : MonoBehaviour
             angle += 180f;
 
         handTransform.rotation = Quaternion.Euler(0f, 0f, angle);
+    }
+    private void OnDrawGizmosSelected()
+    {
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+        }
+
+        if (wallCheck != null)
+        {
+            Gizmos.color = Color.red;
+            Vector3 size = new Vector3(1f, 1f, 0f);
+            Gizmos.DrawWireCube(wallCheck.position, size);
+        }
     }
 }
