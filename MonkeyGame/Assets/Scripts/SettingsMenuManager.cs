@@ -2,15 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-
 public class SettingsMenuManager : MonoBehaviour
 {
-
-    public TMP_Dropdown graphicsDropdown;
-
-    public void ChangeGraphicsQuality()
+    public void ChangeGraphicsQuality(int index)
     {
-        QualitySettings.SetQualityLevel(graphicsDropdown.value);
+        QualitySettings.SetQualityLevel(index);
     }
-
 }
