@@ -622,7 +622,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::laser_controller
   targetLayer:
     serializedVersion: 2
-    m_Bits: 119
+    m_Bits: 255
 --- !u!1 &7736534915095566518
 GameObject:
   m_ObjectHideFlags: 0
