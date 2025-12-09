@@ -30,6 +30,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Wall stick control")]
     public float wallStickCooldown = 0.2f;
 
+    [Header("Aiming")]
+    public Transform handTransform;
+
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private float currentVelocityX;
@@ -42,10 +45,15 @@ public class PlayerMovement : MonoBehaviour
     private float wallStickCounter;
     private bool canWallStick = true;
     private float wallStickCooldownTimer;
+    private int lastWallJumpDirection = 0;
+    private bool hasLeftWallSinceJump = true;
+    private Camera mainCamera;
+
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        mainCamera = Camera.main;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -57,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        AimAtMouse();
     }
 
     // called by Input System
@@ -98,18 +106,28 @@ public class PlayerMovement : MonoBehaviour
         // jump
         if (jumpBufferCounter > 0f)
         {
-            if (wallStickCounter > 0f)
+            if (wallStickCounter > 0f && hasLeftWallSinceJump)
             {
-                // wall jump
                 float wallDirection = isTouchingWall ? -Mathf.Sign(transform.localScale.x) : 0f;
+
+                if ((int)wallDirection == lastWallJumpDirection)
+                {
+                    // same wall disallow
+                    return;
+                }
+
                 Vector2 jumpDir = new Vector2(wallJumpDirection.x * wallDirection, wallJumpDirection.y).normalized;
 
                 rb.linearVelocity = new Vector2(jumpDir.x * wallJumpForce, jumpDir.y * wallJumpForce);
 
                 jumpBufferCounter = 0f;
                 wallStickCounter = 0f;
-                extraJumpsLeft = 0; // no double jump after wall jump
-                return; // skip setting linearVelocity again
+                extraJumpsLeft = 0;
+
+                lastWallJumpDirection = (int)wallDirection;
+                hasLeftWallSinceJump = false;
+
+                return;
             }
             else if (coyoteTimeCounter > 0f)
             {
@@ -143,18 +161,18 @@ public class PlayerMovement : MonoBehaviour
 
         rb.linearVelocity = finalVelocity;
 
-        // Flip player based on movement if not wall sticking
-        if (wallStickCounter <= 0f || IsGrounded())
-        {
-            if (moveInput.x > 0.01f)
-            {
-                transform.localScale = new Vector3(1f, 1f, 1f); // face right
-            }
-            else if (moveInput.x < -0.01f)
-            {
-                transform.localScale = new Vector3(-1f, 1f, 1f);
-            }
-        }
+        // // Flip player based on movement if not wall sticking
+        // if (wallStickCounter <= 0f || IsGrounded())
+        // {
+        //     if (moveInput.x > 0.01f)
+        //     {
+        //         transform.localScale = new Vector3(1f, 1f, 1f); // face right
+        //     }
+        //     else if (moveInput.x < -0.01f)
+        //     {
+        //         transform.localScale = new Vector3(-1f, 1f, 1f);
+        //     }
+        // }
     }
 
     private void CheckGround()
@@ -165,6 +183,8 @@ public class PlayerMovement : MonoBehaviour
             extraJumpsLeft = maxExtraJumps;
             canWallStick = true;
             wallStickCooldownTimer = 0f;
+            hasLeftWallSinceJump = true;
+            lastWallJumpDirection = 0;
         }
         else
         {
@@ -176,7 +196,17 @@ public class PlayerMovement : MonoBehaviour
     {
         // Raycast in the direction the player is facing
         Vector2 direction = Vector2.right * Mathf.Sign(transform.localScale.x);
-        RaycastHit2D hit = Physics2D.Raycast(wallCheck.position, direction, wallCheckDistance, wallLayer);
+        Vector2 boxSize = new Vector2(0.2f, 1f);
+
+        RaycastHit2D hit = Physics2D.BoxCast(
+            wallCheck.position,
+            boxSize,
+            0f,
+            direction,
+            wallCheckDistance,
+            wallLayer
+        );
+
         isTouchingWall = hit.collider != null;
 
         Debug.DrawRay(wallCheck.position, direction * wallCheckDistance, Color.green);
@@ -210,6 +240,11 @@ public class PlayerMovement : MonoBehaviour
         }
         
         previousWallTouch = isTouchingWall;
+
+        if (!isTouchingWall && !IsGrounded())
+        {
+            hasLeftWallSinceJump = true;
+        }
     }
 
     private bool IsGrounded()
@@ -228,10 +263,31 @@ public class PlayerMovement : MonoBehaviour
         if (wallCheck != null)
         {
             Gizmos.color = Color.red;
-            Vector3 dir = Vector3.right * wallCheckDistance;
+            Vector3 dir = Vector3.right * Mathf.Sign(transform.localScale.x);
+            Vector3 center = wallCheck.position + dir * wallCheckDistance * 0.5f;
+            Vector3 size = new Vector3(0.2f, 1f, 0f);
 
-            // Visualize ray direction based on editor time (assumes facing right)
-            Gizmos.DrawLine(wallCheck.position, wallCheck.position + dir);
+            Gizmos.DrawWireCube(center, size);
         }
+    }
+
+    private void AimAtMouse()
+    {
+        Vector3 mouseScreenPos = Mouse.current.position.ReadValue();
+        Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(mouseScreenPos);
+
+        // aim direction
+        Vector2 direction = mouseWorldPos - handTransform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // flip player bvased on aim
+        float playerDirection = mouseWorldPos.x < transform.position.x ? -1f : 1f;
+        transform.localScale = new Vector3(playerDirection, 1f, 1f);
+
+        // if player flipped, invert angle to mirror aiming
+        if (playerDirection == -1f)
+            angle += 180f;
+
+        handTransform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
 }
