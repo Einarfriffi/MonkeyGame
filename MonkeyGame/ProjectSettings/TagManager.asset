@@ -19,8 +19,8 @@ TagManager:
   - UI
   - Background
   - Wall
-  - 
-  - 
+  - Projectile
+  - Player
   - 
   - laser_ignore
   - 

@@ -16,9 +16,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "New action",
+                    "name": "Jump",
                     "type": "Button",
                     "id": "9442d6f4-7258-4e0f-be72-d4425a830a0b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Fire",
+                    "type": "Button",
+                    "id": "05c8340b-bbd8-4ef8-8d17-a3ff921eb620",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -143,7 +152,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -154,7 +163,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "51f30013-5030-46c9-a217-7b99342abe95",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "12496127-d883-4d89-8b66-2665edefad10",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

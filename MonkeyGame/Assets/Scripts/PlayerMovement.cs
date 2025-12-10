@@ -1,40 +1,102 @@
-using TMPro;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SocialPlatforms;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
+    [Tooltip("Maximum horizontal speed in world units per second.")]
     public float maxSpeed = 5f;
+
+    [Tooltip("Seconds to accelerate from 0 to the target speed on the ground.")]
     public float accelerationTime = 0.05f; // time to reach full speed
+
+    [Tooltip("Seconds to decelerate to 0 when no horizontal input.")]
     public float deccelerationTime = 0.05f; // time to stop
 
+    [Header("Input")]
+    [Tooltip("Ignore tiny stick/mouse drift; values below this are treated as 0.")]
+    public float inputDeadzone = 0.15f;
+
     [Header("Jump Settings")]
+    [Tooltip("Upward velocity applied when a jump occurs (higher = higher jump).")]
     public float jumpForce = 10f;
+
+    [Tooltip("Transform used as the center for ground checks.")]
     public Transform groundCheck;
+
+    [Tooltip("Radius of the ground check circle (in world units).")]
     public float groundCheckRadius = 0.1f;
+
+    [Tooltip("Layers that count as ground for ground checks.")]
     public LayerMask groundLayer;
+
     [Header("Jump Timers")]
+    [Tooltip("Time window to buffer a jump pressed slightly before landing.")]
     public float jumpBufferTime = 0.1f;
+    
+    [Tooltip("Coyote time: grace period after leaving ground where jump still works.")]
     public float coyoteTime = 0.1f;
+
     [Header("Double Jump")]
+    [Tooltip("How many extra jumps are allowed while airborne.")]
     public int maxExtraJumps = 1;
+
     [Header("Wall Jump")]
+    [Tooltip("Transform used as the origin for the wall overlap box.")]
     public Transform wallCheck;
-    public float wallCheckDistance = 0.1f;
+
+    [Tooltip("How long the player initially 'sticks' to a wall when touching it in air.")]
     public float wallStickTime = 0.2f;
+
+    [Tooltip("Strength of the wall jump impulse (applied in wallJumpDirection).")]
     public float wallJumpForce = 10f;
+
+    [Tooltip("Direction of the wall jump relative to the wall (normalized X,Y).")]
     public Vector2 wallJumpDirection = new Vector2(1f, 1f);
+
+    [Tooltip("Layers that count as walls for wall detection.")]
     public LayerMask wallLayer;
 
     [Header("Wall stick control")]
+    [Tooltip("Cooldown after wall stick ends before the player can stick again.")]
     public float wallStickCooldown = 0.2f;
 
     [Header("Aiming")]
+    [Tooltip("Child transform for visuals (flipped/scaled). Do NOT assign the root with the Rigidbody2D.")]
     public Transform visualTransform;
+
+    [Tooltip("Hand/Weapon pivot used for aiming and as the fallback muzzle.")]
     public Transform handTransform;
+
+    [Header("Shooting")]
+    [Tooltip("Projectile prefab (must have a Rigidbody2D + Collider2D).")]
+    public GameObject projectilePrefab;
+
+    [Tooltip("Spawn position at the gun tip, If null, uses handTransform.")]
+    public Transform muzzleTransform;
+
+    [Tooltip("Projectiles per second while holding fire.")]
+    public float fireRate = 8f;
+
+    [Tooltip("Initial projectile speed in world units per second.")]
+    public float projectileSpeed = 18f;
+
+    [Tooltip("Rigidbody2D gravity scale applied to the projectile (0 = no drop).")]
+    public float projectileGravityScale = 0f;
+
+    [Tooltip("Seconds before a spawned projectile auto-destroys.")]
+    public float projectileLifetime = 3f;
+
+    [Tooltip("Player velocity for projectile to inherit")]
+    public float projectileInheritVelocity = 1f;
+
+    [Tooltip("If true, only inherit horizontal velocity")]
+    public bool inheritHorizontalOnly = true;
+
+
+    // my privates
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private float currentVelocityX;
@@ -49,12 +111,19 @@ public class PlayerMovement : MonoBehaviour
     private Camera mainCamera;
     private Vector2? lastWallJumpPosition = null;
     private int wallContactDirection = 0;
+    private bool fireHeld;
+    private float nextFireTime;
+
+
 
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         mainCamera = Camera.main;
+
+        if (visualTransform == null || visualTransform == transform)
+            Debug.LogError("VisualTransform must be a Child of the player");
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -81,6 +150,12 @@ public class PlayerMovement : MonoBehaviour
             jumpBufferCounter = jumpBufferTime;
     }
 
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        if (context.performed) fireHeld = true;
+        else if (context.canceled) fireHeld = false;
+    }
+
     private void FixedUpdate()
     {
         CheckGround();
@@ -88,22 +163,29 @@ public class PlayerMovement : MonoBehaviour
 
         if (jumpBufferCounter > 0f)
             jumpBufferCounter -= Time.fixedDeltaTime;
-        
 
-        // horizontal motion
-        float targetSpeedX = moveInput.x * maxSpeed;
+       // horizontal movement
+        float xInput = Mathf.Abs(moveInput.x) < inputDeadzone ? 0f : moveInput.x;
 
-        // SmoothDamp gradually changes current velocity to target velocity
+        float targetSpeedX = xInput * maxSpeed;
         float smoothedSpeedX = Mathf.SmoothDamp(
-            rb.linearVelocity.x, // current velocity
-            targetSpeedX, // target velocity
-            ref currentVelocityX, // ref velocity
-            moveInput.x != 0 ? accelerationTime : deccelerationTime // time to reach target velocity
-        );
+        rb.linearVelocity.x,
+        targetSpeedX,
+        ref currentVelocityX,
+        (Mathf.Abs(targetSpeedX) > 0.01f) ? accelerationTime : deccelerationTime
+       );
 
-        float newYVelocity = rb.linearVelocity.y;
-        Vector2 finalVelocity = new Vector2(smoothedSpeedX, newYVelocity);
-        
+       if (xInput == 0f && Mathf.Abs(smoothedSpeedX) < 0.02f)
+        {
+            smoothedSpeedX = 0f;
+            currentVelocityX = 0f;
+        }
+
+        if (Mathf.Abs(xInput) < 0.0001f)
+            smoothedSpeedX = Mathf.MoveTowards(smoothedSpeedX, 0f, 100f * Time.fixedDeltaTime);
+
+       rb.linearVelocity = new Vector2(smoothedSpeedX, rb.linearVelocity.y);
+
         // jump
         if (jumpBufferCounter > 0f)
         {
@@ -126,15 +208,17 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (coyoteTimeCounter > 0f)
             {
-                // Ground/coyote jump
-                newYVelocity = jumpForce;
+                var v = rb.linearVelocity;
+                v.y = jumpForce;
+                rb.linearVelocity = v;
                 jumpBufferCounter = 0f;
                 coyoteTimeCounter = 0f;
             }
             else if (extraJumpsLeft > 0)
             {
-                // Air jump
-                newYVelocity = jumpForce;
+                var v = rb.linearVelocity;
+                v.y = jumpForce;
+                rb.linearVelocity = v;
                 extraJumpsLeft--;
                 jumpBufferCounter = 0f;
             }
@@ -144,17 +228,18 @@ public class PlayerMovement : MonoBehaviour
         // apply wall stick
         if (wallStickCounter > 0f && isTouchingWall && !IsGrounded())
         {
-            finalVelocity.x = 0f;
-            finalVelocity.y = 0f;
-        }
-        else
-        {
-            finalVelocity.y = newYVelocity;
+            rb.linearVelocity = Vector2.zero;
         }
 
-        rb.linearVelocity = finalVelocity;
+        // shooting
+        if (fireHeld && Time.time >= nextFireTime)
+        {
+            SpawnProjectile();
+            nextFireTime = Time.time + (fireRate > 0f ? 1f / fireRate : 0f);
+        }
     }
 
+    // ground check for movement and jumping
     private void CheckGround()
     {
         if (Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer))
@@ -171,71 +256,68 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // wall check for wall sticking
     private void CheckWall()
     {
-        // Raycast in the direction the player is facing
-        Vector2 boxSize = new Vector2(1f, 1f);
-        Collider2D hit = Physics2D.OverlapBox(wallCheck.position, boxSize, 0f, wallLayer);
-        isTouchingWall = hit != null;
+    // Tight probe slightly ahead of the player
+    Vector2 boxSize = new Vector2(1f, 1f);
 
-        if (hit != null)
+    float x = moveInput.x;
+    float facing = Mathf.Abs(x) > 0.01f ? Mathf.Sign(x) : 1f;
+    Vector2 origin = (Vector2)wallCheck.position + new Vector2(0.05f * facing, 0f);
+
+    // Single overlap query using the intended origin
+    Collider2D hit = Physics2D.OverlapBox(origin, boxSize, 0f, wallLayer);
+
+    // Set flags once
+    isTouchingWall = hit != null;
+    wallContactDirection = isTouchingWall
+        ? (hit.transform.position.x < transform.position.x ? -1 : 1)
+        : 0;
+
+    // "Same wall" suppression after a wall-jump
+    if (isTouchingWall && hit != null && !IsGrounded())
+    {
+        if (lastWallJumpPosition.HasValue)
         {
-            isTouchingWall = true;
+            float xDistance = Mathf.Abs(wallCheck.position.x - lastWallJumpPosition.Value.x);
+            if (xDistance < 0.1f)
+            {
+                isTouchingWall = false;
+                wallContactDirection = 0; // <- also clear the direction
+            }
+        }
+    }
 
-            // det which side the wall is on relative to player
-            if (hit.transform.position.x < transform.position.x)
-                wallContactDirection = -1;
-            else
-                wallContactDirection = 1;
+    // Stick timer / cooldown (unchanged)
+    if (wallStickCooldownTimer > 0f)
+        wallStickCooldownTimer -= Time.fixedDeltaTime;
+
+    bool cooldownActive = wallStickCooldownTimer > 0f;
+
+    if (canWallStick && !cooldownActive && isTouchingWall && !IsGrounded())
+    {
+        if (!previousWallTouch)
+        {
+            wallStickCounter = wallStickTime;
+            // Debug.Log("wall stick Activated");
         }
         else
         {
-            isTouchingWall = false;
-            wallContactDirection = 0;
-        }
-        
-        if (isTouchingWall && hit != null && !IsGrounded())
-        {
-            if (lastWallJumpPosition.HasValue)
+            wallStickCounter -= Time.fixedDeltaTime;
+            if (wallStickCounter <= 0f)
             {
-                float xDistance = Mathf.Abs(wallCheck.position.x - lastWallJumpPosition.Value.x);
-                if (xDistance < 0.1f)
-                {
-                    // still same vertical wall
-                    isTouchingWall = false;
-                }
+                canWallStick = false;
+                wallStickCooldownTimer = wallStickCooldown;
             }
         }
+    }
+    else if (!isTouchingWall || IsGrounded())
+    {
+        wallStickCounter = 0f;
+    }
 
-        if (wallStickCooldownTimer > 0f)
-            wallStickCooldownTimer -= Time.fixedDeltaTime;
-
-        bool cooldownActive = wallStickCooldownTimer > 0f;
-
-        if (canWallStick && !cooldownActive && isTouchingWall && !IsGrounded())
-        {
-            if (!previousWallTouch)
-            {
-                wallStickCounter = wallStickTime;
-                Debug.Log("wall stick Activated");
-            }
-            else
-            {
-                wallStickCounter -= Time.fixedDeltaTime;
-
-                if (wallStickCounter <= 0f)
-                {
-                    canWallStick = false;
-                    wallStickCooldownTimer = wallStickCooldown;
-                }
-            }
-        }
-        else if (!isTouchingWall || IsGrounded())
-        {
-            wallStickCounter = 0f;
-        }
-        
-        previousWallTouch = isTouchingWall;
+    previousWallTouch = isTouchingWall;
     }
 
     private bool IsGrounded()
@@ -273,6 +355,54 @@ public class PlayerMovement : MonoBehaviour
 
         handTransform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
+
+    private void SpawnProjectile()
+    {
+        if (projectilePrefab == null) return;
+
+        Transform spawn = muzzleTransform != null ? muzzleTransform : handTransform;
+
+        // aim toward mouse, but only use Direction
+        Vector2 mouseScreen = Mouse.current.position.ReadValue();
+
+        // project mouse onto the same Z plane as the muzzle
+        float planeZ = spawn.position.z - mainCamera.transform.position.z;
+        Vector3 mouseWorld = mainCamera.ScreenToWorldPoint(new Vector3(mouseScreen.x, mouseScreen.y, planeZ));
+
+        // normalized 2D direction from muzzle to mouse
+        Vector2 dir = (Vector2)(mouseWorld - spawn.position);
+        if (dir.sqrMagnitude < 0.0001f) dir = (Vector2)spawn.right;
+        else dir = dir.normalized;
+
+        // small forward offset
+        Vector3 spawnPos = spawn.position + (Vector3)(dir * 0.15f);
+
+        GameObject go = Instantiate(
+            projectilePrefab,
+            spawnPos,
+            Quaternion.FromToRotation(Vector2.right, dir)
+        );
+
+        var prb = go.GetComponent<Rigidbody2D>();
+        if (prb != null)
+        {
+            prb.gravityScale = projectileGravityScale;
+            // inherit player, but remove the component along the aim direction
+            Vector2 inherited = rb.linearVelocity;
+            if (inheritHorizontalOnly) inherited = new Vector2(inherited.x, 0f);
+
+            // Split inherited into along-aim and perpendicular components
+            float along = Vector2.Dot(inherited, dir);
+            Vector2 inheritedPerp = inherited - dir * along;
+
+            // Final: exact projectileSpeed along aim, plus perpendicular carry scaled to taste
+            prb.linearVelocity = dir * projectileSpeed + inheritedPerp * projectileInheritVelocity;
+        }
+
+        if (projectileLifetime > 0f) Destroy(go, projectileLifetime);
+
+    }
+
     private void OnDrawGizmosSelected()
     {
         if (groundCheck != null)
@@ -283,9 +413,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (wallCheck != null)
         {
-            Gizmos.color = Color.red;
-            Vector3 size = new Vector3(1f, 1f, 0f);
-            Gizmos.DrawWireCube(wallCheck.position, size);
+            Vector2 boxSize = new Vector2(1f, 1f);
+            float facing = 1f;
+            Vector2 origin = (Vector2)wallCheck.position + new Vector2(0.05f * facing, 0f);
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireCube(origin, boxSize);
         }
     }
 }
