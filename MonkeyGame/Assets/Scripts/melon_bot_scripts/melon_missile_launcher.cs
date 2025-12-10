@@ -9,8 +9,9 @@ public class melon_missile_launcher : MonoBehaviour
     [SerializeField] public float view_dist; // view distance of bot
     [SerializeField] private float blinkSpeed = 20f; // higher = faster blinking
     [SerializeField] private float rotation_speed; // how fast bot launchers rotate
-    [SerializeField] private float detection_angle_up = 80f; // how far he can detect player up
-    [SerializeField] private float detection_angle_down = 80f; // how far he can detect player down
+    //[SerializeField] private float detection_angle_up = 80f; // how far he can detect player up
+    //[SerializeField] private float detection_angle_down = 80f; // how far he can detect player down
+    [SerializeField] private float viewAngle = 80f; // how far he can detect player down
     [SerializeField] private float bob_range = 0.3f; // smaller for subtle bob
     [SerializeField] private float bob_speed = 1f;   // how fast it bobs
 
@@ -29,7 +30,7 @@ public class melon_missile_launcher : MonoBehaviour
 
     [Header("Core Components")]
     [SerializeField] private GameObject laser;
-    [SerializeField] private Transform target;
+    [SerializeField] private Transform player;
     [SerializeField] private Transform melon_whole_trans;
 
     [Header("Missile Components")]
@@ -44,14 +45,26 @@ public class melon_missile_launcher : MonoBehaviour
     [SerializeField] private Animator back_launcher_animator;
 
     private float missile_time;
-    private float fix_angle = 180f;
+    //private float fix_angle = 180f;
     private Quaternion originalRotation;
     private Vector3 melonStartLocalPos;
     private float laser_off_time = 0f;
+    public int direction = -1;
 
     void Start()
     {
-        originalRotation = transform.rotation;
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        player = playerObj.transform;
+
+        // have correct direction -1 = left / 1 = right
+        float yRot = transform.eulerAngles.y;
+        if (Mathf.Abs(yRot - 180f) < 1f)
+            direction = 1;   // facing right
+        else
+            direction = -1;  // facing left
+
+        originalRotation = melon_whole_trans.rotation;
+
         missile_time = betweenTimeMissile;
         if (melon_whole_trans != null)
             melonStartLocalPos = melon_whole_trans.localPosition;
@@ -70,32 +83,44 @@ public class melon_missile_launcher : MonoBehaviour
                 melonStartLocalPos.z
             );
         }
+        LauncherLogic();
+    }
 
-        float dist = Vector3.Distance(target.position, transform.position);
-        float angle = AngleBetween();
-        if (dist <= view_dist && (-detection_angle_up < angle) && (angle < detection_angle_down))
+    private void LauncherLogic()
+    {
+        float dist = Vector3.Distance(player.position, transform.position);
+        //float angle = AngleBetween();
+        if (dist <= view_dist)
         {
-            laser_blink();
-            // apply the rotation
-            transform.rotation = Quaternion.Euler(0f, 0f, angle);
+            float angle = AngleBetween();
+            //if (angle < detection_angle_up && angle > detection_angle_down)
+            if (Mathf.Abs(angle) < viewAngle)
+            {
+                if (PlayerInView())
+                {
+                    //Debug.DrawLine(laser.transform.position, player.position, Color.red);
+                    laser_blink();
+                    // apply the rotation
+                    float yRot = transform.localEulerAngles.y;
+                    transform.localRotation = Quaternion.Euler(0f, yRot, angle);
 
-            // missile logic
-            missile_time -= Time.deltaTime;
-            if (missile_time <= 0)
-            {
-                launch_missiles();
+                    // missile logic
+                    missile_time -= Time.deltaTime;
+                    if (missile_time <= 0)
+                    {
+                        launch_missiles();
+                    }
+                }
             }
+            laser_off_time -= Time.deltaTime;
+            RotateLauncherback();
+            return;
         }
-        else
-        {
-            // make laser disappear
-            laser.SetActive(false);
-            missile_time = betweenTimeMissile;
-            if (transform.rotation != originalRotation)
-            {
-                transform.rotation = Quaternion.Slerp(transform.rotation, originalRotation, Time.deltaTime * rotation_speed);
-            }
-        }
+        // make laser disappear
+        laser.SetActive(false);
+        missile_time = betweenTimeMissile;
+        RotateLauncherback();
+        laser_off_time = 0;
     }
 
     private void launch_missiles()
@@ -113,10 +138,6 @@ public class melon_missile_launcher : MonoBehaviour
         // play the launch animation
         front_launcher_animator.SetTrigger("shoot");
         front_launcher_animator.SetTrigger("shoot");
-
-        // TODO old code can remove, when done
-        //Instantiate(missile_prefab, firePoint.position, rot1);
-        //Instantiate(missile_prefab, firePoint_2.position, rot2);
 
         // create missile and the init new attributes for missile
         GameObject m1 = Instantiate(missile_prefab, firePoint.position, rot1);
@@ -144,21 +165,59 @@ public class melon_missile_launcher : MonoBehaviour
                 laser.SetActive(true);
             }
         }
-        else
-        {
-            laser_off_time -= Time.deltaTime;
-        }
     }
     private float AngleBetween()
     {
-        // find the direction between them
-        Vector2 direction = target.position - transform.position;
+        float angle = 0;
+        if (direction == -1)
+        {
+            Vector2 dir = new Vector2(-(player.position.x - transform.position.x),
+                           player.position.y - transform.position.y);
+
+            angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            angle *= -1;
+        }
+        else
+        {
+            Vector2 direction_temp = player.position - transform.position;
+            angle = Mathf.Atan2(direction_temp.y, direction_temp.x) * Mathf.Rad2Deg;
+            angle *= -1;
+        }
+        return angle;
+
+        /* // find the direction between them
+        Vector2 direction = player.position - transform.position;
         // find the angle between the objects
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         // fix angle so it points towards the player
         angle += fix_angle;
 
-        return angle;
+        return angle; */
+    }
+    private bool PlayerInView()
+    {
+        //see if there is a line of sight between bot and player
+
+        Vector2 origin = laser.transform.position;
+        Vector2 target = player.position;
+
+        Vector2 direction = (target - origin).normalized;
+
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, view_dist);
+        //Debug.DrawLine(origin, target, Color.red);
+        if (hit.collider.CompareTag("Player"))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    void RotateLauncherback()
+    {
+        if (transform.rotation != originalRotation)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, originalRotation, Time.deltaTime * rotation_speed);
+        }
     }
 
 }

@@ -348,9 +348,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::melon_missile_launcher
   view_dist: 15
   blinkSpeed: 20
-  rotation_speed: 10
-  detection_angle_up: 80
-  detection_angle_down: 80
+  rotation_speed: 1
+  viewAngle: 80
   bob_range: 0.25
   bob_speed: 1.5
   randAngleMissile: 3
@@ -362,13 +361,14 @@ MonoBehaviour:
   laserColor: {r: 0.6981132, g: 0.050887402, b: 0.026343875, a: 0.6431373}
   laserTimeOff: 1
   laser: {fileID: 7506678160919699390}
-  target: {fileID: 0}
+  player: {fileID: 0}
   melon_whole_trans: {fileID: 3555393968957590383}
   missile_prefab: {fileID: 2448972901239235667, guid: 1f3ca87f15d833c4c96396063ecd92bb, type: 3}
   firePoint: {fileID: 7494996589374200032}
   firePoint_2: {fileID: 6191501589610421832}
   front_launcher_animator: {fileID: 1075686491551204654}
   back_launcher_animator: {fileID: 4710507855080723334}
+  direction: -1
 --- !u!1 &6606820139150187987
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,7 +622,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::laser_controller
   targetLayer:
     serializedVersion: 2
-    m_Bits: 255
+    m_Bits: 1048831
 --- !u!1 &7736534915095566518
 GameObject:
   m_ObjectHideFlags: 0

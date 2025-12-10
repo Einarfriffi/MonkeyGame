@@ -7,6 +7,7 @@ public class missile_controller : MonoBehaviour
     public float acceleration = 5f;   // how fast it speeds up
     public float maxSpeed = 20f;
     public float maxRange = 10f;
+    public GameObject Explosion;
 
     private Rigidbody2D rb;
     private Vector2 startPos;
@@ -40,6 +41,7 @@ public class missile_controller : MonoBehaviour
         if (Vector2.Distance(transform.position, startPos) >= maxRange)
         {
             Destroy(this.gameObject);
+            Instantiate(Explosion, transform.position, Quaternion.identity);
         }
 
     }
@@ -50,16 +52,13 @@ public class missile_controller : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             Destroy(this.gameObject);
-
-        }
-        else if (other.gameObject.CompareTag("Hazards"))
-        {
-
+            Instantiate(Explosion, transform.position, Quaternion.identity);
         }
         else // anything else 
         {
             //Destroy(collision.gameObject);
             Destroy(this.gameObject);
+            Instantiate(Explosion, transform.position, Quaternion.identity);
         }
     }
 }

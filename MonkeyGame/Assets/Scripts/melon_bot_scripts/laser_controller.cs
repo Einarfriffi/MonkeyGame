@@ -15,7 +15,8 @@ public class laser_controller : MonoBehaviour
 
         if (parentScript != null)
         {
-            maxLength = parentScript.view_dist;
+            //maxLength = parentScript.view_dist;
+            maxLength = parentScript.view_dist * 3;
             laserSize = parentScript.laserSize;
             laserColor = parentScript.laserColor;
 

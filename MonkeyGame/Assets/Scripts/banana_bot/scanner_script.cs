@@ -4,7 +4,7 @@ public class scanner_script : MonoBehaviour
 {
     private float endSizeLaser;
     private float baseSizeLaser;
-    private Color laserColor = Color.red;
+    public Color laserColor = Color.red;
     public LayerMask targetLayer;
     private float maxLength;
     private LineRenderer lr;
@@ -45,7 +45,7 @@ public class scanner_script : MonoBehaviour
     void Update()
     {
         Vector2 origin = transform.position;
-        Vector2 direction = -transform.right;
+        Vector2 direction = transform.right;
 
         RaycastHit2D hit = Physics2D.Raycast(origin, direction, maxLength, targetLayer);
         Vector2 endPoint = hit.collider != null ? hit.point : origin + direction * maxLength;
@@ -55,5 +55,19 @@ public class scanner_script : MonoBehaviour
 
         // Optional: visualize the ray in Scene view
         //Debug.DrawRay(origin, direction * maxLength, Color.red);
+    }
+    public void SetLaserColor(Color c)
+    {
+        lr.startColor = c;
+        lr.endColor = c;
+    }
+    public void SetLaserSize(float s)
+    {
+        lr.endWidth = s;
+    }
+    public void ResetLaserSize()
+    {
+        lr.startWidth = baseSizeLaser;
+        lr.endWidth = endSizeLaser;
     }
 }

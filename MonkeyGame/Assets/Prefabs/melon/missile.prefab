@@ -51,6 +51,7 @@ MonoBehaviour:
   acceleration: 3
   maxSpeed: 8
   maxRange: 200
+  Explosion: {fileID: 5313569715796620052, guid: 8e013515185b37546a246c4558c22d05, type: 3}
 --- !u!50 &123283521729023137
 Rigidbody2D:
   serializedVersion: 5

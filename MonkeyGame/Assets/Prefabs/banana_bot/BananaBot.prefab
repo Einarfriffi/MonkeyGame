@@ -307,13 +307,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6677407723816508180}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0.081, y: 0.634, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1436887925578025636}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &7835208483647055586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,6 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260367a652628f84da5d0e1d9b17f08f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::scanner_script
+  laserColor: {r: 1, g: 0, b: 0, a: 1}
   targetLayer:
     serializedVersion: 2
     m_Bits: 255
@@ -390,7 +391,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.75, y: 0.1, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3463132792069950170}
@@ -413,22 +414,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 354d3dd42c5c94fe1974e3903ded125d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BananaBotMovements
-  viewDistance: 8
+  viewDistance: 12
   idle_speed: 3
+  Targets:
+    serializedVersion: 2
+    m_Bits: 1048712
+  Stationery: 1
+  facingLeft: 0
+  attackSpeed: 2
+  timeBeforeAttack: 2
   minX: 4
   maxX: 4
   stopTimeRandomRange: {x: 1, y: 5}
   driveTimeRandomRange: {x: 0.5, y: 1.5}
-  targetLayer:
+  targetLayerMove:
     serializedVersion: 2
     m_Bits: 136
   endSizeLaser: 4
   baseSizeLaser: 0.5
-  laserColor: {r: 1, g: 0.7676166, b: 0, a: 0.1882353}
+  laserColor: {r: 1, g: 0.7676166, b: 0, a: 0.19607843}
+  laserColorAngry: {r: 1, g: 0.38150918, b: 0, a: 0.19607843}
+  laserColorDetecting: {r: 1, g: 0.56961644, b: 0, a: 0.19607843}
+  blinkSpeed: 10
+  laserReSize: 0.04
   laser: {fileID: 6677407723816508180}
   animator: {fileID: 6139307405983015720}
   stun_collider: {fileID: 2018175897670480544}
   weak_spot: {fileID: 669726488152946410}
+  eyePos: {fileID: 3668854653313534971}
+  Player: {fileID: 0}
+  belowThresHoldY: 0.5
+  belowThresHoldAngle: 4
+  targetLaser: 1
+  detection_angle: 0
+  direction: -1
+  SeePlayer: 0
 --- !u!50 &3303687539440485413
 Rigidbody2D:
   serializedVersion: 5
