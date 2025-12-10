@@ -1,20 +1,22 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem;   // << new input system
+using UnityEngine.InputSystem;   // new input system
 
 public class SceneManagerScript : MonoBehaviour
 {
     [Header("Loads this scene when pressing Enter")]
     public string sceneNameOnEnter;
 
+    [Header("Assign your UIFader here")]
+    public UIFader fader;
+
     void Update()
     {
-        // Keyboard.current can be null in some cases, so we check it first
         if (Keyboard.current != null && Keyboard.current.enterKey.wasPressedThisFrame)
         {
             if (!string.IsNullOrEmpty(sceneNameOnEnter))
             {
-                SceneManager.LoadScene(sceneNameOnEnter);
+                // FADE instead of instantly loading
+                fader.FadeToNextScene(sceneNameOnEnter);
             }
             else
             {
@@ -23,9 +25,9 @@ public class SceneManagerScript : MonoBehaviour
         }
     }
 
-    // Still works for UI buttons etc.
+    // For UI buttons (optional)
     public void LoadSceneByName(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
+        fader.FadeToNextScene(sceneName);
     }
 }

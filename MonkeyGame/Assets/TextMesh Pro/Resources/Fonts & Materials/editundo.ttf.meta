@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 41638d3d646921640809d7130007b6da
+guid: cc60f4f6b3089f840bd866a36a7f7a03
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Pixellari
+  - Edit Undo BRK
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
