@@ -851,8 +851,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -8.100102, y: 171.3}
-  m_SizeDelta: {x: 510.834, y: 374.4353}
+  m_AnchoredPosition: {x: 0, y: 168.3}
+  m_SizeDelta: {x: 375.7332, y: 248.7633}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1108253536
 MonoBehaviour:
@@ -890,7 +890,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1288223247243064133, guid: 2710aa8922dc3d8429b0ec2810cf603c, type: 3}
+  m_Sprite: {fileID: -1115504853089015140, guid: bb0b40d32a9c67e46ab9dc51681fe45f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1918,7 +1918,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIFader
   uiGroup: {fileID: 131655992}
-  fadeDuration: 0.8
+  fadeDuration: 0.6
   sfxSource: {fileID: 1564018436}
   clickSound: {fileID: 8300000, guid: ca261f6198ee58a4299ef6a6d43714bc, type: 3}
 --- !u!114 &1847207749

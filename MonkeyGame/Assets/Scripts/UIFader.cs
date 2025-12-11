@@ -8,8 +8,8 @@ public class UIFader : MonoBehaviour
     public float fadeDuration = 0.4f;
 
     [Header("Sound")]
-    public AudioSource sfxSource;    // AudioSource for UI sounds
-    public AudioClip clickSound;     // Optional: assign a click sound
+    public AudioSource sfxSource; 
+    public AudioClip clickSound; 
 
     void Start()
     {
@@ -19,7 +19,7 @@ public class UIFader : MonoBehaviour
 
     public void FadeToNextScene(string sceneName)
     {
-        PlayClickSound();  // 🔊 play sound when transition starts
+        PlayClickSound();  
         StartCoroutine(FadeOutAndSwitch(sceneName));
     }
 
@@ -34,7 +34,7 @@ public class UIFader : MonoBehaviour
         }
         else
         {
-            // or just play whatever clip is on the AudioSource
+            
             sfxSource.Play();
         }
     }
