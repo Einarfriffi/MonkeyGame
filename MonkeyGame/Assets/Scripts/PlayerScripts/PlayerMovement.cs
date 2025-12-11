@@ -115,6 +115,9 @@ public class PlayerMovement : MonoBehaviour
     private float nextFireTime;
     private bool dead = false;
 
+    private float wall_grace_peroid = 0.5f;
+    private float wall_grace_peroid_time = 0;
+
 
 
 
@@ -192,6 +195,9 @@ public class PlayerMovement : MonoBehaviour
         {
             if (wallStickCounter > 0f)
             {
+                // new shit
+                wall_grace_peroid_time = wall_grace_peroid;
+
                 float wallDirection = wallContactDirection;
 
                 Vector2 jumpDir = new Vector2(wallJumpDirection.x * wallDirection, wallJumpDirection.y).normalized;
@@ -310,10 +316,12 @@ public class PlayerMovement : MonoBehaviour
         // "Same wall" suppression after a wall-jump
         if (isTouchingWall && hit != null && !IsGrounded())
         {
+            //Debug.Log(wallCheck.position.x);
             if (lastWallJumpPosition.HasValue)
             {
                 float xDistance = Mathf.Abs(wallCheck.position.x - lastWallJumpPosition.Value.x);
-                if (xDistance < 0.1f)
+                // TODO NEW FIX
+                if (xDistance < 0.3f)
                 {
                     isTouchingWall = false;
                     wallContactDirection = 0; // <- also clear the direction
@@ -322,17 +330,18 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Stick timer / cooldown (unchanged)
-        if (wallStickCooldownTimer > 0f)
-            wallStickCooldownTimer -= Time.fixedDeltaTime;
+        // if (wallStickCooldownTimer > 0f)
+        //     wallStickCooldownTimer -= Time.fixedDeltaTime;
 
-        bool cooldownActive = wallStickCooldownTimer > 0f;
+        // bool cooldownActive = wallStickCooldownTimer > 0f;
 
-        if (canWallStick && !cooldownActive && isTouchingWall && !IsGrounded())
+        //if (canWallStick && !cooldownActive && isTouchingWall && !IsGrounded())
+        if (canWallStick && isTouchingWall && !IsGrounded())
         {
             if (!previousWallTouch)
             {
                 wallStickCounter = wallStickTime;
-                // Debug.Log("wall stick Activated");
+                Debug.Log("wall stick Activated");
             }
             else
             {
