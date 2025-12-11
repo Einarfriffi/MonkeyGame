@@ -328,6 +328,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void AimAtMouse()
     {
+        if (Time.timeScale == 0) return;
         Vector3 mouseScreenPos = Mouse.current.position.ReadValue();
         Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(mouseScreenPos);
 

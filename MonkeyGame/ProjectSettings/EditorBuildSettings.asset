@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Menus/StartScreen.unity
     guid: b6e7b265a57a14218992f1be4cf4d394
   - enabled: 1
-    path: Assets/Scenes/Menus/LevelManager.unity
+    path: Assets/Scenes/Menus/Play.unity
     guid: 7efc3ee213e11454a83cd069b3ef5f48
   - enabled: 1
     path: Assets/Scenes/Menus/MainMenu.unity
