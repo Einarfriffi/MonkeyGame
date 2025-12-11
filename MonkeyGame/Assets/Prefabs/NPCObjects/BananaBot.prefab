@@ -458,7 +458,7 @@ GameObject:
   - component: {fileID: 6081604812907354334}
   m_Layer: 19
   m_Name: BananaBot
-  m_TagString: Untagged
+  m_TagString: Hazards
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -499,9 +499,8 @@ MonoBehaviour:
   idle_speed: 3
   Targets:
     serializedVersion: 2
-    m_Bits: 1048712
+    m_Bits: 1049224
   Stationery: 1
-  facingLeft: 0
   attackSpeed: 5
   timeBeforeAttack: 0.7
   minX: 4

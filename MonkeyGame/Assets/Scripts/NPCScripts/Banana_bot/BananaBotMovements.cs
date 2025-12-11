@@ -320,11 +320,16 @@ public class BananaBotMovements : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(origin, direction, viewDistance, Targets);
         //Debug.DrawLine(origin, target, Color.red);
-        if (hit.collider.CompareTag("Player"))
+        if (hit.collider != null && hit.collider.CompareTag("Player"))
         {
             return true;
         }
         return false;
+        /* if (hit.collider.CompareTag("Player"))
+        {
+            return true;
+        }
+        return false; */
     }
 
     public void WeakSpotHit(Collision2D other)

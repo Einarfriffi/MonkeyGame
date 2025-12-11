@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump Timers")]
     [Tooltip("Time window to buffer a jump pressed slightly before landing.")]
     public float jumpBufferTime = 0.1f;
-    
+
     [Tooltip("Coyote time: grace period after leaving ground where jump still works.")]
     public float coyoteTime = 0.1f;
 
@@ -130,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -165,7 +165,7 @@ public class PlayerMovement : MonoBehaviour
         if (jumpBufferCounter > 0f)
             jumpBufferCounter -= Time.fixedDeltaTime;
 
-       // horizontal movement
+        // horizontal movement
         float xInput = Mathf.Abs(moveInput.x) < inputDeadzone ? 0f : moveInput.x;
 
         float targetSpeedX = xInput * maxSpeed;
@@ -176,7 +176,7 @@ public class PlayerMovement : MonoBehaviour
         (Mathf.Abs(targetSpeedX) > 0.01f) ? accelerationTime : deccelerationTime
        );
 
-       if (xInput == 0f && Mathf.Abs(smoothedSpeedX) < 0.02f)
+        if (xInput == 0f && Mathf.Abs(smoothedSpeedX) < 0.02f)
         {
             smoothedSpeedX = 0f;
             currentVelocityX = 0f;
@@ -185,7 +185,7 @@ public class PlayerMovement : MonoBehaviour
         if (Mathf.Abs(xInput) < 0.0001f)
             smoothedSpeedX = Mathf.MoveTowards(smoothedSpeedX, 0f, 100f * Time.fixedDeltaTime);
 
-       rb.linearVelocity = new Vector2(smoothedSpeedX, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(smoothedSpeedX, rb.linearVelocity.y);
 
         // jump
         if (jumpBufferCounter > 0f)
@@ -240,6 +240,21 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        // collide with hazards kills
+        if (other.gameObject.CompareTag("Hazards"))
+        {
+            dead = true;
+            // TODO: add animation
+            GameManager.Instance.ShowDeathScreen();
+        }
+
+        if (other.gameObject.CompareTag("Win"))
+        {
+            GameManager.Instance.LevelWon();
+        }
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         // collide with hazards kills
@@ -255,6 +270,7 @@ public class PlayerMovement : MonoBehaviour
             GameManager.Instance.LevelWon();
         }
     }
+
     // ground check for movement and jumping
     private void CheckGround()
     {
@@ -275,65 +291,65 @@ public class PlayerMovement : MonoBehaviour
     // wall check for wall sticking
     private void CheckWall()
     {
-    // Tight probe slightly ahead of the player
-    Vector2 boxSize = new Vector2(1f, 1f);
+        // Tight probe slightly ahead of the player
+        Vector2 boxSize = new Vector2(1f, 1f);
 
-    float x = moveInput.x;
-    float facing = Mathf.Abs(x) > 0.01f ? Mathf.Sign(x) : 1f;
-    Vector2 origin = (Vector2)wallCheck.position + new Vector2(0.05f * facing, 0f);
+        float x = moveInput.x;
+        float facing = Mathf.Abs(x) > 0.01f ? Mathf.Sign(x) : 1f;
+        Vector2 origin = (Vector2)wallCheck.position + new Vector2(0.05f * facing, 0f);
 
-    // Single overlap query using the intended origin
-    Collider2D hit = Physics2D.OverlapBox(origin, boxSize, 0f, wallLayer);
+        // Single overlap query using the intended origin
+        Collider2D hit = Physics2D.OverlapBox(origin, boxSize, 0f, wallLayer);
 
-    // Set flags once
-    isTouchingWall = hit != null;
-    wallContactDirection = isTouchingWall
-        ? (hit.transform.position.x < transform.position.x ? -1 : 1)
-        : 0;
+        // Set flags once
+        isTouchingWall = hit != null;
+        wallContactDirection = isTouchingWall
+            ? (hit.transform.position.x < transform.position.x ? -1 : 1)
+            : 0;
 
-    // "Same wall" suppression after a wall-jump
-    if (isTouchingWall && hit != null && !IsGrounded())
-    {
-        if (lastWallJumpPosition.HasValue)
+        // "Same wall" suppression after a wall-jump
+        if (isTouchingWall && hit != null && !IsGrounded())
         {
-            float xDistance = Mathf.Abs(wallCheck.position.x - lastWallJumpPosition.Value.x);
-            if (xDistance < 0.1f)
+            if (lastWallJumpPosition.HasValue)
             {
-                isTouchingWall = false;
-                wallContactDirection = 0; // <- also clear the direction
+                float xDistance = Mathf.Abs(wallCheck.position.x - lastWallJumpPosition.Value.x);
+                if (xDistance < 0.1f)
+                {
+                    isTouchingWall = false;
+                    wallContactDirection = 0; // <- also clear the direction
+                }
             }
         }
-    }
 
-    // Stick timer / cooldown (unchanged)
-    if (wallStickCooldownTimer > 0f)
-        wallStickCooldownTimer -= Time.fixedDeltaTime;
+        // Stick timer / cooldown (unchanged)
+        if (wallStickCooldownTimer > 0f)
+            wallStickCooldownTimer -= Time.fixedDeltaTime;
 
-    bool cooldownActive = wallStickCooldownTimer > 0f;
+        bool cooldownActive = wallStickCooldownTimer > 0f;
 
-    if (canWallStick && !cooldownActive && isTouchingWall && !IsGrounded())
-    {
-        if (!previousWallTouch)
+        if (canWallStick && !cooldownActive && isTouchingWall && !IsGrounded())
         {
-            wallStickCounter = wallStickTime;
-            // Debug.Log("wall stick Activated");
-        }
-        else
-        {
-            wallStickCounter -= Time.fixedDeltaTime;
-            if (wallStickCounter <= 0f)
+            if (!previousWallTouch)
             {
-                canWallStick = false;
-                wallStickCooldownTimer = wallStickCooldown;
+                wallStickCounter = wallStickTime;
+                // Debug.Log("wall stick Activated");
+            }
+            else
+            {
+                wallStickCounter -= Time.fixedDeltaTime;
+                if (wallStickCounter <= 0f)
+                {
+                    canWallStick = false;
+                    wallStickCooldownTimer = wallStickCooldown;
+                }
             }
         }
-    }
-    else if (!isTouchingWall || IsGrounded())
-    {
-        wallStickCounter = 0f;
-    }
+        else if (!isTouchingWall || IsGrounded())
+        {
+            wallStickCounter = 0f;
+        }
 
-    previousWallTouch = isTouchingWall;
+        previousWallTouch = isTouchingWall;
     }
 
     private bool IsGrounded()
