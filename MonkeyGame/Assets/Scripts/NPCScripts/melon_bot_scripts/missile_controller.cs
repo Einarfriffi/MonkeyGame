@@ -8,6 +8,7 @@ public class missile_controller : MonoBehaviour
     public float maxSpeed = 20f;
     public float maxRange = 10f;
     public GameObject Explosion;
+    [SerializeField] private LayerMask collisionLayers;
 
     private Rigidbody2D rb;
     private Vector2 startPos;
@@ -48,17 +49,29 @@ public class missile_controller : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // if the missile collides with the player
+        /* // if the missile collides with the player
         if (other.gameObject.CompareTag("Player"))
         {
             Destroy(this.gameObject);
             Instantiate(Explosion, transform.position, Quaternion.identity);
+        }
+        else if (other.gameObject.layer == LayerMask.NameToLayer("shield")) // anything else 
+        {
+            return;
         }
         else // anything else 
         {
             //Destroy(collision.gameObject);
             Destroy(this.gameObject);
             Instantiate(Explosion, transform.position, Quaternion.identity);
-        }
+        } */
+
+        // Not in the collision mask? Ignore.
+        if ((collisionLayers.value & (1 << other.gameObject.layer)) == 0)
+            return;
+
+        // Player or anything else allowed -> explode
+        Instantiate(Explosion, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }

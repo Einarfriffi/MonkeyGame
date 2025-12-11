@@ -9,7 +9,7 @@ public class BananaBotMovements : MonoBehaviour
     [SerializeField] private float idle_speed;
     [SerializeField] private LayerMask Targets;
     [SerializeField] private bool Stationery = false;
-    [SerializeField] private bool facingLeft = true;
+    //[SerializeField] private bool facingLeft = true;
 
     [Header("Attack Settings")]
     [SerializeField] private float attackSpeed = 2f;
@@ -34,9 +34,14 @@ public class BananaBotMovements : MonoBehaviour
     [Header("Core Components")]
     [SerializeField] private GameObject laser;
     [SerializeField] private Animator animator;
-    [SerializeField] private Collider2D stun_collider;
-    [SerializeField] private Collider2D weak_spot;
+    //[SerializeField] private Collider2D stun_collider;
     [SerializeField] public Transform eyePos;
+    [SerializeField] private Animator shieldAnimator;
+    [SerializeField] private GameObject ExplosionPreFab;
+
+    // TODO maybe remove?
+    //[SerializeField] private Collider2D weak_spot;
+    //[SerializeField] private Collider2D shield;
     //[SerializeField] public Transform Player;
     private scanner_script scannerScript;
 
@@ -70,10 +75,17 @@ public class BananaBotMovements : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (!facingLeft)
+        /* if (!facingLeft)
         {
             direction = 1;
-        }
+        } */
+        float yRot = transform.eulerAngles.y;
+        if (Mathf.Abs(yRot - 180f) < 1f)
+            direction = 1;   // facing right
+        else
+            direction = -1;  // facing left
+
+
         // Fetch Componenets
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
@@ -313,5 +325,15 @@ public class BananaBotMovements : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void WeakSpotHit(Collision2D other)
+    {
+        Instantiate(ExplosionPreFab, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+    }
+    public void ShieldtHit(Collision2D other)
+    {
+        shieldAnimator.SetTrigger("HitShield");
     }
 }
