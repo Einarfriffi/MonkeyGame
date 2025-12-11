@@ -9,8 +9,8 @@ public class MusicManager : MonoBehaviour
 
     void Awake()
     {
-        // Keep only ONE MusicManager
-        if (FindObjectsOfType<MusicManager>().Length > 1)
+
+        if (FindObjectsByType<MusicManager>(FindObjectsSortMode.None).Length > 1)
         {
             Destroy(gameObject);
             return;
@@ -26,7 +26,7 @@ public class MusicManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // If scene is in the stop list → stop music
+        // If scene is in the stop list then stop music
         foreach (string sceneName in stopMusicInScenes)
         {
             if (scene.name == sceneName)
@@ -36,7 +36,7 @@ public class MusicManager : MonoBehaviour
             }
         }
 
-        // Otherwise → start playing if not already
+        // Otherwise start playing if not already
         if (!audioSource.isPlaying)
             audioSource.Play();
     }
