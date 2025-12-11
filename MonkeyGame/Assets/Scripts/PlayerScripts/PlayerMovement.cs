@@ -113,6 +113,7 @@ public class PlayerMovement : MonoBehaviour
     private int wallContactDirection = 0;
     private bool fireHeld;
     private float nextFireTime;
+    private bool dead = false;
 
 
 
@@ -239,6 +240,21 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // collide with hazards kills
+        if (other.CompareTag("Hazards"))
+        {
+            dead = true;
+            // TODO: add animation
+            GameManager.Instance.ShowDeathScreen();
+        }
+
+        if (other.CompareTag("Win"))
+        {
+            GameManager.Instance.LevelWon();
+        }
+    }
     // ground check for movement and jumping
     private void CheckGround()
     {
@@ -324,7 +340,6 @@ public class PlayerMovement : MonoBehaviour
     {
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
-
 
     private void AimAtMouse()
     {

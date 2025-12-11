@@ -12,6 +12,9 @@ TagManager:
   - Vine
   - Music
   - SFX
+  - Shield
+  - WeakSpot
+  - bullet
   layers:
   - Default
   - TransparentFX
