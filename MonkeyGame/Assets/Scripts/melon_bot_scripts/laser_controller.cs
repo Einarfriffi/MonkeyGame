@@ -2,10 +2,26 @@ using UnityEngine;
 
 public class laser_controller : MonoBehaviour
 {
-    public float maxLength = 10f;
+    private float laserSize;
+    private Color laserColor = Color.red;
     public LayerMask targetLayer;
+    private float maxLength;
     private LineRenderer lr;
+    private melon_missile_launcher parentScript;
 
+    void Awake()
+    {
+        parentScript = GetComponentInParent<melon_missile_launcher>();
+
+        if (parentScript != null)
+        {
+            //maxLength = parentScript.view_dist;
+            maxLength = parentScript.view_dist * 3;
+            laserSize = parentScript.laserSize;
+            laserColor = parentScript.laserColor;
+
+        }
+    }
 
     void Start()
     {
@@ -13,13 +29,13 @@ public class laser_controller : MonoBehaviour
         if (!lr) lr = gameObject.AddComponent<LineRenderer>();
 
         lr.positionCount = 2;
-        lr.startWidth = 0.025f;
-        lr.endWidth = 0.025f;
+        lr.startWidth = laserSize;
+        lr.endWidth = laserSize;
         lr.useWorldSpace = true;
 
         // Make the laser red
-        lr.startColor = Color.red;
-        lr.endColor = Color.red;
+        lr.startColor = laserColor;
+        lr.endColor = laserColor;
 
         // Assign a simple material (needed for LineRenderer)
         lr.material = new Material(Shader.Find("Sprites/Default"));
@@ -35,8 +51,5 @@ public class laser_controller : MonoBehaviour
 
         lr.SetPosition(0, origin);
         lr.SetPosition(1, endPoint);
-
-        // Optional: visualize the ray in Scene view
-        //Debug.DrawRay(origin, direction * maxLength, Color.red);
     }
 }
