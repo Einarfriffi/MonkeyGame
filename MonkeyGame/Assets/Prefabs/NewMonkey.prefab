@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7519388297010065754}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ground_check
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8380668460817753244}
   - component: {fileID: 5779281712656616869}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Graphics_monkey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3537518793891357012}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,7 +163,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1318415818346190314}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AimPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,6 +186,37 @@ Transform:
   - {fileID: 4451384739643163649}
   m_Father: {fileID: 3537518793891357012}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5721983681005464203
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7856619533547892024}
+  m_Layer: 9
+  m_Name: Muzzel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7856619533547892024
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5721983681005464203}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.167, y: 0.043, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4451384739643163649}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6553425091695979349
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,7 +226,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 402680339124839211}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: wall_check
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +258,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4451384739643163649}
   - component: {fileID: 510801667268845633}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: shooting_hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,7 +277,8 @@ Transform:
   m_LocalPosition: {x: 0.4319999, y: -0.02700001, z: 0}
   m_LocalScale: {x: 2.5261436, y: 2.5458407, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7856619533547892024}
   m_Father: {fileID: 1318415818346190314}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &510801667268845633
@@ -320,7 +352,7 @@ GameObject:
   - component: {fileID: 8912373136688962945}
   - component: {fileID: 6531768863464193436}
   - component: {fileID: 3346194565245483552}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: NewMonkey
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -466,6 +498,22 @@ MonoBehaviour:
         m_CallState: 1
     m_ActionId: 9442d6f4-7258-4e0f-be72-d4425a830a0b
     m_ActionName: 'Player/New action[/Keyboard/space,/XInputControllerWindows/buttonSouth]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3346194565245483552}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: OnFire
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+    m_ActionId: 05c8340b-bbd8-4ef8-8d17-a3ff921eb620
+    m_ActionName: 'Player/Fire[/Mouse/leftButton]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -486,6 +534,7 @@ MonoBehaviour:
   maxSpeed: 10
   accelerationTime: 0.075
   deccelerationTime: 0.075
+  inputDeadzone: 0.15
   jumpForce: 15
   groundCheck: {fileID: 7519388297010065754}
   groundCheckRadius: 0.1
@@ -496,7 +545,6 @@ MonoBehaviour:
   coyoteTime: 0.1
   maxExtraJumps: 1
   wallCheck: {fileID: 402680339124839211}
-  wallCheckDistance: 0.2
   wallStickTime: 0.5
   wallJumpForce: 20
   wallJumpDirection: {x: 1, y: 1}
@@ -504,5 +552,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   wallStickCooldown: 0.2
-  visualTransform: {fileID: 0}
+  visualTransform: {fileID: 3537518793891357012}
   handTransform: {fileID: 1318415818346190314}
+  projectilePrefab: {fileID: 995945900985695212, guid: 4af00a1c08012436dbd2d98a19b4001a, type: 3}
+  muzzleTransform: {fileID: 7856619533547892024}
+  fireRate: 3
+  projectileSpeed: 18
+  projectileGravityScale: 0
+  projectileLifetime: 3
+  projectileInheritVelocity: 1
+  inheritHorizontalOnly: 1
