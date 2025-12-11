@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8539181763788770751}
   m_Layer: 8
   m_Name: Bullet
-  m_TagString: Untagged
+  m_TagString: bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,7 +47,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.0001
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
@@ -170,8 +170,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BulletProjectile
   hitMask:
     serializedVersion: 2
-    m_Bits: 136
+    m_Bits: 524424
   destroyOnAnyCollider: 0
   impactVFX: {fileID: 0}
   impactVFXLifetime: 1
-  ignoreForSeconds: 0.03
+  ignoreForSeconds: 0
+  shieldIgnoreForSeconds: 0.3

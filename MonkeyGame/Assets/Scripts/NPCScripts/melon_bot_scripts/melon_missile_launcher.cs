@@ -32,6 +32,10 @@ public class melon_missile_launcher : MonoBehaviour
     [SerializeField] private GameObject laser;
     //[SerializeField] private Transform player;
     [SerializeField] private Transform melon_whole_trans;
+    [SerializeField] private GameObject mainGameObject;
+    [SerializeField] private GameObject ExplosionPreFab;
+    [SerializeField] private Animator shieldAnimator;
+    [SerializeField] private LayerMask targetLayer;
 
     [Header("Missile Components")]
     [SerializeField] private GameObject missile_prefab;
@@ -123,43 +127,6 @@ public class melon_missile_launcher : MonoBehaviour
         {
             laser_off_time = 0;
         }
-
-
-        // OLD
-        /*
-        float dist = Vector3.Distance(player.position, transform.position);
-        //float angle = AngleBetween();
-        if (dist <= view_dist)
-        {
-            float angle = AngleBetween();
-            //if (angle < detection_angle_up && angle > detection_angle_down)
-            if (Mathf.Abs(angle) < viewAngle)
-            {
-                if (PlayerInView())
-                {
-                    //Debug.DrawLine(laser.transform.position, player.position, Color.red);
-                    laser_blink();
-                    // apply the rotation
-                    float yRot = transform.localEulerAngles.y;
-                    transform.localRotation = Quaternion.Euler(0f, yRot, angle);
-
-                    // missile logic
-                    missile_time -= Time.deltaTime;
-                    if (missile_time <= 0)
-                    {
-                        launch_missiles();
-                    }
-                }
-            }
-            laser_off_time -= Time.deltaTime;
-            RotateLauncherback();
-            return;
-        }
-        // make laser disappear
-        laser.SetActive(false);
-        missile_time = betweenTimeMissile;
-        RotateLauncherback();
-        laser_off_time = 0; */
     }
 
     private void launch_missiles()
@@ -223,15 +190,6 @@ public class melon_missile_launcher : MonoBehaviour
             angle *= -1;
         }
         return angle;
-
-        /* // find the direction between them
-        Vector2 direction = player.position - transform.position;
-        // find the angle between the objects
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        // fix angle so it points towards the player
-        angle += fix_angle;
-
-        return angle; */
     }
     private bool PlayerInView()
     {
@@ -242,9 +200,10 @@ public class melon_missile_launcher : MonoBehaviour
 
         Vector2 direction = (target - origin).normalized;
 
-        RaycastHit2D hit = Physics2D.Raycast(origin, direction, view_dist);
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, view_dist, targetLayer);
         //Debug.DrawLine(origin, target, Color.red);
-        if (hit.collider.CompareTag("Player"))
+        //Debug.Log(hit.collider.name);
+        if (hit.collider != null && hit.collider.CompareTag("Player"))
         {
             return true;
         }
@@ -257,6 +216,16 @@ public class melon_missile_launcher : MonoBehaviour
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, originalRotation, Time.deltaTime * rotation_speed);
         }
+    }
+
+    public void WeakSpotHit(Collision2D other)
+    {
+        Instantiate(ExplosionPreFab, transform.position, Quaternion.identity);
+        Destroy(mainGameObject);
+    }
+    public void ShieldtHit(Collision2D other)
+    {
+        shieldAnimator.SetTrigger("HitShield");
     }
 
 }
