@@ -6,22 +6,30 @@ public class MusicManager : MonoBehaviour
     public string[] stopMusicInScenes; // Scenes where music should stop
 
     AudioSource audioSource;
+    public static MusicManager Instance { get; private set; }
 
     void Awake()
     {
-
-        if (FindObjectsByType<MusicManager>(FindObjectsSortMode.None).Length > 1)
+        // Singleton pattern
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
+        Instance = this;
         DontDestroyOnLoad(gameObject);
 
         audioSource = GetComponent<AudioSource>();
 
         // Listen to scene changes
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDestroy()
+    {
+        // Good practice: unsubscribe
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -31,7 +39,8 @@ public class MusicManager : MonoBehaviour
         {
             if (scene.name == sceneName)
             {
-                audioSource.Stop();
+                if (audioSource.isPlaying)
+                    audioSource.Stop();
                 return;
             }
         }
@@ -39,5 +48,17 @@ public class MusicManager : MonoBehaviour
         // Otherwise start playing if not already
         if (!audioSource.isPlaying)
             audioSource.Play();
+    }
+
+    public void PauseMusic()
+    {
+        if (audioSource.isPlaying)
+            audioSource.Pause();
+    }
+
+    public void ResumeMusic()
+    {
+        if (!audioSource.isPlaying)
+            audioSource.UnPause();
     }
 }
