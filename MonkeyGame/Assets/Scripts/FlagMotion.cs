@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LogoFlagMotion : MonoBehaviour
+public class FlagMotion : MonoBehaviour
 {
     [Header("Rotation")]
     public float swayAngle = 5f;

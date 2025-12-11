@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:MonkeyGame/Assets/Prefabs/Bullet.prefab.meta
 guid: 4af00a1c08012436dbd2d98a19b4001a
+========
+guid: a48f1590b5dde4bc9a8d27c880800289
+>>>>>>>> dev:MonkeyGame/Assets/Prefabs/TextButtons.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

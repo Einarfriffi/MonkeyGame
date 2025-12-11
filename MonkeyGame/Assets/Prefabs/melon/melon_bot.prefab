@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 294483294758181316}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: -0.048, y: 0.166, z: 0}
+  m_LocalPosition: {x: -0.269, y: 0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -109,7 +109,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: a4c4dc956e54d504cb143c549bb44a2f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -147,7 +147,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.11, y: -1.27, z: -1}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 824755407776513886}
@@ -178,7 +178,7 @@ Transform:
   m_GameObject: {fileID: 1944138593441538934}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: -0.472, y: 0.24, z: 0}
+  m_LocalPosition: {x: -0.649, y: 0.199, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -194,6 +194,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4640393202703039446}
   - component: {fileID: 3989176061645792728}
+  - component: {fileID: 4710507855080723334}
   m_Layer: 0
   m_Name: missile_launcher_back
   m_TagString: Untagged
@@ -210,7 +211,7 @@ Transform:
   m_GameObject: {fileID: 3915327377920817428}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: -0.198, y: 0.206, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -263,7 +264,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e018cc4dec7672c4e973360bd3478c51, type: 3}
+  m_Sprite: {fileID: 1625003605950476271, guid: f1d6a9cf3f575f341a1383fab9a6c51c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -274,6 +275,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &4710507855080723334
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3915327377920817428}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3b1ab702ef3f2b748ab6f604d1da4236, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4495673495043980452
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,7 +306,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5347215940096663177}
-  - component: {fileID: 3908659895674903048}
+  - component: {fileID: 8957301082987008968}
   m_Layer: 0
   m_Name: missile_launchers
   m_TagString: Untagged
@@ -300,7 +323,7 @@ Transform:
   m_GameObject: {fileID: 4495673495043980452}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.0068063736, y: 0.0041908263, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -311,7 +334,7 @@ Transform:
   - {fileID: 6191501589610421832}
   m_Father: {fileID: 824755407776513886}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3908659895674903048
+--- !u!114 &8957301082987008968
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -323,16 +346,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd86d34569eb58489fbb8c722cf5988, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::melon_missile_launcher
-  target: {fileID: 0}
-  fix_angle: 180
-  view_dist: 10
+  view_dist: 15
+  blinkSpeed: 20
+  rotation_speed: 1
+  viewAngle: 80
+  bob_range: 0.25
+  bob_speed: 1.5
+  randAngleMissile: 3
+  betweenTimeMissile: 2
+  acceleration: 10
+  maxSpeed: 20
+  maxRange: 15
+  laserSize: 0.075
+  laserColor: {r: 0.6981132, g: 0.050887402, b: 0.026343875, a: 0.6431373}
+  laserTimeOff: 1
   laser: {fileID: 7506678160919699390}
-  rotation_speed: 5
-  random_missile_angle: 1
+  player: {fileID: 0}
+  melon_whole_trans: {fileID: 3555393968957590383}
   missile_prefab: {fileID: 2448972901239235667, guid: 1f3ca87f15d833c4c96396063ecd92bb, type: 3}
   firePoint: {fileID: 7494996589374200032}
   firePoint_2: {fileID: 6191501589610421832}
-  between_missile_time: 2
+  front_launcher_animator: {fileID: 1075686491551204654}
+  back_launcher_animator: {fileID: 4710507855080723334}
+  direction: -1
 --- !u!1 &6606820139150187987
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,7 +395,7 @@ Transform:
   m_GameObject: {fileID: 6606820139150187987}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.002, y: -0.036, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -415,7 +451,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: ead34b1b0b11c754d935e098c9cd66f9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -584,10 +620,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29e91dda5f2decc4d892d84f93fb625d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::laser_controller
-  maxLength: 10
   targetLayer:
     serializedVersion: 2
-    m_Bits: 119
+    m_Bits: 1048831
 --- !u!1 &7736534915095566518
 GameObject:
   m_ObjectHideFlags: 0
@@ -688,6 +723,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2095930097186014798}
   - component: {fileID: 7141360160655361400}
+  - component: {fileID: 1075686491551204654}
   m_Layer: 0
   m_Name: missile_launcher_front
   m_TagString: Untagged
@@ -703,8 +739,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8863532604220886412}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.196, y: 0.20600013, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -756,8 +792,8 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 7f6d94e3572fd324f84ace92e139ced7, type: 3}
+  m_SortingOrder: 2
+  m_Sprite: {fileID: -5759903074814248727, guid: 3cb9e399c00c2734791d5df918ac659a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -768,3 +804,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1075686491551204654
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8863532604220886412}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3b1ab702ef3f2b748ab6f604d1da4236, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
