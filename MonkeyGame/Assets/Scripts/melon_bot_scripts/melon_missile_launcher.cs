@@ -30,7 +30,7 @@ public class melon_missile_launcher : MonoBehaviour
 
     [Header("Core Components")]
     [SerializeField] private GameObject laser;
-    [SerializeField] private Transform player;
+    //[SerializeField] private Transform player;
     [SerializeField] private Transform melon_whole_trans;
 
     [Header("Missile Components")]
@@ -50,6 +50,7 @@ public class melon_missile_launcher : MonoBehaviour
     private Vector3 melonStartLocalPos;
     private float laser_off_time = 0f;
     public int direction = -1;
+    private Transform player;
 
     void Start()
     {
@@ -89,6 +90,44 @@ public class melon_missile_launcher : MonoBehaviour
     private void LauncherLogic()
     {
         float dist = Vector3.Distance(player.position, transform.position);
+        if (dist > view_dist)
+        {
+            RotateLauncherback();
+            laser.SetActive(false);
+            missile_time = betweenTimeMissile;
+            laser_off_time = 0;
+            return;
+        }
+        float angle = AngleBetween();
+        if (Mathf.Abs(angle) > viewAngle)
+        {
+            laser_off_time -= Time.deltaTime;
+            return;
+        }
+        if (PlayerInView())
+        {
+            //Debug.DrawLine(laser.transform.position, player.position, Color.red);
+            laser_blink();
+            // apply the rotation
+            float yRot = transform.localEulerAngles.y;
+            transform.localRotation = Quaternion.Euler(0f, yRot, angle);
+
+            // missile logic
+            missile_time -= Time.deltaTime;
+            if (missile_time <= 0)
+            {
+                launch_missiles();
+            }
+        }
+        else
+        {
+            laser_off_time = 0;
+        }
+
+
+        // OLD
+        /*
+        float dist = Vector3.Distance(player.position, transform.position);
         //float angle = AngleBetween();
         if (dist <= view_dist)
         {
@@ -120,7 +159,7 @@ public class melon_missile_launcher : MonoBehaviour
         laser.SetActive(false);
         missile_time = betweenTimeMissile;
         RotateLauncherback();
-        laser_off_time = 0;
+        laser_off_time = 0; */
     }
 
     private void launch_missiles()

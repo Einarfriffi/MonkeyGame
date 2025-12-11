@@ -421,8 +421,8 @@ MonoBehaviour:
     m_Bits: 1048712
   Stationery: 1
   facingLeft: 0
-  attackSpeed: 2
-  timeBeforeAttack: 2
+  attackSpeed: 5
+  timeBeforeAttack: 0.7
   minX: 4
   maxX: 4
   stopTimeRandomRange: {x: 1, y: 5}
