@@ -37,7 +37,7 @@ public class BananaBotMovements : MonoBehaviour
     [SerializeField] private Collider2D stun_collider;
     [SerializeField] private Collider2D weak_spot;
     [SerializeField] public Transform eyePos;
-    [SerializeField] public Transform Player;
+    //[SerializeField] public Transform Player;
     private scanner_script scannerScript;
 
     [Header("Fixy Settings")]
@@ -58,6 +58,7 @@ public class BananaBotMovements : MonoBehaviour
     // components 
     private Rigidbody2D rb;
     private SpriteRenderer sr;
+    public Transform Player;
 
     // attack things and such
     private float lastSeen = 0;
@@ -76,6 +77,10 @@ public class BananaBotMovements : MonoBehaviour
         // Fetch Componenets
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponentInChildren<SpriteRenderer>();
+
+        // get player
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        Player = playerObj.transform;
 
         // get the scanner script
         scannerScript = GetComponentInChildren<scanner_script>();
