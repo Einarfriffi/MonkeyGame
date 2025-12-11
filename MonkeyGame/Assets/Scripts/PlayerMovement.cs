@@ -1,5 +1,7 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SocialPlatforms;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
@@ -31,12 +33,11 @@ public class PlayerMovement : MonoBehaviour
     public float wallStickCooldown = 0.2f;
 
     [Header("Aiming")]
+    public Transform visualTransform;
     public Transform handTransform;
-
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private float currentVelocityX;
-    // private bool isGrounded;
     private float jumpBufferCounter;
     private float coyoteTimeCounter;
     private int extraJumpsLeft;
@@ -45,9 +46,9 @@ public class PlayerMovement : MonoBehaviour
     private float wallStickCounter;
     private bool canWallStick = true;
     private float wallStickCooldownTimer;
-    private int lastWallJumpDirection = 0;
-    private bool hasLeftWallSinceJump = true;
     private Camera mainCamera;
+    private Vector2? lastWallJumpPosition = null;
+    private int wallContactDirection = 0;
 
 
     private void Awake()
@@ -106,15 +107,9 @@ public class PlayerMovement : MonoBehaviour
         // jump
         if (jumpBufferCounter > 0f)
         {
-            if (wallStickCounter > 0f && hasLeftWallSinceJump)
+            if (wallStickCounter > 0f)
             {
-                float wallDirection = isTouchingWall ? -Mathf.Sign(transform.localScale.x) : 0f;
-
-                if ((int)wallDirection == lastWallJumpDirection)
-                {
-                    // same wall disallow
-                    return;
-                }
+                float wallDirection = wallContactDirection;
 
                 Vector2 jumpDir = new Vector2(wallJumpDirection.x * wallDirection, wallJumpDirection.y).normalized;
 
@@ -124,8 +119,8 @@ public class PlayerMovement : MonoBehaviour
                 wallStickCounter = 0f;
                 extraJumpsLeft = 0;
 
-                lastWallJumpDirection = (int)wallDirection;
-                hasLeftWallSinceJump = false;
+                if (isTouchingWall)
+                    lastWallJumpPosition = wallCheck.position;
 
                 return;
             }
@@ -151,28 +146,13 @@ public class PlayerMovement : MonoBehaviour
         {
             finalVelocity.x = 0f;
             finalVelocity.y = 0f;
-            // rb.gravityScale = 0f;
         }
         else
         {
             finalVelocity.y = newYVelocity;
-            // rb.gravityScale = originalGravityScale;
         }
 
         rb.linearVelocity = finalVelocity;
-
-        // // Flip player based on movement if not wall sticking
-        // if (wallStickCounter <= 0f || IsGrounded())
-        // {
-        //     if (moveInput.x > 0.01f)
-        //     {
-        //         transform.localScale = new Vector3(1f, 1f, 1f); // face right
-        //     }
-        //     else if (moveInput.x < -0.01f)
-        //     {
-        //         transform.localScale = new Vector3(-1f, 1f, 1f);
-        //     }
-        // }
     }
 
     private void CheckGround()
@@ -183,8 +163,7 @@ public class PlayerMovement : MonoBehaviour
             extraJumpsLeft = maxExtraJumps;
             canWallStick = true;
             wallStickCooldownTimer = 0f;
-            hasLeftWallSinceJump = true;
-            lastWallJumpDirection = 0;
+            lastWallJumpPosition = null;
         }
         else
         {
@@ -198,6 +177,35 @@ public class PlayerMovement : MonoBehaviour
         Vector2 boxSize = new Vector2(1f, 1f);
         Collider2D hit = Physics2D.OverlapBox(wallCheck.position, boxSize, 0f, wallLayer);
         isTouchingWall = hit != null;
+
+        if (hit != null)
+        {
+            isTouchingWall = true;
+
+            // det which side the wall is on relative to player
+            if (hit.transform.position.x < transform.position.x)
+                wallContactDirection = -1;
+            else
+                wallContactDirection = 1;
+        }
+        else
+        {
+            isTouchingWall = false;
+            wallContactDirection = 0;
+        }
+        
+        if (isTouchingWall && hit != null && !IsGrounded())
+        {
+            if (lastWallJumpPosition.HasValue)
+            {
+                float xDistance = Mathf.Abs(wallCheck.position.x - lastWallJumpPosition.Value.x);
+                if (xDistance < 0.1f)
+                {
+                    // still same vertical wall
+                    isTouchingWall = false;
+                }
+            }
+        }
 
         if (wallStickCooldownTimer > 0f)
             wallStickCooldownTimer -= Time.fixedDeltaTime;
@@ -228,11 +236,6 @@ public class PlayerMovement : MonoBehaviour
         }
         
         previousWallTouch = isTouchingWall;
-
-        if (!isTouchingWall && !IsGrounded())
-        {
-            hasLeftWallSinceJump = true;
-        }
     }
 
     private bool IsGrounded()
@@ -250,9 +253,19 @@ public class PlayerMovement : MonoBehaviour
         Vector2 direction = mouseWorldPos - handTransform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        // flip player bvased on aim
+        // det dir based on mouse X
         float playerDirection = mouseWorldPos.x < transform.position.x ? -1f : 1f;
-        transform.localScale = new Vector3(playerDirection, 1f, 1f);
+
+        // flip visual's scale
+        visualTransform.localScale = new Vector3(playerDirection, 1f, 1f);
+
+        Vector3 localPos = visualTransform.localPosition;
+        // Mirror pos offset
+        float offsetRight = 0f;
+        float offsetLeft = 0.65f;
+
+        localPos.x = (playerDirection > 0) ? offsetRight : offsetLeft;
+        visualTransform.localPosition = localPos;
 
         // if player flipped, invert angle to mirror aiming
         if (playerDirection == -1f)
