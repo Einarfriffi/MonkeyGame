@@ -23,7 +23,6 @@ public class MonkeyMovements : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer _monkey_sprite;
 
-    private GroundController _groundController;
     private Rigidbody2D _rigidbody2D;
     private Vector2 _moveInput;
     private event System.Action _jumpPressed;
@@ -42,7 +41,6 @@ public class MonkeyMovements : MonoBehaviour
 
     private void Start()
     {
-        _groundController = GetComponent<GroundController>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _jumpPressed += JumpButtonPressed;
 
@@ -118,7 +116,7 @@ public class MonkeyMovements : MonoBehaviour
         }
 
         // === NORMAL GROUND / AIR MOVEMENT ===
-        bool isGrounded = _groundController != null && _groundController.IsGrounded;
+        bool isGrounded = true;
 
         if (isGrounded && !_wasGrounded)
         {
