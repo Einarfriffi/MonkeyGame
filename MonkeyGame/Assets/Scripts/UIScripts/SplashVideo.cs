@@ -15,7 +15,6 @@ public class SplashVideo : MonoBehaviour
     public GameObject fadeCanvasPrefab;
     // image for transition fade
     private Image fadeImage;
-    public string nextScene = "LevelOne";
     public float fadeDuration = 1f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -69,6 +68,6 @@ public class SplashVideo : MonoBehaviour
             yield return null;
         }
 
-        SceneManager.LoadScene(nextScene);
+        SceneManager.LoadScene("StartScreen");
     }
 }
