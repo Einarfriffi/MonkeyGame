@@ -4,11 +4,13 @@ using UnityEngine.Rendering;
 using System.Collections;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
     // Game manager vars
     public static GameManager Instance { get; private set; }
+    public PlayerInput playerInput;
     public int currentLevel = 1;
     public GameObject deathPanel;
     public GameObject HUDCanvas;
@@ -34,13 +36,13 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void OnEnable()
@@ -59,8 +61,24 @@ public class GameManager : MonoBehaviour
         Debug.Log("Scene lodade: " + scene.name);
 
         // fetch Level scenes GameManager components
-        if (scene.name.StartsWith("Level"))
-        {   
+        if (scene.name.StartsWith("Level") || scene.name == "tutorial_Level_Tumi")
+        {
+            // fetch player object
+            GameObject playerObj = GameObject.FindWithTag("Player");
+            if (playerObj != null)
+            {
+                playerInput = playerObj.GetComponent<PlayerInput>();
+
+                if (playerInput == null)
+                    Debug.Log("Player found but not input");
+                else
+                    Debug.Log("player input assigned");
+            }
+            else
+            {
+                Debug.Log("No player found in scene");
+            }
+
             // fetch deathUI for game manager
             GameObject deathUIfound = GameObject.FindWithTag("DeathUI");
             if (deathUIfound != null)
@@ -68,7 +86,7 @@ public class GameManager : MonoBehaviour
                 var panelTransform = deathUIfound.GetComponentInChildren<Transform>(true)
                                                 .Cast<Transform>()
                                                 .FirstOrDefault(t => t.name == "DeathPanel");
-                
+
                 if (panelTransform != null)
                 {
                     deathPanel = panelTransform.gameObject;
@@ -101,6 +119,9 @@ public class GameManager : MonoBehaviour
     // show death ui
     private IEnumerator DeathSlowdownRoutine()
     {
+        if (playerInput != null)
+            playerInput.enabled = false;
+
         float duration = 1.5f;
         float elapsed = 0f;
         float startScale = Time.timeScale;
@@ -130,6 +151,7 @@ public class GameManager : MonoBehaviour
     // Level Reset, reloads current level scene
     public void RestartLevel()
     {
+        playerInput.enabled = true;
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

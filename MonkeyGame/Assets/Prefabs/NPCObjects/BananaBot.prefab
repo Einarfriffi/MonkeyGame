@@ -501,7 +501,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1049224
   Stationery: 1
-  attackSpeed: 5
+  attackSpeed: 7
   timeBeforeAttack: 0.7
   minX: 4
   maxX: 4

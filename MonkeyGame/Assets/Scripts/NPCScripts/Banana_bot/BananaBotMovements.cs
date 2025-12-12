@@ -108,7 +108,7 @@ public class BananaBotMovements : MonoBehaviour
         growRateLaser = timeBeforeAttack / 100;
 
         // checks if there are any walls in travel distance, to fix maxX and minX
-        wall_check();
+        //wall_check();
 
         laser.SetActive(true);
 
