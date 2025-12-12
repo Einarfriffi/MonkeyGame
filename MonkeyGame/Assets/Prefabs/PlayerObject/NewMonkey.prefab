@@ -429,7 +429,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 4.5
+  m_GravityScale: 4
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -546,7 +546,7 @@ MonoBehaviour:
   maxExtraJumps: 1
   wallCheck: {fileID: 402680339124839211}
   wallStickTime: 0.5
-  wallJumpForce: 20
+  wallJumpForce: 23
   wallJumpDirection: {x: 2, y: 3}
   wallLayer:
     serializedVersion: 2
