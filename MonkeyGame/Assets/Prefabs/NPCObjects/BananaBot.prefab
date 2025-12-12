@@ -501,8 +501,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1049224
   Stationery: 1
-  attackSpeed: 7
-  timeBeforeAttack: 0.7
+  attackSpeed: 11
+  timeBeforeAttack: 0.4
   minX: 4
   maxX: 4
   stopTimeRandomRange: {x: 1, y: 5}
