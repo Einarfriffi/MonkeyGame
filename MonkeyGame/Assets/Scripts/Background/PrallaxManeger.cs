@@ -11,19 +11,22 @@ public class PrallaxManeger : MonoBehaviour
 
     public ParallaxLayer[] parallaxLayers;
     public Transform cameraTransform;
+
     private Vector3 lastCameraPosition;
+
     void Start()
     {
+        if (!cameraTransform) cameraTransform = Camera.main.transform;
         lastCameraPosition = cameraTransform.position;
     }
 
-    void FixedUpdate()
+    void LateUpdate()
     {
         Vector3 cameraDelta = cameraTransform.position - lastCameraPosition;
-        foreach (ParallaxLayer layer in parallaxLayers)
+
+        foreach (var layer in parallaxLayers)
         {
-            float moveX = cameraDelta.x * layer.parallaxFactor;
-            layer.layerTransform.position += new Vector3(moveX, 0, 0);
+            layer.layerTransform.position += new Vector3(cameraDelta.x * layer.parallaxFactor, 0f, 0f);
         }
 
         lastCameraPosition = cameraTransform.position;
