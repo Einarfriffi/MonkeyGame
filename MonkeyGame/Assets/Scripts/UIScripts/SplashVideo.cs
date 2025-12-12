@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using UnityEditor.Search;
 
 public class SplashVideo : MonoBehaviour
 {
