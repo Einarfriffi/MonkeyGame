@@ -546,7 +546,7 @@ MonoBehaviour:
   maxExtraJumps: 1
   wallCheck: {fileID: 402680339124839211}
   wallStickTime: 0.5
-  wallJumpForce: 23
+  wallJumpForce: 22
   wallJumpDirection: {x: 2, y: 3}
   wallLayer:
     serializedVersion: 2
