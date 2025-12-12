@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 570209163692467731}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.1615, y: -0.1347, z: 0}
+  m_LocalPosition: {x: 0.256, y: -0.1347, z: 0}
   m_LocalScale: {x: 1, y: 1.09, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -242,7 +242,7 @@ Transform:
   m_GameObject: {fileID: 6553425091695979349}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.268, y: 0.751, z: 0}
+  m_LocalPosition: {x: 0.27, y: 0.751, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -429,7 +429,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 4.5
+  m_GravityScale: 4
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -437,7 +437,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -546,12 +546,12 @@ MonoBehaviour:
   maxExtraJumps: 1
   wallCheck: {fileID: 402680339124839211}
   wallStickTime: 0.5
-  wallJumpForce: 20
+  wallJumpForce: 23
   wallJumpDirection: {x: 2, y: 3}
   wallLayer:
     serializedVersion: 2
     m_Bits: 128
-  wallCoyoteTime: 0.12
+  wallCoyoteTime: 0.18
   wallStickCooldown: 0.2
   visualTransform: {fileID: 3537518793891357012}
   handTransform: {fileID: 1318415818346190314}
@@ -563,4 +563,4 @@ MonoBehaviour:
   projectileLifetime: 3
   projectileInheritVelocity: 1
   inheritHorizontalOnly: 1
-  wall_box_size: 0.9
+  wall_box_size: 1

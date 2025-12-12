@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Scene lodade: " + scene.name);
 
         // fetch Level scenes GameManager components
-        if (scene.name.StartsWith("Level") || scene.name == "tutorial_Level_Tumi")
+        if (scene.name.StartsWith("Level") || scene.name == "tutorial_Level_steini")
         {
             // fetch player object
             GameObject playerObj = GameObject.FindWithTag("Player");
