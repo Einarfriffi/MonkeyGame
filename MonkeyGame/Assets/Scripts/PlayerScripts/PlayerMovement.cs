@@ -58,6 +58,9 @@ public class PlayerMovement : MonoBehaviour
 
     [Tooltip("Layers that count as walls for wall detection.")]
     public LayerMask wallLayer;
+    
+    [Tooltip("Wall-jump coyote time")]
+    public float wallCoyoteTime = 0.12f;
 
     [Header("Wall stick control")]
     [Tooltip("Cooldown after wall stick ends before the player can stick again.")]
@@ -114,10 +117,11 @@ public class PlayerMovement : MonoBehaviour
     private bool fireHeld;
     private float nextFireTime;
     private bool dead = false;
-
-    private float wall_grace_peroid = 0.5f;
-    private float wall_grace_peroid_time = 0;
-
+    private float wallCoyoteLeft = 0f;
+    private float wallCoyoteRight = 0f;
+    private bool wallCoyoteConsumedLeft = false, wallCoyoteConsumedRight = false;
+    private int lastWallSideTouched = 0;
+    public float wall_box_size = 1f;
 
 
 
@@ -165,6 +169,10 @@ public class PlayerMovement : MonoBehaviour
         CheckGround();
         CheckWall();
 
+        // Wall coyote tick down
+        if (wallCoyoteLeft > 0f) wallCoyoteLeft -= Time.fixedDeltaTime;
+        if (wallCoyoteRight > 0f) wallCoyoteRight -= Time.fixedDeltaTime;
+
         if (jumpBufferCounter > 0f)
             jumpBufferCounter -= Time.fixedDeltaTime;
 
@@ -193,20 +201,28 @@ public class PlayerMovement : MonoBehaviour
         // jump
         if (jumpBufferCounter > 0f)
         {
-            if (wallStickCounter > 0f)
-            {
-                // new shit
-                wall_grace_peroid_time = wall_grace_peroid;
+            // allow wall-jump if sticking OR have an unconsumed wall-coyote on either side
+            bool canCoyoteLeft  = (wallCoyoteLeft  > 0f) && !wallCoyoteConsumedLeft;
+            bool canCoyoteRight = (wallCoyoteRight > 0f) && !wallCoyoteConsumedRight;
+            bool canWallCoyote  = canCoyoteLeft || canCoyoteRight;
 
-                float wallDirection = wallContactDirection;
+            if (wallStickCounter > 0f || canWallCoyote)
+            {
+                // choose side: if not currently sticking, use the coyote side that’s available
+                int wallDirection = wallContactDirection;
+                if (wallDirection == 0)
+                    wallDirection = canCoyoteLeft ? -1 : 1;
 
                 Vector2 jumpDir = new Vector2(wallJumpDirection.x * wallDirection, wallJumpDirection.y).normalized;
-
                 rb.linearVelocity = new Vector2(jumpDir.x * wallJumpForce, jumpDir.y * wallJumpForce);
 
+                // consume buffer & mark the used coyote side as spent
                 jumpBufferCounter = 0f;
                 wallStickCounter = 0f;
                 extraJumpsLeft = 0;
+
+                if (wallDirection == -1) wallCoyoteConsumedLeft  = true;
+                if (wallDirection ==  1) wallCoyoteConsumedRight = true;
 
                 if (isTouchingWall)
                     lastWallJumpPosition = wallCheck.position;
@@ -287,6 +303,8 @@ public class PlayerMovement : MonoBehaviour
             canWallStick = true;
             wallStickCooldownTimer = 0f;
             lastWallJumpPosition = null;
+            wallCoyoteConsumedLeft = wallCoyoteConsumedRight =false;
+            lastWallSideTouched = 0;
         }
         else
         {
@@ -298,7 +316,7 @@ public class PlayerMovement : MonoBehaviour
     private void CheckWall()
     {
         // Tight probe slightly ahead of the player
-        Vector2 boxSize = new Vector2(1f, 1f);
+        Vector2 boxSize = new Vector2(wall_box_size, wall_box_size);
 
         float x = moveInput.x;
         float facing = Mathf.Abs(x) > 0.01f ? Mathf.Sign(x) : 1f;
@@ -312,6 +330,26 @@ public class PlayerMovement : MonoBehaviour
         wallContactDirection = isTouchingWall
             ? (hit.transform.position.x < transform.position.x ? -1 : 1)
             : 0;
+
+        // refresh side we're touching
+        // refresh coyote timers for the side we're touching
+        if (isTouchingWall)
+        {
+            // if we switched wall sides, allow one-use again on the new side
+            if (wallContactDirection != 0 && wallContactDirection != lastWallSideTouched)
+            {
+                // reset one-use gates and timers when switching sides
+                wallCoyoteConsumedLeft = wallCoyoteConsumedRight = false;
+                wallCoyoteLeft = wallCoyoteRight = 0f;
+                lastWallSideTouched = wallContactDirection;
+            }
+
+            if (wallContactDirection == -1)
+                wallCoyoteLeft = wallCoyoteTime;   // refill while touching left wall
+            else if (wallContactDirection == 1)
+                wallCoyoteRight = wallCoyoteTime;  // refill while touching right wall
+        }
+
 
         // "Same wall" suppression after a wall-jump
         if (isTouchingWall && hit != null && !IsGrounded())
@@ -368,6 +406,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void AimAtMouse()
     {
+        if(dead) return;
+        
         if (Time.timeScale == 0) return;
         Vector3 mouseScreenPos = Mouse.current.position.ReadValue();
         Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(mouseScreenPos);
@@ -454,7 +494,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (wallCheck != null)
         {
-            Vector2 boxSize = new Vector2(1f, 1f);
+            Vector2 boxSize = new Vector2(wall_box_size, wall_box_size);
             float facing = 1f;
             Vector2 origin = (Vector2)wallCheck.position + new Vector2(0.05f * facing, 0f);
             Gizmos.color = Color.magenta;
