@@ -107,6 +107,15 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("If true, only inherit horizontal velocity")]
     public bool inheritHorizontalOnly = true;
 
+    [Header("Sound Effects")]
+    public AudioClip jumpSoundClip;
+    public AudioClip doubleJumpSoundClip;
+    public AudioClip wallJumpSoundClip;
+    public AudioClip shootSoundClip;
+    public AudioClip runningSoundClip;
+    public AudioClip landSoundClip;
+
+
 
     // my privates
     private Rigidbody2D rb;
@@ -263,6 +272,9 @@ public class PlayerMovement : MonoBehaviour
                 rb.linearVelocity = v;
                 jumpBufferCounter = 0f;
                 coyoteTimeCounter = 0f;
+
+                //play jump sound
+                SFXManager.instance.PlaySoundEffect(jumpSoundClip, transform, 0.3f);
             }
             else if (extraJumpsLeft > 0)
             {
@@ -271,6 +283,9 @@ public class PlayerMovement : MonoBehaviour
                 rb.linearVelocity = v;
                 extraJumpsLeft--;
                 jumpBufferCounter = 0f;
+
+                //play double jump sound
+                SFXManager.instance.PlaySoundEffect(doubleJumpSoundClip, transform, 0.3f);
             }
 
         }
@@ -285,6 +300,8 @@ public class PlayerMovement : MonoBehaviour
         if (fireHeld && Time.time >= nextFireTime)
         {
             SpawnProjectile();
+            // play shoot sound
+            SFXManager.instance.PlaySoundEffect(shootSoundClip, transform, 0.5f);
             nextFireTime = Time.time + (fireRate > 0f ? 1f / fireRate : 0f);
         }
     }
