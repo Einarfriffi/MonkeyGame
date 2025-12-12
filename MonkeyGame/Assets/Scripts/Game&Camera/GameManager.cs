@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
             {
                 var panelTransform = deathUIfound.GetComponentInChildren<Transform>(true)
                                                 .Cast<Transform>()
-                                                .FirstOrDefault(t => t.name == "DeathPanel");
+                                                .FirstOrDefault(t => t.name == "Menu");
 
                 if (panelTransform != null)
                 {
@@ -122,6 +122,11 @@ public class GameManager : MonoBehaviour
         if (playerInput != null)
             playerInput.enabled = false;
 
+        if (deathPanel != null)
+        {
+            deathPanel.SetActive(true);
+        }
+        
         float duration = 1.5f;
         float elapsed = 0f;
         float startScale = Time.timeScale;
@@ -135,10 +140,6 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 0f;
 
-        if (deathPanel != null)
-        {
-            deathPanel.SetActive(true);
-        }
     }
 
     // call death routine
