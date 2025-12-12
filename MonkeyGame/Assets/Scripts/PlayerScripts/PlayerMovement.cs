@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -64,6 +65,16 @@ public class PlayerMovement : MonoBehaviour
     [Header("Wall stick control")]
     [Tooltip("Cooldown after wall stick ends before the player can stick again.")]
     public float wallStickCooldown = 0.2f;
+    
+    [Tooltip("Size of wall detection box")]
+    public float wall_box_size = 1f;
+
+    [Header("Air Control")]
+    [Tooltip("Duration where horizontal input don't cancel momentum (unless player moves)")]
+    public float wallJumpControlLock = 0.15f;
+
+    [Tooltip("If true, any horizontal input cancels the lock early")]
+    public bool cancelWallJumpLockOnInput = true;
 
     [Header("Aiming")]
     [Tooltip("Child transform for visuals (flipped/scaled). Do NOT assign the root with the Rigidbody2D.")]
@@ -120,7 +131,8 @@ public class PlayerMovement : MonoBehaviour
     private float wallCoyoteRight = 0f;
     private bool wallCoyoteConsumedLeft = false, wallCoyoteConsumedRight = false;
     private int lastWallSideTouched = 0;
-    public float wall_box_size = 1f;
+    private float wallJumpControlTimer = 0f;
+
 
 
 
@@ -168,6 +180,9 @@ public class PlayerMovement : MonoBehaviour
         CheckGround();
         CheckWall();
 
+        // wall jump control tick down
+        if (wallJumpControlTimer > 0f) wallJumpControlTimer -= Time.fixedDeltaTime;
+
         // Wall coyote tick down
         if (wallCoyoteLeft > 0f) wallCoyoteLeft -= Time.fixedDeltaTime;
         if (wallCoyoteRight > 0f) wallCoyoteRight -= Time.fixedDeltaTime;
@@ -175,28 +190,30 @@ public class PlayerMovement : MonoBehaviour
         if (jumpBufferCounter > 0f)
             jumpBufferCounter -= Time.fixedDeltaTime;
 
-        // horizontal movement
+        // horizontal movement with post wall jump momentum lock
         float xInput = Mathf.Abs(moveInput.x) < inputDeadzone ? 0f : moveInput.x;
+        bool lockActive = wallJumpControlTimer > 0f && !IsGrounded() &&
+                        (!cancelWallJumpLockOnInput || Mathf.Abs(xInput) < 0.0001f);
 
-        float targetSpeedX = xInput * maxSpeed;
-        float smoothedSpeedX = Mathf.SmoothDamp(
-        rb.linearVelocity.x,
-        targetSpeedX,
-        ref currentVelocityX,
-        (Mathf.Abs(targetSpeedX) > 0.01f) ? accelerationTime : deccelerationTime
-       );
-
-        if (xInput == 0f && Mathf.Abs(smoothedSpeedX) < 0.02f)
+        if (!lockActive)
         {
-            smoothedSpeedX = 0f;
-            currentVelocityX = 0f;
+            float targetSpeedX = xInput * maxSpeed;
+            float smoothedSpeedX = Mathf.SmoothDamp(
+            rb.linearVelocity.x,
+            targetSpeedX,
+            ref currentVelocityX,
+            (Mathf.Abs(targetSpeedX) > 0.01f) ? accelerationTime : deccelerationTime
+        );
+
+            // Grounded snap to zero (but dont fight air momentum)
+            if (IsGrounded() && xInput == 0f && Mathf.Abs(smoothedSpeedX) < 0.02f)
+            {
+                smoothedSpeedX = 0f;
+                currentVelocityX = 0f;        
+            }
+
+            rb.linearVelocity = new Vector2(smoothedSpeedX, rb.linearVelocity.y);
         }
-
-        if (Mathf.Abs(xInput) < 0.0001f)
-            smoothedSpeedX = Mathf.MoveTowards(smoothedSpeedX, 0f, 100f * Time.fixedDeltaTime);
-
-        rb.linearVelocity = new Vector2(smoothedSpeedX, rb.linearVelocity.y);
-
         // jump
         if (jumpBufferCounter > 0f)
         {
@@ -212,8 +229,20 @@ public class PlayerMovement : MonoBehaviour
                 if (wallDirection == 0)
                     wallDirection = canCoyoteLeft ? -1 : 1;
 
-                Vector2 jumpDir = new Vector2(wallJumpDirection.x * wallDirection, wallJumpDirection.y).normalized;
+                // always jump away
+                int away =- wallDirection;
+
+                Vector2 jumpDir = new Vector2(wallJumpDirection.x * away, wallJumpDirection.y).normalized;
                 rb.linearVelocity = new Vector2(jumpDir.x * wallJumpForce, jumpDir.y * wallJumpForce);
+
+                wallJumpControlTimer = wallJumpControlLock;
+
+                // clear smoothdamp for not snapping after lock
+                currentVelocityX = 0f;
+
+                // prevent instant restick
+                canWallStick = false;
+                wallStickCooldownTimer = wallStickCooldown;
 
                 // consume buffer & mark the used coyote side as spent
                 jumpBufferCounter = 0f;
@@ -321,14 +350,17 @@ public class PlayerMovement : MonoBehaviour
         float facing = Mathf.Abs(x) > 0.01f ? Mathf.Sign(x) : 1f;
         Vector2 origin = (Vector2)wallCheck.position + new Vector2(0.05f * facing, 0f);
 
-        // Single overlap query using the intended origin
-        Collider2D hit = Physics2D.OverlapBox(origin, boxSize, 0f, wallLayer);
+        // cast slightly ahead to get hit with a surface normal
+        RaycastHit2D hit = Physics2D.BoxCast(origin, boxSize, 0f, Vector2.right * facing, 0.05f, wallLayer);
 
-        // Set flags once
-        isTouchingWall = hit != null;
-        wallContactDirection = isTouchingWall
-            ? (hit.transform.position.x < transform.position.x ? -1 : 1)
-            : 0;
+        // Flags
+        isTouchingWall = hit.collider != null;
+
+        // side: -1 = left wall, 1 = right wall
+        if (isTouchingWall)
+            wallContactDirection = (hit.normal.x > 0f) ? -1 : 1;
+        else
+            wallContactDirection = 0;
 
         // refresh side we're touching
         // refresh coyote timers for the side we're touching
@@ -351,7 +383,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         // "Same wall" suppression after a wall-jump
-        if (isTouchingWall && hit != null && !IsGrounded())
+        if (isTouchingWall && hit.collider != null && !IsGrounded())
         {
             //Debug.Log(wallCheck.position.x);
             if (lastWallJumpPosition.HasValue)
@@ -367,22 +399,24 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Stick timer / cooldown (unchanged)
-        // if (wallStickCooldownTimer > 0f)
-        //     wallStickCooldownTimer -= Time.fixedDeltaTime;
+        if (wallStickCooldownTimer > 0f)
+            wallStickCooldownTimer -= Time.fixedDeltaTime;
 
-        // bool cooldownActive = wallStickCooldownTimer > 0f;
+        bool cooldownActive = wallStickCooldownTimer > 0f;
 
-        //if (canWallStick && !cooldownActive && isTouchingWall && !IsGrounded())
-        if (canWallStick && isTouchingWall && !IsGrounded())
+
+        if (canWallStick && !cooldownActive && isTouchingWall && !IsGrounded())
         {
             if (!previousWallTouch)
             {
                 wallStickCounter = wallStickTime;
                 Debug.Log("wall stick Activated");
+                Debug.Log($"sticking to wall: {wallContactDirection}");
             }
             else
             {
                 wallStickCounter -= Time.fixedDeltaTime;
+
                 if (wallStickCounter <= 0f)
                 {
                     canWallStick = false;
@@ -490,7 +524,6 @@ public class PlayerMovement : MonoBehaviour
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
-
         if (wallCheck != null)
         {
             Vector2 boxSize = new Vector2(wall_box_size, wall_box_size);
@@ -498,6 +531,18 @@ public class PlayerMovement : MonoBehaviour
             Vector2 origin = (Vector2)wallCheck.position + new Vector2(0.05f * facing, 0f);
             Gizmos.color = Color.magenta;
             Gizmos.DrawWireCube(origin, boxSize);
+            Gizmos.DrawLine(origin, origin + Vector2.right * 0.25f); // cast direction preview
         }
+
+
+        // if (wallCheck != null)
+        // {
+        //     Vector2 boxSize = new Vector2(wall_box_size, wall_box_size);
+        //     float facing = 1f;
+        //     Vector2 origin = (Vector2)wallCheck.position + new Vector2(0.05f * facing, 0f);
+        //     Gizmos.color = Color.magenta;
+        //     Gizmos.DrawWireCube(origin, boxSize);
+        // }
+        
     }
 }
