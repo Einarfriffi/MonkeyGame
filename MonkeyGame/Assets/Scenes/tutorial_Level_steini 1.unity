@@ -11643,6 +11643,22 @@ PrefabInstance:
       propertyPath: shieldtHitClip
       value: 
       objectReference: {fileID: 8300000, guid: b52d9df489f0540e6ad6b4a8ea28fcd3, type: 3}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: shieldHitVolume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: dyingSoundVolume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: scanningSoundClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2b39de79562fd407fa44dbf01a5ece18, type: 3}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: scanningSoundVolume
+      value: 0.06
+      objectReference: {fileID: 0}
     - target: {fileID: 8010632543001000398, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: m_Name
       value: BananaBot (1)
@@ -12164,6 +12180,22 @@ PrefabInstance:
       propertyPath: shieldtHitClip
       value: 
       objectReference: {fileID: 8300000, guid: b52d9df489f0540e6ad6b4a8ea28fcd3, type: 3}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: shieldHitVolume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: dyingSoundVolume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: scanningSoundClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2b39de79562fd407fa44dbf01a5ece18, type: 3}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: scanningSoundVolume
+      value: 0.06
+      objectReference: {fileID: 0}
     - target: {fileID: 8010632543001000398, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: m_Name
       value: BananaBot
@@ -15659,9 +15691,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
+      propertyPath: jumpVolume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: jumpSoundClip
       value: 
-      objectReference: {fileID: 8300000, guid: f4d2b66f280f24f7b9da2494d7331b75, type: 3}
+      objectReference: {fileID: 8300000, guid: e2ede26c13e824d2f8f9eb620847bdb4, type: 3}
     - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: landSoundClip
       value: 
@@ -15671,17 +15707,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: a2ec4d1806567432f821156a0d5975e9, type: 3}
     - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
+      propertyPath: wallJumpVolume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
+      propertyPath: doubleJumpVolume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: runningSoundClip
       value: 
       objectReference: {fileID: 8300000, guid: 5f7e41bdafd42411ea5bf842761ee7c2, type: 3}
     - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: wallJumpSoundClip
       value: 
-      objectReference: {fileID: 8300000, guid: 75285ebf06acb41048a9a2c500e2a30f, type: 3}
+      objectReference: {fileID: 8300000, guid: 5a4655b1eb974415d9bd5348c9b10fa4, type: 3}
     - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: doubleJumpSoundClip
       value: 
-      objectReference: {fileID: 8300000, guid: dc880c872a1db4669aa2ae9d127a8687, type: 3}
+      objectReference: {fileID: 8300000, guid: 5325f70b568574d0398211e8a2cede19, type: 3}
     - target: {fileID: 6717379132692717810, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: m_Name
       value: NewMonkey
@@ -16464,6 +16508,14 @@ PrefabInstance:
       propertyPath: acceleration
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 8957301082987008968, guid: c38d3c445e3b9a141baaca8376d42367, type: 3}
+      propertyPath: laserLockLoopClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 97c46feb4c9bb44fd8d26e662d7cb689, type: 3}
+    - target: {fileID: 8957301082987008968, guid: c38d3c445e3b9a141baaca8376d42367, type: 3}
+      propertyPath: missileLaunchClip
+      value: 
+      objectReference: {fileID: 8300000, guid: be7c1a69e48244458899dbeda6518371, type: 3}
     - target: {fileID: 8957301082987008968, guid: c38d3c445e3b9a141baaca8376d42367, type: 3}
       propertyPath: betweenTimeMissile
       value: 0.75
@@ -36484,6 +36536,22 @@ PrefabInstance:
       propertyPath: shieldtHitClip
       value: 
       objectReference: {fileID: 8300000, guid: b52d9df489f0540e6ad6b4a8ea28fcd3, type: 3}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: shieldHitVolume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: dyingSoundVolume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: scanningSoundClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2b39de79562fd407fa44dbf01a5ece18, type: 3}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: scanningSoundVolume
+      value: 0.06
+      objectReference: {fileID: 0}
     - target: {fileID: 8010632543001000398, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: m_Name
       value: BananaBot (2)

@@ -53,6 +53,18 @@ public class melon_missile_launcher : MonoBehaviour
     public int direction = -1;
     private Transform player;
 
+    [Header("Missile SFX")]
+    [SerializeField] private AudioClip missileLaunchClip;
+    [SerializeField, Range(0f, 1f)] private float missileLaunchVolume = 0.6f;
+
+
+    [Header("Laser SFX")]
+    [SerializeField] private AudioClip laserLockLoopClip;
+    [SerializeField, Range(0f, 1f)] private float laserLockVolume = 0.4f;
+
+    private AudioSource laserLockSource;
+    private bool wasLockedOn = false;
+
     void Start()
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -70,6 +82,14 @@ public class melon_missile_launcher : MonoBehaviour
         missile_time = betweenTimeMissile;
         if (melon_whole_trans != null)
             melonStartLocalPos = melon_whole_trans.localPosition;
+
+
+        // setup laser lock sound
+        laserLockSource = gameObject.AddComponent<AudioSource>();
+        laserLockSource.loop = true;
+        laserLockSource.playOnAwake = false;
+        laserLockSource.volume = laserLockVolume;
+        laserLockSource.spatialBlend = 0f; // 2D sound
     }
 
     // Update is called once per frame
@@ -90,9 +110,13 @@ public class melon_missile_launcher : MonoBehaviour
 
     private void LauncherLogic()
     {
+        bool lockedOn = false;
         float dist = Vector3.Distance(player.position, transform.position);
         if (dist > view_dist)
         {
+            lockedOn = false;
+            UpdateLaserLockSFX(lockedOn);
+
             RotateLauncherback();
             laser.SetActive(false);
             missile_time = betweenTimeMissile;
@@ -102,11 +126,17 @@ public class melon_missile_launcher : MonoBehaviour
         float angle = AngleBetween();
         if (Mathf.Abs(angle) > viewAngle)
         {
+            lockedOn = false;
+            UpdateLaserLockSFX(lockedOn);
+            
             laser_off_time -= Time.deltaTime;
             return;
         }
         if (PlayerInView())
         {
+            lockedOn = true;
+            UpdateLaserLockSFX(lockedOn);
+            
             //Debug.DrawLine(laser.transform.position, player.position, Color.red);
             laser_blink();
             // apply the rotation
@@ -122,12 +152,20 @@ public class melon_missile_launcher : MonoBehaviour
         }
         else
         {
+        
+            lockedOn = false;
+            UpdateLaserLockSFX(lockedOn);
+            
             laser_off_time = 0;
         }
     }
 
     private void launch_missiles()
     {
+        // play missile launch sound
+        if (missileLaunchClip != null)
+        SFXManager.instance.PlaySoundEffect(missileLaunchClip, transform, missileLaunchVolume);
+
         laser_off_time = laserTimeOff;
 
         // Random rotation in degrees
@@ -224,5 +262,24 @@ public class melon_missile_launcher : MonoBehaviour
     {
         shieldAnimator.SetTrigger("HitShield");
     }
+
+    private void UpdateLaserLockSFX(bool lockedOn)
+    {
+        if (lockedOn)
+        {
+            if (laserLockLoopClip != null && !laserLockSource.isPlaying)
+            {
+                laserLockSource.clip = laserLockLoopClip;
+                laserLockSource.volume = laserLockVolume;
+                laserLockSource.time = 0f;
+                laserLockSource.Play();
+            }
+        }
+        else
+        {
+            if (laserLockSource.isPlaying)
+                laserLockSource.Stop();
+        }
+}
 
 }

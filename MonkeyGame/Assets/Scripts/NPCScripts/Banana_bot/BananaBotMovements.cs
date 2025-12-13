@@ -69,12 +69,16 @@ public class BananaBotMovements : MonoBehaviour
     private float curLaserSize;
     private float growRateLaser;
 
-        [Header("Sound Effects")]
-    public AudioClip drivingSoundClip;
+    [Header("Sound Effects")]
     public AudioClip scanningSoundClip;
-    public AudioClip chargingSoundClip;
+    [SerializeField, Range(0f, 1f)] private float scanningSoundVolume = 1f;
     public AudioClip dyingSoundClip;
+    [SerializeField, Range(0f, 1f)] private float dyingSoundVolume = 1f;
     public AudioClip shieldtHitClip;
+    [SerializeField, Range(0f, 1f)] private float shieldHitVolume = 1f;
+
+    private AudioSource scanningSource;
+    private bool wasSeeingPlayer = false;
 
 
 
@@ -123,6 +127,13 @@ public class BananaBotMovements : MonoBehaviour
 
         // find the angle that the bot can see the player
         FindDetectionAngle();
+
+        scanningSource = gameObject.AddComponent<AudioSource>();
+        scanningSource.clip = scanningSoundClip;
+        scanningSource.loop = true;
+        scanningSource.playOnAwake = false;
+        scanningSource.volume = scanningSoundVolume;     // tweak in Inspector later if needed
+        scanningSource.spatialBlend = 0f; // 2D sound
     }
 
     // Update is called once per frame
@@ -130,6 +141,8 @@ public class BananaBotMovements : MonoBehaviour
     {
         // working on detecting player
         PlayerDetection();
+
+        UpdateScanningSound();
 
         // ============================
         animator.SetFloat("speed", Mathf.Abs(rb.linearVelocity.x));
@@ -340,8 +353,11 @@ public class BananaBotMovements : MonoBehaviour
 
     public void WeakSpotHit(Collision2D other)
     {
+        if (scanningSource != null)
+        scanningSource.Stop();
+
         // play death sound
-        SFXManager.instance.PlaySoundEffect(dyingSoundClip, transform, 0.6f);
+        SFXManager.instance.PlaySoundEffect(dyingSoundClip, transform, dyingSoundVolume);
 
         // explosion VFX
         Instantiate(ExplosionPreFab, transform.position, Quaternion.identity);
@@ -354,6 +370,27 @@ public class BananaBotMovements : MonoBehaviour
         shieldAnimator.SetTrigger("HitShield");
 
         // play shield sound
-        SFXManager.instance.PlaySoundEffect(shieldtHitClip, transform, 0.6f);
+        SFXManager.instance.PlaySoundEffect(shieldtHitClip, transform, shieldHitVolume);
+    }
+
+    private void UpdateScanningSound()
+    {
+    scanningSource.volume = scanningSoundVolume;
+    if (SeePlayer && !wasSeeingPlayer)
+    {
+        // just detected player
+        if (scanningSoundClip != null)
+        {
+            scanningSource.time = 0f;
+            scanningSource.Play();
+        }
+    }
+    else if (!SeePlayer && wasSeeingPlayer)
+    {
+        // lost player
+        scanningSource.Stop();
+    }
+
+    wasSeeingPlayer = SeePlayer;
     }
 }

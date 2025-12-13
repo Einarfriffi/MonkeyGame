@@ -107,13 +107,26 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("If true, only inherit horizontal velocity")]
     public bool inheritHorizontalOnly = true;
 
+    //AUDIO
+
     [Header("Sound Effects")]
     public AudioClip jumpSoundClip;
+    [SerializeField, Range(0f, 1f)] private float jumpVolume = 1f;
+
     public AudioClip doubleJumpSoundClip;
+    [SerializeField, Range(0f, 1f)] private float doubleJumpVolume = 1f;
+
     public AudioClip wallJumpSoundClip;
+    [SerializeField, Range(0f, 1f)] private float wallJumpVolume = 1f;
+
     public AudioClip shootSoundClip;
+    [SerializeField, Range(0f, 1f)] private float shootVolume = 0.7f;
+
     public AudioClip runningSoundClip;
+    [SerializeField, Range(0f, 1f)] private float runningVolume = 1f;
+
     public AudioClip landSoundClip;
+    [SerializeField, Range(0f, 1f)] private float landVolume = 1f;
 
 
 
@@ -194,7 +207,7 @@ public class PlayerMovement : MonoBehaviour
         if (!wasGrounded && groundedNow)
         {
             // just landed
-            SFXManager.instance.PlaySoundEffect(landSoundClip, transform, 1f);
+            SFXManager.instance.PlaySoundEffect(landSoundClip, transform, landVolume);
 
             // optional: stop running loop briefly or restart based on isRunning logic
         }
@@ -248,7 +261,7 @@ public class PlayerMovement : MonoBehaviour
             if (!wasRunning && isRunning)
             {
                 // start loop
-                SFXManager.instance.PlayLoop(runningSoundClip, 1f);
+                SFXManager.instance.PlayLoop(runningSoundClip, runningVolume);
             }
             else if (wasRunning && !isRunning)
             {
@@ -278,7 +291,8 @@ public class PlayerMovement : MonoBehaviour
                 rb.linearVelocity = new Vector2(jumpDir.x * wallJumpForce, jumpDir.y * wallJumpForce);
 
                 // play wall jump sound
-                SFXManager.instance.PlaySoundEffect(wallJumpSoundClip, transform, 1f);
+                SFXManager.instance.PlaySoundEffect(wallJumpSoundClip, transform, wallJumpVolume);
+
 
                 wallJumpControlTimer = wallJumpControlLock;
 
@@ -311,7 +325,7 @@ public class PlayerMovement : MonoBehaviour
                 coyoteTimeCounter = 0f;
 
                 //play jump sound
-                SFXManager.instance.PlaySoundEffect(jumpSoundClip, transform, 1f);
+                SFXManager.instance.PlaySoundEffect(jumpSoundClip, transform, jumpVolume);
             }
             else if (extraJumpsLeft > 0)
             {
@@ -322,7 +336,7 @@ public class PlayerMovement : MonoBehaviour
                 jumpBufferCounter = 0f;
 
                 //play double jump sound
-                SFXManager.instance.PlaySoundEffect(doubleJumpSoundClip, transform, 1f);
+                SFXManager.instance.PlaySoundEffect(doubleJumpSoundClip, transform, doubleJumpVolume);
             }
 
         }
@@ -338,7 +352,7 @@ public class PlayerMovement : MonoBehaviour
         {
             SpawnProjectile();
             // play shoot sound
-            SFXManager.instance.PlaySoundEffect(shootSoundClip, transform, 0.7f);
+            SFXManager.instance.PlaySoundEffect(shootSoundClip, transform, shootVolume);
             nextFireTime = Time.time + (fireRate > 0f ? 1f / fireRate : 0f);
         }
     }

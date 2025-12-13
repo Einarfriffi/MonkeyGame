@@ -55,6 +55,8 @@ MonoBehaviour:
   collisionLayers:
     serializedVersion: 2
     m_Bits: 1049224
+  explosionClip: {fileID: 8300000, guid: 9f149e8444c694474bbf63b713eacecc, type: 3}
+  explosionVolume: 0.7
 --- !u!50 &123283521729023137
 Rigidbody2D:
   serializedVersion: 5
