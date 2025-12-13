@@ -1,3 +1,4 @@
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class BananaBotMovements : MonoBehaviour
@@ -353,17 +354,7 @@ public class BananaBotMovements : MonoBehaviour
 
     public void WeakSpotHit(Collision2D other)
     {
-        if (scanningSource != null)
-        scanningSource.Stop();
-
-        // play death sound
-        SFXManager.instance.PlaySoundEffect(dyingSoundClip, transform, dyingSoundVolume);
-
-        // explosion VFX
-        Instantiate(ExplosionPreFab, transform.position, Quaternion.identity);
-
-        // destroy bot
-        Destroy(gameObject);
+        KillBot();
     }
     public void ShieldtHit(Collision2D other)
     {
@@ -398,6 +389,29 @@ public class BananaBotMovements : MonoBehaviour
         }
 
         wasSeeingPlayer = SeePlayer;
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.collider.CompareTag("Hazards"))
+        {
+            KillBot();
+        }
+    }
+
+    private void KillBot()
+    {
+        if (scanningSource != null)
+            scanningSource.Stop();
+
+        // play death sound
+        SFXManager.instance.PlaySoundEffect(dyingSoundClip, transform, dyingSoundVolume);
+
+        // explosion VFX
+        Instantiate(ExplosionPreFab, transform.position, Quaternion.identity);
+
+        // destroy bot
+        Destroy(gameObject);
     }
 
 }

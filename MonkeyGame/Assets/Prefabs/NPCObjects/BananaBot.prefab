@@ -267,8 +267,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.035053916, y: 0.02409192}
-  m_Size: {x: 0.507466, y: 0.7277476}
+  m_Offset: {x: -0.035053916, y: 0.04309551}
+  m_Size: {x: 0.507466, y: 0.68974036}
   m_Direction: 0
 --- !u!212 &8611222898271900675
 SpriteRenderer:
@@ -503,8 +503,8 @@ MonoBehaviour:
   Stationery: 1
   attackSpeed: 11
   timeBeforeAttack: 0.4
-  minX: 4
-  maxX: 0
+  minX: 2
+  maxX: 0.5
   stopTimeRandomRange: {x: 1, y: 5}
   driveTimeRandomRange: {x: 0.5, y: 1.5}
   targetLayerMove:
