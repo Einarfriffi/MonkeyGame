@@ -10,6 +10,8 @@ public class UIFader : MonoBehaviour
     [Header("Sound")]
     public AudioSource sfxSource; 
     public AudioClip clickSound; 
+    [SerializeField, Range(0f, 1f)]
+    private float clickVolume = 0.04f;
 
     void Start()
     {
@@ -25,18 +27,13 @@ public class UIFader : MonoBehaviour
 
     public void PlayClickSound()
     {
-        if (sfxSource == null) return;
+        if (sfxSource == null || clickSound == null) return;
 
-        if (clickSound != null)
-        {
-            // play this specific clip
-            sfxSource.PlayOneShot(clickSound);
-        }
-        else
-        {
-            
-            sfxSource.Play();
-        }
+        float master = (SFXManager.instance != null)
+            ? SFXManager.instance.MasterVolume
+            : 1f;
+
+        sfxSource.PlayOneShot(clickSound, clickVolume * master);
     }
 
     IEnumerator FadeIn()

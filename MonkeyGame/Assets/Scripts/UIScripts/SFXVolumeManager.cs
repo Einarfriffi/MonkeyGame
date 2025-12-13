@@ -3,68 +3,40 @@ using UnityEngine.UI;
 
 public class SFXVolumeManager : MonoBehaviour
 {
-    [Header("Optional: assign only in scenes with a slider")]
-    public Slider sfxSlider; // leave empty in scenes without a slider
+    [Header("Assign in Settings scene only")]
+    [SerializeField] private Slider sfxSlider;
 
-    AudioSource[] sfxSources;
-    float currentVolume = 1f;
-
-    void Awake()
+    private void Awake()
     {
-        // Load saved SFX volume (default = 1)
-        currentVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
-    }
+        // Load saved value (default = 1)
+        float saved = PlayerPrefs.GetFloat("SFXVolume", 1f);
 
-    void Start()
-    {
-        // Find SFX sources in THIS scene
-        RefreshSFXSources();
+        // Apply immediately to SFXManager if it exists
+        if (SFXManager.instance != null)
+            SFXManager.instance.SetMasterVolume(saved);
 
-        // Apply loaded volume to all SFX here
-        ApplyVolume(currentVolume);
-
-        // Hook slider if we have one in this scene
+        // If slider exists, set its UI value too
         if (sfxSlider != null)
-        {
-            sfxSlider.value = currentVolume;
-            sfxSlider.onValueChanged.AddListener(SetVolumeFromSlider);
-        }
+            sfxSlider.value = saved;
     }
 
-    void OnDestroy()
+    private void OnEnable()
     {
         if (sfxSlider != null)
-        {
-            sfxSlider.onValueChanged.RemoveListener(SetVolumeFromSlider);
-        }
+            sfxSlider.onValueChanged.AddListener(OnSliderChanged);
     }
 
-    void RefreshSFXSources()
+    private void OnDisable()
     {
-        GameObject[] sfxObjects = GameObject.FindGameObjectsWithTag("SFX");
-        sfxSources = new AudioSource[sfxObjects.Length];
-
-        for (int i = 0; i < sfxObjects.Length; i++)
-        {
-            sfxSources[i] = sfxObjects[i].GetComponent<AudioSource>();
-        }
+        if (sfxSlider != null)
+            sfxSlider.onValueChanged.RemoveListener(OnSliderChanged);
     }
 
-    public void SetVolumeFromSlider(float volume)
+    private void OnSliderChanged(float value)
     {
-        currentVolume = volume;
-        ApplyVolume(volume);
-        PlayerPrefs.SetFloat("SFXVolume", volume);
-    }
+        PlayerPrefs.SetFloat("SFXVolume", value);
 
-    void ApplyVolume(float volume)
-    {
-        if (sfxSources == null) return;
-
-        foreach (AudioSource src in sfxSources)
-        {
-            if (src != null)
-                src.volume = volume;
-        }
+        if (SFXManager.instance != null)
+            SFXManager.instance.SetMasterVolume(value);
     }
 }

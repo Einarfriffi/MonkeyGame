@@ -132,7 +132,7 @@ public class BananaBotMovements : MonoBehaviour
         scanningSource.clip = scanningSoundClip;
         scanningSource.loop = true;
         scanningSource.playOnAwake = false;
-        scanningSource.volume = scanningSoundVolume;     // tweak in Inspector later if needed
+        scanningSource.volume = scanningSoundVolume * (SFXManager.instance != null ? SFXManager.instance.MasterVolume : 1f);
         scanningSource.spatialBlend = 0f; // 2D sound
     }
 
@@ -375,22 +375,29 @@ public class BananaBotMovements : MonoBehaviour
 
     private void UpdateScanningSound()
     {
-    scanningSource.volume = scanningSoundVolume;
-    if (SeePlayer && !wasSeeingPlayer)
-    {
-        // just detected player
-        if (scanningSoundClip != null)
+        float master = (SFXManager.instance != null) ? SFXManager.instance.MasterVolume : 1f;
+
+        // ALWAYS keep loop volume synced to slider + inspector volume
+        if (scanningSource != null)
+            scanningSource.volume = scanningSoundVolume * master;
+
+        if (SeePlayer && !wasSeeingPlayer)
         {
-            scanningSource.time = 0f;
-            scanningSource.Play();
+            // just detected player
+            if (scanningSoundClip != null && scanningSource != null)
+            {
+                scanningSource.time = 0f;
+                scanningSource.Play();
+            }
         }
-    }
-    else if (!SeePlayer && wasSeeingPlayer)
-    {
-        // lost player
-        scanningSource.Stop();
+        else if (!SeePlayer && wasSeeingPlayer)
+        {
+            // lost player
+            if (scanningSource != null)
+                scanningSource.Stop();
+        }
+
+        wasSeeingPlayer = SeePlayer;
     }
 
-    wasSeeingPlayer = SeePlayer;
-    }
 }

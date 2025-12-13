@@ -1919,6 +1919,7 @@ MonoBehaviour:
   fadeDuration: 0.6
   sfxSource: {fileID: 1564018436}
   clickSound: {fileID: 8300000, guid: ca261f6198ee58a4299ef6a6d43714bc, type: 3}
+  clickVolume: 0.04
 --- !u!114 &1847207749
 MonoBehaviour:
   m_ObjectHideFlags: 0

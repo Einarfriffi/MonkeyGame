@@ -8,56 +8,75 @@ public class SFXManager : MonoBehaviour
 
     private AudioSource loopingSource;
 
+    private float masterVolume = 1f;
+    public float MasterVolume => masterVolume;
+
     private void Awake()
     {
-        if (instance == null)
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        // load saved volume
+        masterVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
 
         loopingSource = gameObject.AddComponent<AudioSource>();
         loopingSource.loop = true;
         loopingSource.playOnAwake = false;
+        loopingSource.spatialBlend = 0f; // 2D by default
+        loopingSource.volume = masterVolume;
     }
 
+    // called by your slider script
+    public void SetMasterVolume(float value)
+    {
+        masterVolume = Mathf.Clamp01(value);
+        PlayerPrefs.SetFloat("SFXVolume", masterVolume);
+
+        // update current loop immediately
+        if (loopingSource != null)
+            loopingSource.volume = masterVolume * (loopingSource.clip != null ? 1f : 1f);
+    }
 
     public void PlaySoundEffect(AudioClip audioClip, Transform spawnTransform, float volume)
     {
-        //spawn in gameObject
+        if (audioClip == null || soundFXObject == null) return;
+
         AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
 
-        //assign the audioClip
         audioSource.clip = audioClip;
 
-        //assign volume
-        audioSource.volume = volume;
+        // IMPORTANT: multiply by master volume
+        audioSource.volume = volume * masterVolume;
 
-        //play sound
         audioSource.Play();
-
-        //get length of audioclip
-        float clipLength = audioClip.length;
-
-        //destroy gameObject after length of audioclip
-        Destroy(audioSource.gameObject, clipLength);
-
-
-        //AudioSource.PlayClipAtPoint(audioClip, spawnTransform.position);
+        Destroy(audioSource.gameObject, audioClip.length);
     }
 
     public void PlayLoop(AudioClip clip, float volume = 1f)
     {
         if (clip == null) return;
 
+        // already playing this clip
         if (loopingSource.clip == clip && loopingSource.isPlaying)
             return;
 
         loopingSource.clip = clip;
-        loopingSource.volume = volume;
+
+        // IMPORTANT: multiply by master volume
+        loopingSource.volume = volume * masterVolume;
+
         loopingSource.Play();
     }
 
     public void StopLoop()
     {
-        if (loopingSource.isPlaying)
+        if (loopingSource != null && loopingSource.isPlaying)
             loopingSource.Stop();
     }
 }

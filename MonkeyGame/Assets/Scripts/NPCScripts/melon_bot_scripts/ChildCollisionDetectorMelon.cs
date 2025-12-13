@@ -10,8 +10,6 @@ public class ChildCollisionDetectorMelon : MonoBehaviour
     [SerializeField] bool Shield;
 
     [Header("Sound Effects")]
-    public AudioClip laserSoundClip;
-    public AudioClip rocketSoundClip;
     public AudioClip dyingSoundClip;
     public AudioClip shieldtHitClip;
 

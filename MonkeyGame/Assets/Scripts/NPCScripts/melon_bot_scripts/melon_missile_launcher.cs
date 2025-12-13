@@ -88,7 +88,7 @@ public class melon_missile_launcher : MonoBehaviour
         laserLockSource = gameObject.AddComponent<AudioSource>();
         laserLockSource.loop = true;
         laserLockSource.playOnAwake = false;
-        laserLockSource.volume = laserLockVolume;
+        laserLockSource.volume = laserLockVolume * (SFXManager.instance != null ? SFXManager.instance.MasterVolume : 1f);
         laserLockSource.spatialBlend = 0f; // 2D sound
     }
 
@@ -265,14 +265,21 @@ public class melon_missile_launcher : MonoBehaviour
 
     private void UpdateLaserLockSFX(bool lockedOn)
     {
+        float master = (SFXManager.instance != null) ? SFXManager.instance.MasterVolume : 1f;
+
         if (lockedOn)
         {
-            if (laserLockLoopClip != null && !laserLockSource.isPlaying)
+            if (laserLockLoopClip != null)
             {
-                laserLockSource.clip = laserLockLoopClip;
-                laserLockSource.volume = laserLockVolume;
-                laserLockSource.time = 0f;
-                laserLockSource.Play();
+                // keep volume synced even if already playing
+                laserLockSource.volume = laserLockVolume * master;
+
+                if (!laserLockSource.isPlaying)
+                {
+                    laserLockSource.clip = laserLockLoopClip;
+                    laserLockSource.time = 0f;
+                    laserLockSource.Play();
+                }
             }
         }
         else
@@ -280,6 +287,7 @@ public class melon_missile_launcher : MonoBehaviour
             if (laserLockSource.isPlaying)
                 laserLockSource.Stop();
         }
-}
+    }
+
 
 }

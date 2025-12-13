@@ -11645,11 +11645,11 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: b52d9df489f0540e6ad6b4a8ea28fcd3, type: 3}
     - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: shieldHitVolume
-      value: 0.1
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: dyingSoundVolume
-      value: 0.1
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: scanningSoundClip
@@ -11657,7 +11657,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 2b39de79562fd407fa44dbf01a5ece18, type: 3}
     - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: scanningSoundVolume
-      value: 0.06
+      value: 0.09
       objectReference: {fileID: 0}
     - target: {fileID: 8010632543001000398, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: m_Name
@@ -12182,11 +12182,11 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: b52d9df489f0540e6ad6b4a8ea28fcd3, type: 3}
     - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: shieldHitVolume
-      value: 0.1
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: dyingSoundVolume
-      value: 0.1
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: scanningSoundClip
@@ -12194,7 +12194,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 2b39de79562fd407fa44dbf01a5ece18, type: 3}
     - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: scanningSoundVolume
-      value: 0.06
+      value: 0.09
       objectReference: {fileID: 0}
     - target: {fileID: 8010632543001000398, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: m_Name
@@ -15605,6 +15605,7 @@ MonoBehaviour:
   fadeDuration: 0.4
   sfxSource: {fileID: 624911901}
   clickSound: {fileID: 0}
+  clickVolume: 0.04
 --- !u!1 &1535536176
 GameObject:
   m_ObjectHideFlags: 0
@@ -15692,7 +15693,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: jumpVolume
-      value: 0.5
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
+      propertyPath: shootVolume
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: jumpSoundClip
@@ -15708,11 +15713,11 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: a2ec4d1806567432f821156a0d5975e9, type: 3}
     - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: wallJumpVolume
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: doubleJumpVolume
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: runningSoundClip
@@ -16509,6 +16514,10 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8957301082987008968, guid: c38d3c445e3b9a141baaca8376d42367, type: 3}
+      propertyPath: laserLockVolume
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8957301082987008968, guid: c38d3c445e3b9a141baaca8376d42367, type: 3}
       propertyPath: laserLockLoopClip
       value: 
       objectReference: {fileID: 8300000, guid: 97c46feb4c9bb44fd8d26e662d7cb689, type: 3}
@@ -16519,6 +16528,10 @@ PrefabInstance:
     - target: {fileID: 8957301082987008968, guid: c38d3c445e3b9a141baaca8376d42367, type: 3}
       propertyPath: betweenTimeMissile
       value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8957301082987008968, guid: c38d3c445e3b9a141baaca8376d42367, type: 3}
+      propertyPath: missileLaunchVolume
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 8984824562415850130, guid: c38d3c445e3b9a141baaca8376d42367, type: 3}
       propertyPath: lockOnVolume
@@ -16779,65 +16792,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1436887925578025636, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
   m_PrefabInstance: {fileID: 789477125}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1913319356
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1913319358}
-  - component: {fileID: 1913319357}
-  - component: {fileID: 1913319359}
-  m_Layer: 0
-  m_Name: SoundFXManager
-  m_TagString: SFX
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1913319357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1913319356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ccb87cbad94f7b4dad8131a0a72d24a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SFXManager
-  soundFXObject: {fileID: 4729034530403912608, guid: 5108e3fe1ee3f2d4595f841a492d6da8, type: 3}
---- !u!4 &1913319358
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1913319356}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.27382, y: 3.96625, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1913319359
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1913319356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c637bc8110bf545448e5218ed24b510c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SFXVolumeManager
-  sfxSlider: {fileID: 0}
 --- !u!4 &1917682820 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5487389733664399828, guid: 5819f1df96400488fba5ad3112f493aa, type: 3}
@@ -36538,11 +36492,11 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: b52d9df489f0540e6ad6b4a8ea28fcd3, type: 3}
     - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: shieldHitVolume
-      value: 0.1
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: dyingSoundVolume
-      value: 0.1
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: scanningSoundClip
@@ -36550,7 +36504,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 2b39de79562fd407fa44dbf01a5ece18, type: 3}
     - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: scanningSoundVolume
-      value: 0.06
+      value: 0.09
       objectReference: {fileID: 0}
     - target: {fileID: 8010632543001000398, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: m_Name
@@ -36680,5 +36634,4 @@ SceneRoots:
   - {fileID: 2076236452}
   - {fileID: 1802391973}
   - {fileID: 586976717}
-  - {fileID: 1913319358}
   - {fileID: 624911902}
