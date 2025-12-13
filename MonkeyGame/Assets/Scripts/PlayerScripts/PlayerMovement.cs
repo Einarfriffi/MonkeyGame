@@ -128,6 +128,13 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip landSoundClip;
     [SerializeField, Range(0f, 1f)] private float landVolume = 1f;
 
+    // Video Effects
+    [Header("VFX")]
+    [Tooltip("paricle prefab to spawn at player feet on jump input")]
+    public ParticleSystem jumpSmokePartical;
+    
+    [Tooltip("Empty game object for spawn position on jump particle")]
+    public Transform particleSpawnPoint;
 
 
     // my privates
@@ -196,6 +203,26 @@ public class PlayerMovement : MonoBehaviour
     {
         if (context.performed) fireHeld = true;
         else if (context.canceled) fireHeld = false;
+    }
+
+    //Jump Partical
+    public void PlayJumpParticleEffect()
+    {
+        ParticleSystem newJumpParticle = Instantiate(jumpSmokePartical, particleSpawnPoint.position, Quaternion.identity);
+        newJumpParticle.transform.parent = null;
+
+        // if (extraJumpsLeft > 0)
+        // {
+        //     var main = newJumpParticle.main;
+        //     main.startColor = new Color(244f / 255f, 164f / 255f, 96f / 255f);
+        // }
+        // else
+        // {
+        //     var main = newJumpParticle.main;
+        //     main.startColor = new Color(0.95f, 0.95f, 0.95f, 0.8f);
+        // }
+
+        Destroy(newJumpParticle.gameObject, 1f);
     }
 
     private void FixedUpdate()
@@ -321,8 +348,18 @@ public class PlayerMovement : MonoBehaviour
                 var v = rb.linearVelocity;
                 v.y = jumpForce;
                 rb.linearVelocity = v;
+                PlayJumpParticleEffect();
+                Debug.Log("coyote jump ?");
                 jumpBufferCounter = 0f;
                 coyoteTimeCounter = 0f;
+                if (jumpSmokePartical.isPlaying)
+                {
+                    Debug.Log("Particle is currently playing");
+                }
+                else
+                {
+                    Debug.Log("Particle is NOT playing");
+                }
 
                 //play jump sound
                 SFXManager.instance.PlaySoundEffect(jumpSoundClip, transform, jumpVolume);
@@ -332,6 +369,8 @@ public class PlayerMovement : MonoBehaviour
                 var v = rb.linearVelocity;
                 v.y = jumpForce;
                 rb.linearVelocity = v;
+                PlayJumpParticleEffect();
+                Debug.Log("jump extra ?");
                 extraJumpsLeft--;
                 jumpBufferCounter = 0f;
 
