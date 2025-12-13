@@ -11,6 +11,10 @@ public class CameraFollow : MonoBehaviour
     [Header("Vertical settings")]
     [SerializeField] private float verticalDeadZone = 1f;   // how far the monkey can move vertically before camera reacts
 
+    [Header("Vertical limits")]
+    [SerializeField] private float minY = 8f;
+
+
     [Header("Smoothing")]
     [SerializeField] private float smoothTime = 0.2f;       // higher = slower camera
 
@@ -45,6 +49,8 @@ public class CameraFollow : MonoBehaviour
         {
             desired.y = currentY; // keep current camera height
         }
+
+        desired.y = Mathf.Max(desired.y, minY);
 
         // Smooth movement to the desired position
         transform.position = Vector3.SmoothDamp(
