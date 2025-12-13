@@ -121,6 +121,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private float currentVelocityX;
+    private bool isRunning = false;
+    private bool wasGrounded;
     private float jumpBufferCounter;
     private float coyoteTimeCounter;
     private int extraJumpsLeft;
@@ -186,6 +188,20 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         CheckGround();
+
+        bool groundedNow = IsGrounded();
+
+        if (!wasGrounded && groundedNow)
+        {
+            // just landed
+            SFXManager.instance.PlaySoundEffect(landSoundClip, transform, 1f);
+
+            // optional: stop running loop briefly or restart based on isRunning logic
+        }
+
+        wasGrounded = groundedNow;
+
+
         CheckWall();
 
         // wall jump control tick down
@@ -220,7 +236,25 @@ public class PlayerMovement : MonoBehaviour
                 currentVelocityX = 0f;        
             }
 
+
             rb.linearVelocity = new Vector2(smoothedSpeedX, rb.linearVelocity.y);
+
+            // ---- Running state (put after horizontal movement code, before jump checks) ----
+            bool wasRunning = isRunning;
+
+            // treat "running" as grounded + actually moving horizontally
+            isRunning = IsGrounded() && Mathf.Abs(rb.linearVelocity.x) > 0.1f;
+
+            if (!wasRunning && isRunning)
+            {
+                // start loop
+                SFXManager.instance.PlayLoop(runningSoundClip, 1f);
+            }
+            else if (wasRunning && !isRunning)
+            {
+                // stop loop
+                SFXManager.instance.StopLoop();
+            }
         }
         // jump
         if (jumpBufferCounter > 0f)
@@ -242,6 +276,9 @@ public class PlayerMovement : MonoBehaviour
 
                 Vector2 jumpDir = new Vector2(wallJumpDirection.x * away, wallJumpDirection.y).normalized;
                 rb.linearVelocity = new Vector2(jumpDir.x * wallJumpForce, jumpDir.y * wallJumpForce);
+
+                // play wall jump sound
+                SFXManager.instance.PlaySoundEffect(wallJumpSoundClip, transform, 1f);
 
                 wallJumpControlTimer = wallJumpControlLock;
 
@@ -274,7 +311,7 @@ public class PlayerMovement : MonoBehaviour
                 coyoteTimeCounter = 0f;
 
                 //play jump sound
-                SFXManager.instance.PlaySoundEffect(jumpSoundClip, transform, 0.3f);
+                SFXManager.instance.PlaySoundEffect(jumpSoundClip, transform, 1f);
             }
             else if (extraJumpsLeft > 0)
             {
@@ -285,7 +322,7 @@ public class PlayerMovement : MonoBehaviour
                 jumpBufferCounter = 0f;
 
                 //play double jump sound
-                SFXManager.instance.PlaySoundEffect(doubleJumpSoundClip, transform, 0.3f);
+                SFXManager.instance.PlaySoundEffect(doubleJumpSoundClip, transform, 1f);
             }
 
         }
@@ -301,7 +338,7 @@ public class PlayerMovement : MonoBehaviour
         {
             SpawnProjectile();
             // play shoot sound
-            SFXManager.instance.PlaySoundEffect(shootSoundClip, transform, 0.5f);
+            SFXManager.instance.PlaySoundEffect(shootSoundClip, transform, 0.7f);
             nextFireTime = Time.time + (fireRate > 0f ? 1f / fireRate : 0f);
         }
     }

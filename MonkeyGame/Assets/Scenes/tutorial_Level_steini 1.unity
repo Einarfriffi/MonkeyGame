@@ -15645,15 +15645,27 @@ PrefabInstance:
     - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: jumpSoundClip
       value: 
-      objectReference: {fileID: 8300000, guid: 72087def9a5be8e4384c522914b0f75f, type: 3}
+      objectReference: {fileID: 8300000, guid: f4d2b66f280f24f7b9da2494d7331b75, type: 3}
+    - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
+      propertyPath: landSoundClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7c2277f73e9d542638eca5a3b50fdeee, type: 3}
     - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: shootSoundClip
       value: 
-      objectReference: {fileID: 8300000, guid: d3c2503a7f155a84eb34d42e8c263789, type: 3}
+      objectReference: {fileID: 8300000, guid: a2ec4d1806567432f821156a0d5975e9, type: 3}
+    - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
+      propertyPath: runningSoundClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 5f7e41bdafd42411ea5bf842761ee7c2, type: 3}
+    - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
+      propertyPath: wallJumpSoundClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 75285ebf06acb41048a9a2c500e2a30f, type: 3}
     - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: doubleJumpSoundClip
       value: 
-      objectReference: {fileID: 8300000, guid: 4ab2709350edb2c41b5fa91d66301232, type: 3}
+      objectReference: {fileID: 8300000, guid: dc880c872a1db4669aa2ae9d127a8687, type: 3}
     - target: {fileID: 6717379132692717810, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: m_Name
       value: NewMonkey

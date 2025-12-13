@@ -6,13 +6,16 @@ public class SFXManager : MonoBehaviour
 
     [SerializeField] private AudioSource soundFXObject;
 
+    private AudioSource loopingSource;
+
     private void Awake()
     {
         if (instance == null)
-        {
-            instance = this;
-        }
-    
+        instance = this;
+
+        loopingSource = gameObject.AddComponent<AudioSource>();
+        loopingSource.loop = true;
+        loopingSource.playOnAwake = false;
     }
 
 
@@ -37,6 +40,24 @@ public class SFXManager : MonoBehaviour
         Destroy(audioSource.gameObject, clipLength);
 
 
-        AudioSource.PlayClipAtPoint(audioClip, spawnTransform.position);
+        //AudioSource.PlayClipAtPoint(audioClip, spawnTransform.position);
+    }
+
+    public void PlayLoop(AudioClip clip, float volume = 1f)
+    {
+        if (clip == null) return;
+
+        if (loopingSource.clip == clip && loopingSource.isPlaying)
+            return;
+
+        loopingSource.clip = clip;
+        loopingSource.volume = volume;
+        loopingSource.Play();
+    }
+
+    public void StopLoop()
+    {
+        if (loopingSource.isPlaying)
+            loopingSource.Stop();
     }
 }

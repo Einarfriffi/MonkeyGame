@@ -69,6 +69,13 @@ public class BananaBotMovements : MonoBehaviour
     private float curLaserSize;
     private float growRateLaser;
 
+        [Header("Sound Effects")]
+    public AudioClip drivingSoundClip;
+    public AudioClip scanningSoundClip;
+    public AudioClip chargingSoundClip;
+    public AudioClip dyingSoundClip;
+    public AudioClip shieldtHitClip;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -333,11 +340,20 @@ public class BananaBotMovements : MonoBehaviour
 
     public void WeakSpotHit(Collision2D other)
     {
+        // play death sound
+        SFXManager.instance.PlaySoundEffect(dyingSoundClip, transform, 0.6f);
+
+        // explosion VFX
         Instantiate(ExplosionPreFab, transform.position, Quaternion.identity);
+
+        // destroy bot
         Destroy(gameObject);
     }
     public void ShieldtHit(Collision2D other)
     {
         shieldAnimator.SetTrigger("HitShield");
+
+        // play shield sound
+        SFXManager.instance.PlaySoundEffect(shieldtHitClip, transform, 0.6f);
     }
 }
