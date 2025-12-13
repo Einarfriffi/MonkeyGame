@@ -69,6 +69,17 @@ public class BananaBotMovements : MonoBehaviour
     private float curLaserSize;
     private float growRateLaser;
 
+    [Header("Sound Effects")]
+    public AudioClip scanningSoundClip;
+    [SerializeField, Range(0f, 1f)] private float scanningSoundVolume = 1f;
+    public AudioClip dyingSoundClip;
+    [SerializeField, Range(0f, 1f)] private float dyingSoundVolume = 1f;
+    public AudioClip shieldtHitClip;
+    [SerializeField, Range(0f, 1f)] private float shieldHitVolume = 1f;
+
+    private AudioSource scanningSource;
+    private bool wasSeeingPlayer = false;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -116,6 +127,13 @@ public class BananaBotMovements : MonoBehaviour
 
         // find the angle that the bot can see the player
         FindDetectionAngle();
+
+        scanningSource = gameObject.AddComponent<AudioSource>();
+        scanningSource.clip = scanningSoundClip;
+        scanningSource.loop = true;
+        scanningSource.playOnAwake = false;
+        scanningSource.volume = scanningSoundVolume * (SFXManager.instance != null ? SFXManager.instance.MasterVolume : 1f);
+        scanningSource.spatialBlend = 0f; // 2D sound
     }
 
     // Update is called once per frame
@@ -123,6 +141,8 @@ public class BananaBotMovements : MonoBehaviour
     {
         // working on detecting player
         PlayerDetection();
+
+        UpdateScanningSound();
 
         // ============================
         animator.SetFloat("speed", Mathf.Abs(rb.linearVelocity.x));
@@ -333,11 +353,51 @@ public class BananaBotMovements : MonoBehaviour
 
     public void WeakSpotHit(Collision2D other)
     {
+        if (scanningSource != null)
+        scanningSource.Stop();
+
+        // play death sound
+        SFXManager.instance.PlaySoundEffect(dyingSoundClip, transform, dyingSoundVolume);
+
+        // explosion VFX
         Instantiate(ExplosionPreFab, transform.position, Quaternion.identity);
+
+        // destroy bot
         Destroy(gameObject);
     }
     public void ShieldtHit(Collision2D other)
     {
         shieldAnimator.SetTrigger("HitShield");
+
+        // play shield sound
+        SFXManager.instance.PlaySoundEffect(shieldtHitClip, transform, shieldHitVolume);
     }
+
+    private void UpdateScanningSound()
+    {
+        float master = (SFXManager.instance != null) ? SFXManager.instance.MasterVolume : 1f;
+
+        // ALWAYS keep loop volume synced to slider + inspector volume
+        if (scanningSource != null)
+            scanningSource.volume = scanningSoundVolume * master;
+
+        if (SeePlayer && !wasSeeingPlayer)
+        {
+            // just detected player
+            if (scanningSoundClip != null && scanningSource != null)
+            {
+                scanningSource.time = 0f;
+                scanningSource.Play();
+            }
+        }
+        else if (!SeePlayer && wasSeeingPlayer)
+        {
+            // lost player
+            if (scanningSource != null)
+                scanningSource.Stop();
+        }
+
+        wasSeeingPlayer = SeePlayer;
+    }
+
 }

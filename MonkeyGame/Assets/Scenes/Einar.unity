@@ -978,11 +978,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1436887925578025636, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.07
+      value: 15.55
       objectReference: {fileID: 0}
     - target: {fileID: 1436887925578025636, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.14
+      value: 3.26
       objectReference: {fileID: 0}
     - target: {fileID: 1436887925578025636, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1025,37 +1025,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
---- !u!1 &1361860073
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1361860074}
-  m_Layer: 9
-  m_Name: jumpParticalSpawn
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1361860074
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361860073}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0102, y: -0.34233338, z: 0}
-  m_LocalScale: {x: 0.33333334, y: 0.33333334, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1921768774}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1468264276
 GameObject:
   m_ObjectHideFlags: 0
@@ -2505,11 +2474,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!4 &1921768774 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8380668460817753244, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
-  m_PrefabInstance: {fileID: 3760786817159221822}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1939285506
 GameObject:
   m_ObjectHideFlags: 0
@@ -3103,24 +3067,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
-      propertyPath: jumpSmokePartical
-      value: 
-      objectReference: {fileID: 6689041845639265051, guid: 0542b8a8005374c198362d706b0281e3, type: 3}
-    - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
-      propertyPath: particleSpawnPoint
-      value: 
-      objectReference: {fileID: 1361860074}
     - target: {fileID: 6717379132692717810, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: m_Name
       value: NewMonkey
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 8380668460817753244, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1361860074}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
 --- !u!4 &4923914537757710848 stripped

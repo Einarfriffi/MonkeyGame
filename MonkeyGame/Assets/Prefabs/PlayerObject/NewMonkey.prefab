@@ -60,7 +60,8 @@ Transform:
   m_LocalPosition: {x: 0.19700003, y: 0.821, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1853327203512325994}
   m_Father: {fileID: 3537518793891357012}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5779281712656616869
@@ -121,6 +122,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &3598393042350381693
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1853327203512325994}
+  m_Layer: 9
+  m_Name: jumpParticalSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1853327203512325994
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3598393042350381693}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.0102, y: -0.34233338, z: 0}
+  m_LocalScale: {x: 0.33333334, y: 0.33333334, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8380668460817753244}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4341896205071388769
 GameObject:
   m_ObjectHideFlags: 0
@@ -561,8 +593,22 @@ MonoBehaviour:
   projectilePrefab: {fileID: 995945900985695212, guid: 4af00a1c08012436dbd2d98a19b4001a, type: 3}
   muzzleTransform: {fileID: 7856619533547892024}
   fireRate: 3
-  projectileSpeed: 18
+  projectileSpeed: 23
   projectileGravityScale: 0
   projectileLifetime: 3
   projectileInheritVelocity: 1
   inheritHorizontalOnly: 1
+  jumpSoundClip: {fileID: 8300000, guid: e2ede26c13e824d2f8f9eb620847bdb4, type: 3}
+  jumpVolume: 1
+  doubleJumpSoundClip: {fileID: 8300000, guid: 5325f70b568574d0398211e8a2cede19, type: 3}
+  doubleJumpVolume: 1
+  wallJumpSoundClip: {fileID: 8300000, guid: 5a4655b1eb974415d9bd5348c9b10fa4, type: 3}
+  wallJumpVolume: 1
+  shootSoundClip: {fileID: 8300000, guid: a2ec4d1806567432f821156a0d5975e9, type: 3}
+  shootVolume: 0.8
+  runningSoundClip: {fileID: 8300000, guid: 5f7e41bdafd42411ea5bf842761ee7c2, type: 3}
+  runningVolume: 1
+  landSoundClip: {fileID: 8300000, guid: 7c2277f73e9d542638eca5a3b50fdeee, type: 3}
+  landVolume: 1
+  jumpSmokePartical: {fileID: 6689041845639265051, guid: 0542b8a8005374c198362d706b0281e3, type: 3}
+  particleSpawnPoint: {fileID: 1853327203512325994}
