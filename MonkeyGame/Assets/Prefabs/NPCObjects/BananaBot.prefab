@@ -504,7 +504,7 @@ MonoBehaviour:
   attackSpeed: 11
   timeBeforeAttack: 0.4
   minX: 4
-  maxX: 4
+  maxX: 0
   stopTimeRandomRange: {x: 1, y: 5}
   driveTimeRandomRange: {x: 0.5, y: 1.5}
   targetLayerMove:
@@ -529,6 +529,12 @@ MonoBehaviour:
   direction: -1
   SeePlayer: 0
   Player: {fileID: 0}
+  scanningSoundClip: {fileID: 8300000, guid: 2b39de79562fd407fa44dbf01a5ece18, type: 3}
+  scanningSoundVolume: 0.09
+  dyingSoundClip: {fileID: 8300000, guid: 721531cc03c194cb8a844587bd7fb0c1, type: 3}
+  dyingSoundVolume: 0.25
+  shieldtHitClip: {fileID: 8300000, guid: b52d9df489f0540e6ad6b4a8ea28fcd3, type: 3}
+  shieldHitVolume: 0.3
 --- !u!50 &3303687539440485413
 Rigidbody2D:
   serializedVersion: 5

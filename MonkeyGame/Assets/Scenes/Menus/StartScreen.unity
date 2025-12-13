@@ -533,6 +533,7 @@ MonoBehaviour:
   fadeDuration: 0.6
   sfxSource: {fileID: 1999756608}
   clickSound: {fileID: 8300000, guid: ca261f6198ee58a4299ef6a6d43714bc, type: 3}
+  clickVolume: 0.04
 --- !u!114 &324777804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1732,6 +1733,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 1207548219}
   - {fileID: 1290842379}
+  - {fileID: 1103460516}
   - {fileID: 324777800}
   - {fileID: 823640430}
-  - {fileID: 1103460516}
