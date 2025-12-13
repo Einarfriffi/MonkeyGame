@@ -1,0 +1,22 @@
+Banana Bot Beatdown – Attribution File
+------------------------------------
+
+The following resources were used in this game.
+
+Art Assets
+----------
+Enviroment Sprites
+Created by Tumi Kristinsson (Developer)
+
+Background Art
+Created by Tumi Kristinsson (Developer)
+
+Audio
+-----
+Background Music
+Created by Þorsteinn Hængur Jónsson (Developer)
+
+Sound Effects
+Created by Þorsteinn Hængur Jónsson (Developer)
+Using free Sound Maker
+https://www.bfxr.net/ 
