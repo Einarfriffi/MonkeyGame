@@ -561,7 +561,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 995945900985695212, guid: 4af00a1c08012436dbd2d98a19b4001a, type: 3}
   muzzleTransform: {fileID: 7856619533547892024}
   fireRate: 3
-  projectileSpeed: 18
+  projectileSpeed: 23
   projectileGravityScale: 0
   projectileLifetime: 3
   projectileInheritVelocity: 1
