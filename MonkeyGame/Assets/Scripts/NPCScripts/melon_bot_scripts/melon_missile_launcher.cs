@@ -63,7 +63,6 @@ public class melon_missile_launcher : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float laserLockVolume = 0.4f;
 
     private AudioSource laserLockSource;
-    private bool wasLockedOn = false;
 
     void Start()
     {

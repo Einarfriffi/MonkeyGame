@@ -211,17 +211,6 @@ public class PlayerMovement : MonoBehaviour
         ParticleSystem newJumpParticle = Instantiate(jumpSmokePartical, particleSpawnPoint.position, Quaternion.identity);
         newJumpParticle.transform.parent = null;
 
-        // if (extraJumpsLeft > 0)
-        // {
-        //     var main = newJumpParticle.main;
-        //     main.startColor = new Color(244f / 255f, 164f / 255f, 96f / 255f);
-        // }
-        // else
-        // {
-        //     var main = newJumpParticle.main;
-        //     main.startColor = new Color(0.95f, 0.95f, 0.95f, 0.8f);
-        // }
-
         Destroy(newJumpParticle.gameObject, 1f);
     }
 
@@ -234,7 +223,10 @@ public class PlayerMovement : MonoBehaviour
         if (!wasGrounded && groundedNow)
         {
             // just landed
-            SFXManager.instance.PlaySoundEffect(landSoundClip, transform, landVolume);
+            if (SFXManager.instance != null)
+            {
+                SFXManager.instance.PlaySoundEffect(landSoundClip, transform, landVolume);
+            }
 
             // optional: stop running loop briefly or restart based on isRunning logic
         }
@@ -285,15 +277,18 @@ public class PlayerMovement : MonoBehaviour
             // treat "running" as grounded + actually moving horizontally
             isRunning = IsGrounded() && Mathf.Abs(rb.linearVelocity.x) > 0.1f;
 
-            if (!wasRunning && isRunning)
+            if (SFXManager.instance != null)
             {
-                // start loop
-                SFXManager.instance.PlayLoop(runningSoundClip, runningVolume);
-            }
-            else if (wasRunning && !isRunning)
-            {
-                // stop loop
-                SFXManager.instance.StopLoop();
+                if (!wasRunning && isRunning)
+                {
+                    // start loop
+                    SFXManager.instance.PlayLoop(runningSoundClip, runningVolume);
+                }
+                else if (wasRunning && !isRunning)
+                {
+                    // stop loop
+                    SFXManager.instance.StopLoop();
+                }
             }
         }
         // jump
@@ -318,7 +313,10 @@ public class PlayerMovement : MonoBehaviour
                 rb.linearVelocity = new Vector2(jumpDir.x * wallJumpForce, jumpDir.y * wallJumpForce);
 
                 // play wall jump sound
-                SFXManager.instance.PlaySoundEffect(wallJumpSoundClip, transform, wallJumpVolume);
+                if (SFXManager.instance != null)
+                {
+                    SFXManager.instance.PlaySoundEffect(wallJumpSoundClip, transform, wallJumpVolume);
+                }
 
 
                 wallJumpControlTimer = wallJumpControlLock;
@@ -362,7 +360,10 @@ public class PlayerMovement : MonoBehaviour
                 }
 
                 //play jump sound
-                SFXManager.instance.PlaySoundEffect(jumpSoundClip, transform, jumpVolume);
+                if (SFXManager.instance != null)
+                {
+                    SFXManager.instance.PlaySoundEffect(jumpSoundClip, transform, jumpVolume);
+                }
             }
             else if (extraJumpsLeft > 0)
             {
@@ -375,7 +376,10 @@ public class PlayerMovement : MonoBehaviour
                 jumpBufferCounter = 0f;
 
                 //play double jump sound
-                SFXManager.instance.PlaySoundEffect(doubleJumpSoundClip, transform, doubleJumpVolume);
+                if (SFXManager.instance != null)
+                {
+                    SFXManager.instance.PlaySoundEffect(doubleJumpSoundClip, transform, doubleJumpVolume);
+                }
             }
 
         }
@@ -391,7 +395,10 @@ public class PlayerMovement : MonoBehaviour
         {
             SpawnProjectile();
             // play shoot sound
-            SFXManager.instance.PlaySoundEffect(shootSoundClip, transform, shootVolume);
+            if (SFXManager.instance != null)
+            {
+                SFXManager.instance.PlaySoundEffect(shootSoundClip, transform, shootVolume);
+            }
             nextFireTime = Time.time + (fireRate > 0f ? 1f / fireRate : 0f);
         }
     }
