@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0f7d7e4abca0dca48b569cb5929d69d2
+guid: 67145ccbed764dc4eaaae246c7d91109
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6167700759773780020
-    second: Monkey_Base_0
+      213: 4017157863584983907
+    second: Monkey_Hand 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Monkey_Base_0
+      name: Monkey_Hand 1_0
       rect:
         serializedVersion: 2
-        x: 16
-        y: 0
-        width: 46
-        height: 64
+        x: 1
+        y: 24
+        width: 42
+        height: 17
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cc7e6cc36dce76aa0800000000000000
-      internalID: -6167700759773780020
+      spriteID: 36b66a90bcfcfb730800000000000000
+      internalID: 4017157863584983907
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Monkey_Base_0: -6167700759773780020
+      Monkey_Hand 1_0: 4017157863584983907
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
