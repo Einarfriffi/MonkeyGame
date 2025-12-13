@@ -351,12 +351,12 @@ MonoBehaviour:
   view_dist: 15
   blinkSpeed: 20
   rotation_speed: 10
-  viewAngle: 80
+  viewAngle: 100
   bob_range: 0.25
   bob_speed: 1.5
-  randAngleMissile: 3
-  betweenTimeMissile: 2
-  acceleration: 10
+  randAngleMissile: 10
+  betweenTimeMissile: 0.75
+  acceleration: 15
   maxSpeed: 20
   maxRange: 15
   laserSize: 0.075
