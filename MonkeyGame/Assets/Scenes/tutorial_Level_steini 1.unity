@@ -11635,6 +11635,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: dyingSoundClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 721531cc03c194cb8a844587bd7fb0c1, type: 3}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: shieldtHitClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b52d9df489f0540e6ad6b4a8ea28fcd3, type: 3}
     - target: {fileID: 8010632543001000398, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: m_Name
       value: BananaBot (1)
@@ -12148,6 +12156,14 @@ PrefabInstance:
       propertyPath: maxX
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: dyingSoundClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 721531cc03c194cb8a844587bd7fb0c1, type: 3}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: shieldtHitClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b52d9df489f0540e6ad6b4a8ea28fcd3, type: 3}
     - target: {fileID: 8010632543001000398, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: m_Name
       value: BananaBot
@@ -16392,6 +16408,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: melon_bot
       objectReference: {fileID: 0}
+    - target: {fileID: 2897891778512909201, guid: c38d3c445e3b9a141baaca8376d42367, type: 3}
+      propertyPath: shieldtHitClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b52d9df489f0540e6ad6b4a8ea28fcd3, type: 3}
     - target: {fileID: 3555393968957590383, guid: c38d3c445e3b9a141baaca8376d42367, type: 3}
       propertyPath: m_LocalPosition.x
       value: 103.604195
@@ -16432,6 +16452,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7849182798542992339, guid: c38d3c445e3b9a141baaca8376d42367, type: 3}
+      propertyPath: dyingSoundClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 721531cc03c194cb8a844587bd7fb0c1, type: 3}
     - target: {fileID: 8957301082987008968, guid: c38d3c445e3b9a141baaca8376d42367, type: 3}
       propertyPath: viewAngle
       value: 100
@@ -16444,6 +16468,14 @@ PrefabInstance:
       propertyPath: betweenTimeMissile
       value: 0.75
       objectReference: {fileID: 0}
+    - target: {fileID: 8984824562415850130, guid: c38d3c445e3b9a141baaca8376d42367, type: 3}
+      propertyPath: lockOnVolume
+      value: 0.785
+      objectReference: {fileID: 0}
+    - target: {fileID: 8984824562415850130, guid: c38d3c445e3b9a141baaca8376d42367, type: 3}
+      propertyPath: lockOnLoopClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 97c46feb4c9bb44fd8d26e662d7cb689, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -36444,6 +36476,14 @@ PrefabInstance:
       propertyPath: Stationery
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: dyingSoundClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 721531cc03c194cb8a844587bd7fb0c1, type: 3}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: shieldtHitClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b52d9df489f0540e6ad6b4a8ea28fcd3, type: 3}
     - target: {fileID: 8010632543001000398, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: m_Name
       value: BananaBot (2)
