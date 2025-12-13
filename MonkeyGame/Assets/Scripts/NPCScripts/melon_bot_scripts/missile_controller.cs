@@ -15,6 +15,10 @@ public class missile_controller : MonoBehaviour
 
     //private Vector2 original_pos;
 
+    [Header("Explosion SFX")]
+    [SerializeField] private AudioClip explosionClip;
+    [SerializeField, Range(0f, 1f)] private float explosionVolume = 0.7f;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
@@ -41,6 +45,9 @@ public class missile_controller : MonoBehaviour
         rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxSpeed);
         if (Vector2.Distance(transform.position, startPos) >= maxRange)
         {
+            if (explosionClip != null)
+            SFXManager.instance.PlaySoundEffect(explosionClip, transform, explosionVolume);
+
             Destroy(this.gameObject);
             Instantiate(Explosion, transform.position, Quaternion.identity);
         }
@@ -72,6 +79,10 @@ public class missile_controller : MonoBehaviour
 
         // Player or anything else allowed -> explode
         Instantiate(Explosion, transform.position, Quaternion.identity);
+
+        if (explosionClip != null)
+                SFXManager.instance.PlaySoundEffect(explosionClip, transform, explosionVolume);
+
         Destroy(gameObject);
     }
 }

@@ -376,6 +376,10 @@ MonoBehaviour:
   front_launcher_animator: {fileID: 1075686491551204654}
   back_launcher_animator: {fileID: 4710507855080723334}
   direction: -1
+  missileLaunchClip: {fileID: 8300000, guid: be7c1a69e48244458899dbeda6518371, type: 3}
+  missileLaunchVolume: 0.2
+  laserLockLoopClip: {fileID: 8300000, guid: 97c46feb4c9bb44fd8d26e662d7cb689, type: 3}
+  laserLockVolume: 0.35
 --- !u!1 &5115736991458996235
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,6 +465,8 @@ MonoBehaviour:
   parent_script: {fileID: 8957301082987008968}
   weakSpot: 1
   Shield: 0
+  dyingSoundClip: {fileID: 8300000, guid: 721531cc03c194cb8a844587bd7fb0c1, type: 3}
+  shieldtHitClip: {fileID: 0}
 --- !u!1 &6606820139150187987
 GameObject:
   m_ObjectHideFlags: 0
@@ -604,6 +610,8 @@ MonoBehaviour:
   parent_script: {fileID: 8957301082987008968}
   weakSpot: 0
   Shield: 1
+  dyingSoundClip: {fileID: 0}
+  shieldtHitClip: {fileID: 8300000, guid: b52d9df489f0540e6ad6b4a8ea28fcd3, type: 3}
 --- !u!70 &8243728164539174300
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

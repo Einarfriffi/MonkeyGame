@@ -566,3 +566,15 @@ MonoBehaviour:
   projectileLifetime: 3
   projectileInheritVelocity: 1
   inheritHorizontalOnly: 1
+  jumpSoundClip: {fileID: 8300000, guid: e2ede26c13e824d2f8f9eb620847bdb4, type: 3}
+  jumpVolume: 1
+  doubleJumpSoundClip: {fileID: 8300000, guid: 5325f70b568574d0398211e8a2cede19, type: 3}
+  doubleJumpVolume: 1
+  wallJumpSoundClip: {fileID: 8300000, guid: 5a4655b1eb974415d9bd5348c9b10fa4, type: 3}
+  wallJumpVolume: 1
+  shootSoundClip: {fileID: 8300000, guid: a2ec4d1806567432f821156a0d5975e9, type: 3}
+  shootVolume: 0.8
+  runningSoundClip: {fileID: 8300000, guid: 5f7e41bdafd42411ea5bf842761ee7c2, type: 3}
+  runningVolume: 1
+  landSoundClip: {fileID: 8300000, guid: 7c2277f73e9d542638eca5a3b50fdeee, type: 3}
+  landVolume: 1

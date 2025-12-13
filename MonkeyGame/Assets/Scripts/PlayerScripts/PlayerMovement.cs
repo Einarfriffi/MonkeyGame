@@ -107,11 +107,35 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("If true, only inherit horizontal velocity")]
     public bool inheritHorizontalOnly = true;
 
+    //AUDIO
+
+    [Header("Sound Effects")]
+    public AudioClip jumpSoundClip;
+    [SerializeField, Range(0f, 1f)] private float jumpVolume = 1f;
+
+    public AudioClip doubleJumpSoundClip;
+    [SerializeField, Range(0f, 1f)] private float doubleJumpVolume = 1f;
+
+    public AudioClip wallJumpSoundClip;
+    [SerializeField, Range(0f, 1f)] private float wallJumpVolume = 1f;
+
+    public AudioClip shootSoundClip;
+    [SerializeField, Range(0f, 1f)] private float shootVolume = 0.7f;
+
+    public AudioClip runningSoundClip;
+    [SerializeField, Range(0f, 1f)] private float runningVolume = 1f;
+
+    public AudioClip landSoundClip;
+    [SerializeField, Range(0f, 1f)] private float landVolume = 1f;
+
+
 
     // my privates
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private float currentVelocityX;
+    private bool isRunning = false;
+    private bool wasGrounded;
     private float jumpBufferCounter;
     private float coyoteTimeCounter;
     private int extraJumpsLeft;
@@ -177,6 +201,20 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         CheckGround();
+
+        bool groundedNow = IsGrounded();
+
+        if (!wasGrounded && groundedNow)
+        {
+            // just landed
+            SFXManager.instance.PlaySoundEffect(landSoundClip, transform, landVolume);
+
+            // optional: stop running loop briefly or restart based on isRunning logic
+        }
+
+        wasGrounded = groundedNow;
+
+
         CheckWall();
 
         // wall jump control tick down
@@ -211,7 +249,25 @@ public class PlayerMovement : MonoBehaviour
                 currentVelocityX = 0f;        
             }
 
+
             rb.linearVelocity = new Vector2(smoothedSpeedX, rb.linearVelocity.y);
+
+            // ---- Running state (put after horizontal movement code, before jump checks) ----
+            bool wasRunning = isRunning;
+
+            // treat "running" as grounded + actually moving horizontally
+            isRunning = IsGrounded() && Mathf.Abs(rb.linearVelocity.x) > 0.1f;
+
+            if (!wasRunning && isRunning)
+            {
+                // start loop
+                SFXManager.instance.PlayLoop(runningSoundClip, runningVolume);
+            }
+            else if (wasRunning && !isRunning)
+            {
+                // stop loop
+                SFXManager.instance.StopLoop();
+            }
         }
         // jump
         if (jumpBufferCounter > 0f)
@@ -233,6 +289,10 @@ public class PlayerMovement : MonoBehaviour
 
                 Vector2 jumpDir = new Vector2(wallJumpDirection.x * away, wallJumpDirection.y).normalized;
                 rb.linearVelocity = new Vector2(jumpDir.x * wallJumpForce, jumpDir.y * wallJumpForce);
+
+                // play wall jump sound
+                SFXManager.instance.PlaySoundEffect(wallJumpSoundClip, transform, wallJumpVolume);
+
 
                 wallJumpControlTimer = wallJumpControlLock;
 
@@ -263,6 +323,9 @@ public class PlayerMovement : MonoBehaviour
                 rb.linearVelocity = v;
                 jumpBufferCounter = 0f;
                 coyoteTimeCounter = 0f;
+
+                //play jump sound
+                SFXManager.instance.PlaySoundEffect(jumpSoundClip, transform, jumpVolume);
             }
             else if (extraJumpsLeft > 0)
             {
@@ -271,6 +334,9 @@ public class PlayerMovement : MonoBehaviour
                 rb.linearVelocity = v;
                 extraJumpsLeft--;
                 jumpBufferCounter = 0f;
+
+                //play double jump sound
+                SFXManager.instance.PlaySoundEffect(doubleJumpSoundClip, transform, doubleJumpVolume);
             }
 
         }
@@ -285,6 +351,8 @@ public class PlayerMovement : MonoBehaviour
         if (fireHeld && Time.time >= nextFireTime)
         {
             SpawnProjectile();
+            // play shoot sound
+            SFXManager.instance.PlaySoundEffect(shootSoundClip, transform, shootVolume);
             nextFireTime = Time.time + (fireRate > 0f ? 1f / fireRate : 0f);
         }
     }
