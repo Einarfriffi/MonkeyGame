@@ -184,6 +184,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (dead) return;
         AimAtMouse();
     }
 
@@ -216,6 +217,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (dead)
+        {
+            // fully freeze
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+
+            if (SFXManager.instance != null) SFXManager.instance.StopLoop();
+
+            return;
+        }
+
         CheckGround();
 
         bool groundedNow = IsGrounded();
@@ -417,7 +429,13 @@ public class PlayerMovement : MonoBehaviour
         {
             GameManager.Instance.LevelWon();
         }
+        
+        if (other.gameObject.CompareTag("TutorialDone"))
+        {
+            GameManager.Instance.TutorialWon();
+        }
     }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         // collide with hazards kills
@@ -426,11 +444,6 @@ public class PlayerMovement : MonoBehaviour
             dead = true;
             // TODO: add animation
             GameManager.Instance.ShowDeathScreen();
-        }
-
-        if (other.CompareTag("Win"))
-        {
-            GameManager.Instance.LevelWon();
         }
     }
 
@@ -552,8 +565,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void AimAtMouse()
     {
-        if(dead) return;
-        
         if (Time.timeScale == 0) return;
         Vector3 mouseScreenPos = Mouse.current.position.ReadValue();
         Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(mouseScreenPos);

@@ -15,6 +15,7 @@ TagManager:
   - Shield
   - WeakSpot
   - bullet
+  - TutorialDone
   layers:
   - Default
   - TransparentFX

@@ -59,8 +59,15 @@ public class GameManager : MonoBehaviour
         Debug.Log("Scene lodade: " + scene.name);
 
         // fetch Level scenes GameManager components
-        if ((scene.name.StartsWith("Level") && scene.name != "LevelManager") || scene.name == "tutorial_Level_steini")
+        if (scene.name.StartsWith("Level") && scene.name != "LevelManager")
         {
+
+            // fetch win screen
+            GameObject winScreen = GameObject.FindWithTag("Win");
+            if (winScreen != null)
+            {
+                // set active false stuff
+            }
             // fetch player object
             GameObject playerObj = GameObject.FindWithTag("Player");
             if (playerObj != null)
@@ -109,6 +116,24 @@ public class GameManager : MonoBehaviour
                 Destroy(currentHUD);
                 currentHUD = null;
                 levelHUD = null;
+            }
+        }
+
+        if (scene.name.StartsWith("Tutorial"))
+        {
+            // fetch deathUI for game manager
+            GameObject deathUIfound = GameObject.FindWithTag("DeathUI");
+            if (deathUIfound != null)
+            {
+                var panelTransform = deathUIfound.GetComponentInChildren<Transform>(true)
+                                                .Cast<Transform>()
+                                                .FirstOrDefault(t => t.name == "Menu");
+
+                if (panelTransform != null)
+                {
+                    deathPanel = panelTransform.gameObject;
+                    deathPanel.SetActive(false);
+                }
             }
         }
     }
@@ -160,7 +185,16 @@ public class GameManager : MonoBehaviour
     public void LevelWon()
     {
         // TODO: add actual logic
+        Time.timeScale = 0f;
+        // set win screen active
+        // save time and send to db
+
         SceneManager.LoadScene("DevSplash");
+    }
+
+    public void TutorialWon()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     // Return game time to normal
