@@ -63,8 +63,6 @@ ShaderCache/
 # Do NOT ignore them unless you know exactly what you’re doing.
 # ProjectSettings/
 # Assets/
-Assets/VFX
-Assets/VFX.meta
 
 
 ############################
