@@ -666,5 +666,6 @@ MonoBehaviour:
   landSoundClip: {fileID: 8300000, guid: 7c2277f73e9d542638eca5a3b50fdeee, type: 3}
   landVolume: 1
   jumpSmokePartical: {fileID: 6689041845639265051, guid: 0542b8a8005374c198362d706b0281e3, type: 3}
+  deathEffect: {fileID: 5313569715796620052, guid: 83aeca6d3bde38540971e5319251270b, type: 3}
   particleSpawnPoint: {fileID: 1853327203512325994}
   animator: {fileID: 4414859380414990587}
