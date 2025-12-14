@@ -57,14 +57,14 @@ public class PlayerMovement : MonoBehaviour
 
     [Tooltip("Layers that count as walls for wall detection.")]
     public LayerMask wallLayer;
-    
+
     [Tooltip("Wall-jump coyote time")]
     public float wallCoyoteTime = 0.12f;
 
     [Header("Wall stick control")]
     [Tooltip("Cooldown after wall stick ends before the player can stick again.")]
     public float wallStickCooldown = 0.2f;
-    
+
     [Tooltip("Size of wall detection box")]
     public float wall_box_size = 1f;
 
@@ -132,9 +132,13 @@ public class PlayerMovement : MonoBehaviour
     [Header("VFX")]
     [Tooltip("paricle prefab to spawn at player feet on jump input")]
     public ParticleSystem jumpSmokePartical;
-    
+    public GameObject deathEffect;
+
     [Tooltip("Empty game object for spawn position on jump particle")]
     public Transform particleSpawnPoint;
+
+    [Header("Animation")]
+    public Animator animator;
 
 
     // my privates
@@ -184,7 +188,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (dead) return;
+        if (dead)
+        {
+            Instantiate(deathEffect, transform.position, Quaternion.identity);
+            return;
+        }
         AimAtMouse();
     }
 
@@ -234,6 +242,16 @@ public class PlayerMovement : MonoBehaviour
 
             return;
         }
+        // set speed var in animator to monkey velocity
+        animator.SetFloat("speed", Mathf.Abs(rb.linearVelocity.x));
+        if (isTouchingWall)
+        {
+            animator.SetBool("onwall", true);
+        }
+        else
+        {
+            animator.SetBool("onwall", false);
+        }
 
         CheckGround();
 
@@ -242,6 +260,8 @@ public class PlayerMovement : MonoBehaviour
         if (!wasGrounded && groundedNow)
         {
             // just landed
+            animator.SetBool("jump", false);
+            //animator.SetBool("doublejump", false);
             if (SFXManager.instance != null)
             {
                 SFXManager.instance.PlaySoundEffect(landSoundClip, transform, landVolume);
@@ -284,7 +304,7 @@ public class PlayerMovement : MonoBehaviour
             if (IsGrounded() && xInput == 0f && Mathf.Abs(smoothedSpeedX) < 0.02f)
             {
                 smoothedSpeedX = 0f;
-                currentVelocityX = 0f;        
+                currentVelocityX = 0f;
             }
 
 
@@ -314,9 +334,9 @@ public class PlayerMovement : MonoBehaviour
         if (jumpBufferCounter > 0f)
         {
             // allow wall-jump if sticking OR have an unconsumed wall-coyote on either side
-            bool canCoyoteLeft  = (wallCoyoteLeft  > 0f) && !wallCoyoteConsumedLeft;
+            bool canCoyoteLeft = (wallCoyoteLeft > 0f) && !wallCoyoteConsumedLeft;
             bool canCoyoteRight = (wallCoyoteRight > 0f) && !wallCoyoteConsumedRight;
-            bool canWallCoyote  = canCoyoteLeft || canCoyoteRight;
+            bool canWallCoyote = canCoyoteLeft || canCoyoteRight;
 
             if (wallStickCounter > 0f || canWallCoyote)
             {
@@ -326,7 +346,7 @@ public class PlayerMovement : MonoBehaviour
                     wallDirection = canCoyoteLeft ? -1 : 1;
 
                 // always jump away
-                int away =- wallDirection;
+                int away = -wallDirection;
 
                 Vector2 jumpDir = new Vector2(wallJumpDirection.x * away, wallJumpDirection.y).normalized;
                 rb.linearVelocity = new Vector2(jumpDir.x * wallJumpForce, jumpDir.y * wallJumpForce);
@@ -352,8 +372,8 @@ public class PlayerMovement : MonoBehaviour
                 wallStickCounter = 0f;
                 extraJumpsLeft = 0;
 
-                if (wallDirection == -1) wallCoyoteConsumedLeft  = true;
-                if (wallDirection ==  1) wallCoyoteConsumedRight = true;
+                if (wallDirection == -1) wallCoyoteConsumedLeft = true;
+                if (wallDirection == 1) wallCoyoteConsumedRight = true;
 
                 if (isTouchingWall)
                     lastWallJumpPosition = wallCheck.position;
@@ -366,6 +386,10 @@ public class PlayerMovement : MonoBehaviour
                 v.y = jumpForce;
                 rb.linearVelocity = v;
                 PlayJumpParticleEffect();
+                // animation
+                animator.SetBool("jump", true);
+                animator.SetTrigger("jumptrig");
+
                 Debug.Log("coyote jump ?");
                 jumpBufferCounter = 0f;
                 coyoteTimeCounter = 0f;
@@ -390,6 +414,11 @@ public class PlayerMovement : MonoBehaviour
                 v.y = jumpForce;
                 rb.linearVelocity = v;
                 PlayJumpParticleEffect();
+                // animation
+                //animator.SetBool("doublejump", true);
+                animator.SetBool("jump", true);
+                animator.SetTrigger("jumptrig");
+
                 Debug.Log("jump extra ?");
                 extraJumpsLeft--;
                 jumpBufferCounter = 0f;
@@ -436,7 +465,7 @@ public class PlayerMovement : MonoBehaviour
         {
             GameManager.Instance.LevelWon();
         }
-        
+
         if (other.gameObject.CompareTag("TutorialDone"))
         {
             GameManager.Instance.TutorialWon();
@@ -464,7 +493,7 @@ public class PlayerMovement : MonoBehaviour
             canWallStick = true;
             wallStickCooldownTimer = 0f;
             lastWallJumpPosition = null;
-            wallCoyoteConsumedLeft = wallCoyoteConsumedRight =false;
+            wallCoyoteConsumedLeft = wallCoyoteConsumedRight = false;
             lastWallSideTouched = 0;
         }
         else
@@ -584,21 +613,53 @@ public class PlayerMovement : MonoBehaviour
         float playerDirection = mouseWorldPos.x < transform.position.x ? -1f : 1f;
 
         // flip visual's scale
-        visualTransform.localScale = new Vector3(playerDirection, 1f, 1f);
+        if (isTouchingWall)
+        {
+            float tempdir;
+            if (wallContactDirection == -1f) // left
+            {
+                Debug.Log("wall LEFT");
+                tempdir = -wallContactDirection;
+            }
+            else // right
+            {
+                Debug.Log("wall Right");
+                tempdir = -wallContactDirection;
+            }
+            visualTransform.localScale = new Vector3(tempdir, 1f, 1f);
+            Vector3 localPos = visualTransform.localPosition;
+            // Mirror pos offset
+            float offsetRight = 0f;
+            float offsetLeft = 0.65f;
 
-        Vector3 localPos = visualTransform.localPosition;
-        // Mirror pos offset
-        float offsetRight = 0f;
-        float offsetLeft = 0.65f;
+            localPos.x = (tempdir > 0) ? offsetRight : offsetLeft;
+            visualTransform.localPosition = localPos;
 
-        localPos.x = (playerDirection > 0) ? offsetRight : offsetLeft;
-        visualTransform.localPosition = localPos;
+            if (wallContactDirection == 1f)
+                angle += 180f;
+            handTransform.rotation = Quaternion.Euler(0f, 0f, angle);
+        }
+        else
+        {
+            visualTransform.localScale = new Vector3(playerDirection, 1f, 1f);
+            Vector3 localPos = visualTransform.localPosition;
+            // Mirror pos offset
+            float offsetRight = 0f;
+            float offsetLeft = 0.65f;
 
-        // if player flipped, invert angle to mirror aiming
-        if (playerDirection == -1f)
-            angle += 180f;
+            localPos.x = (playerDirection > 0) ? offsetRight : offsetLeft;
+            visualTransform.localPosition = localPos;
 
-        handTransform.rotation = Quaternion.Euler(0f, 0f, angle);
+            // if player flipped, invert angle to mirror aiming
+            if (playerDirection == -1f)
+                angle += 180f;
+            handTransform.rotation = Quaternion.Euler(0f, 0f, angle);
+        }
+        /*  // if player flipped, invert angle to mirror aiming
+         if (playerDirection == -1f)
+             angle += 180f;
+         handTransform.rotation = Quaternion.Euler(0f, 0f, angle); */
+
     }
 
     private void SpawnProjectile()
@@ -674,6 +735,6 @@ public class PlayerMovement : MonoBehaviour
         //     Gizmos.color = Color.magenta;
         //     Gizmos.DrawWireCube(origin, boxSize);
         // }
-        
+
     }
 }

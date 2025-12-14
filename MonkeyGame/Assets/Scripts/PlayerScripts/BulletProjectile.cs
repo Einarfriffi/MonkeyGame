@@ -12,6 +12,7 @@ public class BulletProjectile : MonoBehaviour
     [Tooltip("Optional impact effect")]
     public GameObject impactVFX;
     public float impactVFXLifetime = 1f;
+    public GameObject bulletImpact;
 
     [Header("Safety")]
     [Tooltip("Ignore collision right after spawn")]
@@ -102,6 +103,7 @@ public class BulletProjectile : MonoBehaviour
     private void Die(Vector2 at)
     {
         dead = true;
+        Instantiate(bulletImpact, transform.position, Quaternion.identity);
         if (impactVFX)
         {
             var v = Instantiate(impactVFX, at, Quaternion.identity);

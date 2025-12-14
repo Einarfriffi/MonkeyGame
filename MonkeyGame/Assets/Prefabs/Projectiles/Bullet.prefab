@@ -174,4 +174,5 @@ MonoBehaviour:
   destroyOnAnyCollider: 0
   impactVFX: {fileID: 0}
   impactVFXLifetime: 1
+  bulletImpact: {fileID: 9141096219296145576, guid: 873fc27a06d8c65498f0eb2e98f579ce, type: 3}
   ignoreForSeconds: 0
