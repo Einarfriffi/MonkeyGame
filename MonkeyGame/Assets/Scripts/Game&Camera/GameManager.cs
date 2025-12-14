@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public GameObject parent;
     private GameObject currentHUD;
     private levelHUD levelHUD;
+    private bool startInUIMode = true;
 
 
 
@@ -33,6 +34,9 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        if (startInUIMode && playerInput != null)
+            playerInput.DeactivateInput();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -60,12 +64,18 @@ public class GameManager : MonoBehaviour
     // Filling game manager on each scene load depending on what is needed for each scene
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        
         Debug.Log("Scene lodade: " + scene.name);
+        startInUIMode = true;
+        if (playerInput != null)
+        {
+            playerInput.DeactivateInput();
+        }
 
         // fetch Level scenes GameManager components
         if (scene.name.StartsWith("Level") && scene.name != "LevelManager")
         {
-
+            startInUIMode = false;
             // fetch win screen
             GameObject winScreenObj = GameObject.FindWithTag("WinScreen");
             if (winScreenObj != null)
@@ -92,17 +102,10 @@ public class GameManager : MonoBehaviour
             if (playerObj != null)
             {
                 playerInput = playerObj.GetComponent<PlayerInput>();
-
-                if (playerInput == null)
-                    Debug.Log("Player found but not input");
-                else
-                    Debug.Log("player input assigned");
-            }
-            else
-            {
-                Debug.Log("No player found in scene");
             }
 
+            if (!startInUIMode && playerInput != null) playerInput.ActivateInput();
+    
             // fetch deathUI for game manager
             GameObject deathUIfound = GameObject.FindWithTag("DeathUI");
             if (deathUIfound != null)
@@ -140,6 +143,17 @@ public class GameManager : MonoBehaviour
 
         if (scene.name.StartsWith("Tutorial"))
         {
+            startInUIMode = false;
+
+            // fetch player object
+            GameObject playerObj = GameObject.FindWithTag("Player");
+            if (playerObj != null)
+            {
+                playerInput = playerObj.GetComponent<PlayerInput>();
+            }
+
+            if (!startInUIMode && playerInput != null) playerInput.ActivateInput();
+
             // fetch deathUI for game manager
             GameObject deathUIfound = GameObject.FindWithTag("DeathUI");
             if (deathUIfound != null)

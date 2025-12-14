@@ -347,6 +347,10 @@ PrefabInstance:
       propertyPath: HUDCanvas
       value: 
       objectReference: {fileID: 1454377360465952005, guid: b819bf66ac2f143a3948edfd3d3cf889, type: 3}
+    - target: {fileID: 3697795700650398116, guid: 2d56c0cd16b644ae69d654a860d320fb, type: 3}
+      propertyPath: playerInput
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4154200137339630098, guid: 2d56c0cd16b644ae69d654a860d320fb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.52895
