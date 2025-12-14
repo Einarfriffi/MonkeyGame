@@ -354,6 +354,7 @@ MonoBehaviour:
   viewAngle: 100
   bob_range: 0.25
   bob_speed: 1.5
+  Health: 5
   randAngleMissile: 13
   betweenTimeMissile: 0.5
   acceleration: 15
@@ -378,6 +379,7 @@ MonoBehaviour:
   direction: -1
   missileLaunchClip: {fileID: 8300000, guid: be7c1a69e48244458899dbeda6518371, type: 3}
   missileLaunchVolume: 0.2
+  dyingSoundClip: {fileID: 8300000, guid: 721531cc03c194cb8a844587bd7fb0c1, type: 3}
   laserLockLoopClip: {fileID: 8300000, guid: 97c46feb4c9bb44fd8d26e662d7cb689, type: 3}
   laserLockVolume: 0.35
 --- !u!1 &5115736991458996235

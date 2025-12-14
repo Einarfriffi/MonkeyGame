@@ -8,6 +8,7 @@ public class BananaBotMovements : MonoBehaviour
     [SerializeField] private float idle_speed;
     [SerializeField] private LayerMask Targets;
     [SerializeField] private bool Stationery = false;
+    [SerializeField] private float Health = 3f;
     //[SerializeField] private bool facingLeft = true;
 
     [Header("Attack Settings")]
@@ -357,6 +358,11 @@ public class BananaBotMovements : MonoBehaviour
     }
     public void ShieldtHit(Collision2D other)
     {
+        Health -= 1f;
+        if (Health <= 0)
+        {
+            KillBot();
+        }
         shieldAnimator.SetTrigger("HitShield");
 
         // play shield sound
@@ -404,7 +410,8 @@ public class BananaBotMovements : MonoBehaviour
             scanningSource.Stop();
 
         // play death sound
-        SFXManager.instance.PlaySoundEffect(dyingSoundClip, transform, dyingSoundVolume);
+        // TODO UNCOMMENT LINE BELOW
+        //SFXManager.instance.PlaySoundEffect(dyingSoundClip, transform, dyingSoundVolume);
 
         // explosion VFX
         Instantiate(ExplosionPreFab, transform.position, Quaternion.identity);

@@ -22,7 +22,7 @@ public class ChildCollisionDetectorMelon : MonoBehaviour
                 parent_script.WeakSpotHit(other);
 
                 // play death sound
-                SFXManager.instance.PlaySoundEffect(dyingSoundClip, transform, 0.6f);
+                //SFXManager.instance.PlaySoundEffect(dyingSoundClip, transform, 0.6f);
             }
             if (Shield)
             {
