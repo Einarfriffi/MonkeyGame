@@ -350,15 +350,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::melon_missile_launcher
   view_dist: 15
   blinkSpeed: 20
-  rotation_speed: 10
+  rotation_speed: 15
   viewAngle: 100
   bob_range: 0.25
   bob_speed: 1.5
   randAngleMissile: 10
-  betweenTimeMissile: 0.75
+  betweenTimeMissile: 0.5
   acceleration: 15
   maxSpeed: 20
-  maxRange: 15
+  maxRange: 20
   laserSize: 0.075
   laserColor: {r: 0.6981132, g: 0.050887402, b: 0.026343875, a: 0.6431373}
   laserTimeOff: 1
