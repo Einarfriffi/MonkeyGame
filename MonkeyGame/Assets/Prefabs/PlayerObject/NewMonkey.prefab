@@ -661,9 +661,9 @@ MonoBehaviour:
   wallJumpVolume: 1
   shootSoundClip: {fileID: 8300000, guid: a2ec4d1806567432f821156a0d5975e9, type: 3}
   shootVolume: 0.8
-  runningSoundClip: {fileID: 8300000, guid: 5f7e41bdafd42411ea5bf842761ee7c2, type: 3}
+  runningSoundClip: {fileID: 8300000, guid: 400c5fca67e0f4d2d805c8be8e4d076a, type: 3}
   runningVolume: 1
-  landSoundClip: {fileID: 8300000, guid: 7c2277f73e9d542638eca5a3b50fdeee, type: 3}
+  landSoundClip: {fileID: 8300000, guid: 9a252ad63e6944cdebd8bbf97c702ba7, type: 3}
   landVolume: 1
   jumpSmokePartical: {fileID: 6689041845639265051, guid: 0542b8a8005374c198362d706b0281e3, type: 3}
   deathEffect: {fileID: 5313569715796620052, guid: 83aeca6d3bde38540971e5319251270b, type: 3}
