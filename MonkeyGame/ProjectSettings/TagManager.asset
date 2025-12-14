@@ -16,6 +16,7 @@ TagManager:
   - WeakSpot
   - bullet
   - TutorialDone
+  - WinScreen
   layers:
   - Default
   - TransparentFX

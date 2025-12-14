@@ -3,6 +3,8 @@ using System.Collections;
 using System.Linq;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using TMPro;
+using Unity.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,7 +13,9 @@ public class GameManager : MonoBehaviour
     public PlayerInput playerInput;
     public int currentLevel = 1;
     public GameObject deathPanel;
+    public GameObject winScreen;
     public GameObject HUDCanvas;
+    public GameObject parent;
     private GameObject currentHUD;
     private levelHUD levelHUD;
 
@@ -63,10 +67,25 @@ public class GameManager : MonoBehaviour
         {
 
             // fetch win screen
-            GameObject winScreen = GameObject.FindWithTag("Win");
-            if (winScreen != null)
+            GameObject winScreenObj = GameObject.FindWithTag("WinScreen");
+            if (winScreenObj != null)
             {
-                // set active false stuff
+                var panelTransform = winScreenObj.GetComponentInChildren<Transform>(true)
+                                                .Cast<Transform>()
+                                                .FirstOrDefault(t => t.name == "Menu");
+                if (panelTransform != null)
+                {
+                    winScreen = panelTransform.gameObject;
+                    winScreen.SetActive(false);
+                }
+                var timerParent = winScreen.GetComponentInChildren<Transform>(true)
+                                            .Cast<Transform>()
+                                            .FirstOrDefault(t => t.name == "Panel");
+                if (timerParent != null)
+                {
+                    parent = timerParent.gameObject;
+                }
+                
             }
             // fetch player object
             GameObject playerObj = GameObject.FindWithTag("Player");
@@ -186,10 +205,42 @@ public class GameManager : MonoBehaviour
     {
         // TODO: add actual logic
         Time.timeScale = 0f;
-        // set win screen active
-        // save time and send to db
 
-        SceneManager.LoadScene("DevSplash");
+        var hud = FindFirstObjectByType<levelHUD>(FindObjectsInactive.Include);
+        float runSeconds = 0f;
+        if (hud != null)
+        {
+            runSeconds = hud.StopAndGetTime();
+        }
+        string formattedRun = levelHUD.FormatTime(runSeconds);
+
+        string levelID = SceneManager.GetActiveScene().name;
+        string key = $"BestTime_{levelID}";
+        float prevBest = PlayerPrefs.GetFloat(key, float.PositiveInfinity);
+
+        bool improved = runSeconds > 0f && runSeconds < prevBest;
+        if(improved)
+        {
+            PlayerPrefs.SetFloat(key, runSeconds);
+            PlayerPrefs.Save();
+        }
+        float bestNow = improved ? runSeconds : prevBest;
+        string formattedBestNow = levelHUD.FormatTime(bestNow);
+
+
+        // set win screen active
+        if (winScreen != null)
+        {
+            var runText = parent.transform.Find("Your Time") ?.GetComponent<TextMeshProUGUI>();
+            if (runText != null) Debug.Log("found runtxt");
+            var runBest = parent.transform.Find("Best Time") ?.GetComponent<TextMeshProUGUI>();
+            if (runBest != null) Debug.Log("found runbest");
+
+            if (runText) runText.text = $"This run: {formattedRun}";
+            if (runBest) runBest.text = $"Best: { (float.IsPositiveInfinity(bestNow) ? "00:00:00" : formattedBestNow) }";
+            winScreen.SetActive(true); 
+        }
+        // save time and send to db
     }
 
     public void TutorialWon()

@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 2921676770557041662}
   m_Layer: 5
   m_Name: WinMenu
-  m_TagString: Untagged
+  m_TagString: WinScreen
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

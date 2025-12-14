@@ -10,6 +10,8 @@ public class levelHUD : MonoBehaviour
     // track time elapsed
     private float elapsedTime;
     private bool timerRunning = false;
+    public float ElapsedTime => elapsedTime;
+    public float StopAndGetTime() { timerRunning = false; return elapsedTime; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -29,7 +31,7 @@ public class levelHUD : MonoBehaviour
     }
 
     // change stopwatch to string for UI display
-    string FormatTime(float time)
+    public static string FormatTime(float time)
     {
         int minutes = Mathf.FloorToInt(time / 60f);
         int seconds = Mathf.FloorToInt(time % 60f);
