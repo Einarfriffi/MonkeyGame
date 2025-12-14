@@ -1,20 +1,25 @@
 Banana Bot Beatdown – Attribution File
 ------------------------------------
 
-The following resources were used in this game.
+The following resources were used in this game but were not created by the developers.
 
 Art Assets
 ----------
-Enviroment Sprites
-Created by Tumi Kristinsson (Developer)
+Player Sprite and animations
+Created by Pixelil (Online artist)
+https://www.fiverr.com/abshor_lyloe99?source=gig_cards&referrer_gig_slug=do-pixel-art-animation-for-your-games&ref_ctx_id=d1eb604d140e45f7917c96546df4219f&imp_id=c68efe4c-b2cf-4442-9d6e-4031fddf854b 
 
-Background Art
-Created by Tumi Kristinsson (Developer)
+Font
+https://www.1001fonts.com/edit-undo-font.html
+
+Jump VFX
+https://assetstore.unity.com/packages/vfx/particles/fire-explosions/free-stylized-smoke-effects-pack-226406 
+
+Developer LOGO
+Created by gemini AI 
 
 Audio
 -----
-Background Music
-Created by Þorsteinn Hængur Jónsson (Developer)
 
 Sound Effects
 Created by Þorsteinn Hængur Jónsson (Developer)
