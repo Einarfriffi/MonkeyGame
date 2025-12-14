@@ -2,11 +2,7 @@
 
 **Release Date:** 14 December 2025  
 **Developer:** Big Banana Incorporated  
-**Website:** ____
-
-## How to Launch the Game 
-
-??
+**Website:** https://einarfriffi.itch.io/bananabotbeatdown
 
 ## Notes
 
