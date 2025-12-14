@@ -1016,6 +1016,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2765507693127094227, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
+      propertyPath: dangerPartical
+      value: 
+      objectReference: {fileID: 8099996740612524614, guid: 141e1779869c79845bd243610f187f47, type: 3}
     - target: {fileID: 8010632543001000398, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
       propertyPath: m_Name
       value: BananaBot
