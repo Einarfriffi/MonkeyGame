@@ -160,7 +160,7 @@ public class PlayerMovement : MonoBehaviour
     private int wallContactDirection = 0;
     private bool fireHeld;
     private float nextFireTime;
-    private bool dead = false;
+    public bool dead = false;
     private float wallCoyoteLeft = 0f;
     private float wallCoyoteRight = 0f;
     private bool wallCoyoteConsumedLeft = false, wallCoyoteConsumedRight = false;
