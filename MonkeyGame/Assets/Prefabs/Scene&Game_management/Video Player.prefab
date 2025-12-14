@@ -41,7 +41,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4600080741037442878}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 869ab5d3cb89a458fbe72c4e2b23cae8, type: 3}
+  m_VideoClip: {fileID: 0}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -51,7 +51,7 @@ VideoPlayer:
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 1
   m_AspectRatio: 2
-  m_DataSource: 0
+  m_DataSource: 1
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 2
@@ -59,7 +59,7 @@ VideoPlayer:
   - {fileID: 0}
   m_DirectAudioVolumes:
   - 1
-  m_Url: 
+  m_Url: https://einarfriffi.github.io/MonkeyGame/Video/Logo_Animation_With_Electricity_Surge.mp4
   m_EnabledAudioTracks: 01
   m_DirectAudioMutes: 00
   m_ControlledAudioTrackCount: 1
@@ -82,6 +82,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SplashVideo
   videoPlayer: {fileID: 2678870444408319765}
+  webglVideoUrl: https://einarfriffi.github.io/MonkeyGame/Video/Logo_Animation_With_Electricity_Surge.mp4
   fadeCanvasPrefab: {fileID: 3180057762116197227, guid: f41aa6228a81a470faa8be9c7b5e2082, type: 3}
-  nextScene: LevelOne
   fadeDuration: 1

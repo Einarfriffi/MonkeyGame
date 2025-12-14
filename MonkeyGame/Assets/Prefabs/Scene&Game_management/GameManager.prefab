@@ -44,3 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46a3f614fdca04547ac9ae92bdf08358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  playerInput: {fileID: 0}
+  currentLevel: 1
+  deathPanel: {fileID: 0}
+  winScreen: {fileID: 0}
+  HUDCanvas: {fileID: 1454377360465952005, guid: b819bf66ac2f143a3948edfd3d3cf889, type: 3}
+  parent: {fileID: 0}
+  pauseFirstSelected: {fileID: 0}

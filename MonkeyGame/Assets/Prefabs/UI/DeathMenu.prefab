@@ -323,6 +323,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38f5986eb701f429c9b2b28f883aa4c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  panelRoot: {fileID: 7598213900483545548}
+  firstSelected: {fileID: 165163780929338005}
+  closeAction: {fileID: 0}
   pauseMenu: {fileID: 4278505328489086375}
 --- !u!1 &6357216078509650405
 GameObject:
@@ -511,6 +514,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3894555639452986201}
     m_Modifications:
+    - target: {fileID: 1046564889375822770, guid: d135555ab49a1174987b126ac07a1d9d, type: 3}
+      propertyPath: m_Colors.m_NormalColor.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1046564889375822770, guid: d135555ab49a1174987b126ac07a1d9d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -702,6 +709,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3315854099988671693, guid: c742ecb817049aa49b55154c2468673b, type: 3}
+      propertyPath: m_Colors.m_NormalColor.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315854099988671693, guid: c742ecb817049aa49b55154c2468673b, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 4899502307790373566}
@@ -718,6 +729,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c742ecb817049aa49b55154c2468673b, type: 3}
+--- !u!114 &165163780929338005 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3315854099988671693, guid: c742ecb817049aa49b55154c2468673b, type: 3}
+  m_PrefabInstance: {fileID: 3192630100253562456}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!224 &2613613973313234801 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 579816627609039145, guid: c742ecb817049aa49b55154c2468673b, type: 3}

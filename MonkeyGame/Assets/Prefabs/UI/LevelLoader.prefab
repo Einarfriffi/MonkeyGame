@@ -215,7 +215,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelIntro
   countdownText: {fileID: 6403971362545631760}
   countdownTime: 3
-  objectsToEnableAfterCountdown: []
+  objectsToEnableAfterCountdown:
+  - {fileID: 0}
 --- !u!1 &5186841433537364452
 GameObject:
   m_ObjectHideFlags: 0

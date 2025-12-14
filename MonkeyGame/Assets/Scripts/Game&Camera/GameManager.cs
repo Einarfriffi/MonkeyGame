@@ -4,7 +4,8 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using TMPro;
-using Unity.Collections;
+using UnityEngine.AI;
+using NUnit.Framework;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +19,17 @@ public class GameManager : MonoBehaviour
     public GameObject parent;
     private GameObject currentHUD;
     private levelHUD levelHUD;
+    private bool startInUIMode = true;
+
+    // pause
+    [SerializeField] private UnityEngine.UI.Selectable pauseFirstSelected;
+
+    private bool isPaused = false;
+    private bool canPause = false;
+
+    // call when countdown finish / level begins
+    public void EnablePausing() => canPause = true;
+    public void DisablePausing() => canPause = false;
 
 
 
@@ -33,6 +45,9 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        if (startInUIMode && playerInput != null)
+            playerInput.DeactivateInput();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -60,12 +75,18 @@ public class GameManager : MonoBehaviour
     // Filling game manager on each scene load depending on what is needed for each scene
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        
         Debug.Log("Scene lodade: " + scene.name);
+        startInUIMode = true;
+        if (playerInput != null)
+        {
+            playerInput.DeactivateInput();
+        }
 
         // fetch Level scenes GameManager components
         if (scene.name.StartsWith("Level") && scene.name != "LevelManager")
         {
-
+            startInUIMode = false;
             // fetch win screen
             GameObject winScreenObj = GameObject.FindWithTag("WinScreen");
             if (winScreenObj != null)
@@ -92,17 +113,10 @@ public class GameManager : MonoBehaviour
             if (playerObj != null)
             {
                 playerInput = playerObj.GetComponent<PlayerInput>();
-
-                if (playerInput == null)
-                    Debug.Log("Player found but not input");
-                else
-                    Debug.Log("player input assigned");
-            }
-            else
-            {
-                Debug.Log("No player found in scene");
             }
 
+            if (!startInUIMode && playerInput != null) playerInput.ActivateInput();
+    
             // fetch deathUI for game manager
             GameObject deathUIfound = GameObject.FindWithTag("DeathUI");
             if (deathUIfound != null)
@@ -140,6 +154,17 @@ public class GameManager : MonoBehaviour
 
         if (scene.name.StartsWith("Tutorial"))
         {
+            startInUIMode = false;
+
+            // fetch player object
+            GameObject playerObj = GameObject.FindWithTag("Player");
+            if (playerObj != null)
+            {
+                playerInput = playerObj.GetComponent<PlayerInput>();
+            }
+
+            if (!startInUIMode && playerInput != null) playerInput.ActivateInput();
+
             // fetch deathUI for game manager
             GameObject deathUIfound = GameObject.FindWithTag("DeathUI");
             if (deathUIfound != null)
@@ -258,5 +283,57 @@ public class GameManager : MonoBehaviour
     public void PauseGame()
     {
         Time.timeScale = 0f;
+    }
+
+    public void TryOpenPauseFromHotKey()
+    {
+        if (isPaused)
+        {
+            ResumeFromPause();
+            return;
+        }
+
+        if (!canPause) return;
+        PauseFromGameplay();
+    }
+
+    public void PauseFromGameplay()
+    {
+        if (isPaused) return;
+        isPaused = true;
+
+        // turn of player input
+        if (playerInput != null)
+            playerInput.DeactivateInput();
+
+        Time.timeScale = 0f;
+
+        var pm = FindFirstObjectByType<PauseMenu>(FindObjectsInactive.Include);
+        if (pm != null)
+            pm.Pause();
+        
+        // default button
+        if (pauseFirstSelected != null && UnityEngine.EventSystems.EventSystem.current != null)
+        {
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(pauseFirstSelected.gameObject);
+        }
+    }
+
+    public void ResumeFromPause()
+    {
+        if (!isPaused) return;
+        isPaused = false;
+
+        var pm = FindFirstObjectByType<PauseMenu>(FindObjectsInactive.Include);
+        if (pm != null) pm.Resume();
+
+        Time.timeScale = 1f;
+
+        // Re-enable player input
+        if (playerInput != null) playerInput.ActivateInput();
+
+        if (UnityEngine.EventSystems.EventSystem.current != null)
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
     }
 }

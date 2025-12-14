@@ -54,6 +54,7 @@ public class LevelIntro : MonoBehaviour
 
         // hide countdown ui
         countdownText.gameObject.SetActive(false);
+        GameManager.Instance.EnablePausing();
 
         // activate all scene game objects (need to assign each in LeveLoader)
         foreach (GameObject obj in objectsToEnableAfterCountdown)

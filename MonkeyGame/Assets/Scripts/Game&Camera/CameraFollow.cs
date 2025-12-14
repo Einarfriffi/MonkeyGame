@@ -11,14 +11,14 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float minY = 8f;
 
     [Header("Vertical Dead Zone")]
-    [SerializeField] private float verticalDeadZone = 1f;
+    [SerializeField] private float verticalDeadZone = 0f;
 
     [Header("Y Smoothing")]
     [Tooltip("Slower = smoother upward movement")]
-    [SerializeField] private float upwardSmoothTime = 0.2f;
+    [SerializeField] private float upwardSmoothTime = 0.3f;
 
     [Tooltip("Faster = camera catches falling quickly")]
-    [SerializeField] private float downwardSmoothTime = 0.05f;
+    [SerializeField] private float downwardSmoothTime = 0.15f;
 
     private Vector3 _offset;
     private float _yVelocity;
