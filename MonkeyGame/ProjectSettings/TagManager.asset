@@ -51,14 +51,17 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: 'Background '
     uniqueID: 371288357
     locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
   - name: Main Menu
     uniqueID: 2374545657
+    locked: 0
+  - name: shadowBlocks
+    uniqueID: 169503443
     locked: 0
   m_RenderingLayers:
   - Default
