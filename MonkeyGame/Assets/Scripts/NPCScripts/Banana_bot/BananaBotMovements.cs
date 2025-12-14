@@ -184,6 +184,7 @@ public class BananaBotMovements : MonoBehaviour
             else
             {
                 scannerScript.SetLaserColor(laserColorAngry);
+                // move bot
                 rb.linearVelocity = new Vector2(direction * attackSpeed, rb.linearVelocity.y);
             }
         }
@@ -354,7 +355,7 @@ public class BananaBotMovements : MonoBehaviour
     public void WeakSpotHit(Collision2D other)
     {
         if (scanningSource != null)
-        scanningSource.Stop();
+            scanningSource.Stop();
 
         // play death sound
         SFXManager.instance.PlaySoundEffect(dyingSoundClip, transform, dyingSoundVolume);
