@@ -14,9 +14,12 @@ public class UIFader : MonoBehaviour
     private float clickVolume = 0.04f;
 
     void Start()
-    {
-        uiGroup.alpha = 0f;
-        StartCoroutine(FadeIn());
+    {   
+        if (uiGroup != null)
+        {
+            uiGroup.alpha = 0f;
+            StartCoroutine(FadeIn());
+        }
     }
 
     public void FadeToNextScene(string sceneName)
