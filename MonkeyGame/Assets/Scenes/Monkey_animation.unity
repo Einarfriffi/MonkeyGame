@@ -7503,7 +7503,7 @@ MonoBehaviour:
   minX: 0
   maxX: 350
   minY: 8
-  verticalDeadZone: 1.5
+  verticalDeadZone: 0
   upwardSmoothTime: 0.3
   downwardSmoothTime: 0.15
 --- !u!4 &555852961 stripped
