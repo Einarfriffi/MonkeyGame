@@ -4,7 +4,8 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using TMPro;
-using Unity.Collections;
+using UnityEngine.AI;
+using NUnit.Framework;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,6 +20,16 @@ public class GameManager : MonoBehaviour
     private GameObject currentHUD;
     private levelHUD levelHUD;
     private bool startInUIMode = true;
+
+    // pause
+    [SerializeField] private UnityEngine.UI.Selectable pauseFirstSelected;
+
+    private bool isPaused = false;
+    private bool canPause = false;
+
+    // call when countdown finish / level begins
+    public void EnablePausing() => canPause = true;
+    public void DisablePausing() => canPause = false;
 
 
 
@@ -272,5 +283,57 @@ public class GameManager : MonoBehaviour
     public void PauseGame()
     {
         Time.timeScale = 0f;
+    }
+
+    public void TryOpenPauseFromHotKey()
+    {
+        if (isPaused)
+        {
+            ResumeFromPause();
+            return;
+        }
+
+        if (!canPause) return;
+        PauseFromGameplay();
+    }
+
+    public void PauseFromGameplay()
+    {
+        if (isPaused) return;
+        isPaused = true;
+
+        // turn of player input
+        if (playerInput != null)
+            playerInput.DeactivateInput();
+
+        Time.timeScale = 0f;
+
+        var pm = FindFirstObjectByType<PauseMenu>(FindObjectsInactive.Include);
+        if (pm != null)
+            pm.Pause();
+        
+        // default button
+        if (pauseFirstSelected != null && UnityEngine.EventSystems.EventSystem.current != null)
+        {
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(pauseFirstSelected.gameObject);
+        }
+    }
+
+    public void ResumeFromPause()
+    {
+        if (!isPaused) return;
+        isPaused = false;
+
+        var pm = FindFirstObjectByType<PauseMenu>(FindObjectsInactive.Include);
+        if (pm != null) pm.Resume();
+
+        Time.timeScale = 1f;
+
+        // Re-enable player input
+        if (playerInput != null) playerInput.ActivateInput();
+
+        if (UnityEngine.EventSystems.EventSystem.current != null)
+            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
     }
 }

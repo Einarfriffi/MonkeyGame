@@ -202,8 +202,15 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnFire(InputAction.CallbackContext context)
     {
+        if (Time.timeScale == 0f) return;
         if (context.performed) fireHeld = true;
         else if (context.canceled) fireHeld = false;
+    }
+
+    public void OnPause(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
+    {
+        if (!ctx.performed) return;
+        GameManager.Instance?.TryOpenPauseFromHotKey();
     }
 
     //Jump Partical
