@@ -12220,10 +12220,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
-      propertyPath: animator
-      value: 
-      objectReference: {fileID: 1925606684}
     - target: {fileID: 6717379132692717810, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: m_Name
       value: NewMonkey
@@ -12231,10 +12227,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2024080735060702519, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1925606684}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
 --- !u!1 &1605871036
 GameObject:
@@ -13225,33 +13218,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5487389733664399828, guid: 5819f1df96400488fba5ad3112f493aa, type: 3}
   m_PrefabInstance: {fileID: 1636434759}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1925606681 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2024080735060702519, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
-  m_PrefabInstance: {fileID: 1537051799}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1925606684
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1925606681}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 642f0f6424db34147b9a2b180a2e5705, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &1974917007 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1436887925578025636, guid: 6d32abb61718c7246aceeee0ab27b547, type: 3}
