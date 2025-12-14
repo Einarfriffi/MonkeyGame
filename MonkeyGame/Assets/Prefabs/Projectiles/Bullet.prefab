@@ -176,3 +176,5 @@ MonoBehaviour:
   impactVFXLifetime: 1
   bulletImpact: {fileID: 9141096219296145576, guid: 873fc27a06d8c65498f0eb2e98f579ce, type: 3}
   ignoreForSeconds: 0
+  hitSoundClip: {fileID: 8300000, guid: 15d3329af417d4d0f982e99dbb6fb1ff, type: 3}
+  hitVolume: 0.2

@@ -19,6 +19,10 @@ public class BulletProjectile : MonoBehaviour
     public float ignoreForSeconds = 0.03f;
     //public float shieldIgnoreForSeconds = 0.03f;
 
+    [Header("Sound Effects")]
+    public AudioClip hitSoundClip;
+    [SerializeField, Range(0f, 1f)] private float hitVolume = 1f;
+
 
 
     private Rigidbody2D rb;
@@ -108,6 +112,10 @@ public class BulletProjectile : MonoBehaviour
         {
             var v = Instantiate(impactVFX, at, Quaternion.identity);
             if (impactVFXLifetime > 0f) Destroy(v, impactVFXLifetime);
+        }
+        if (SFXManager.instance != null)
+        {
+            SFXManager.instance.PlaySoundEffect(hitSoundClip, transform, hitVolume);
         }
         Destroy(gameObject);
     }
