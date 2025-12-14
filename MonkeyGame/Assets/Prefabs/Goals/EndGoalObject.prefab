@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5033550547879809049}
   m_Layer: 0
   m_Name: EndGoalObject
-  m_TagString: Untagged
+  m_TagString: Win
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

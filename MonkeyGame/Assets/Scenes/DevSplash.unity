@@ -343,22 +343,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3697795700650398116, guid: 2d56c0cd16b644ae69d654a860d320fb, type: 3}
-      propertyPath: parent
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3697795700650398116, guid: 2d56c0cd16b644ae69d654a860d320fb, type: 3}
-      propertyPath: HUDCanvas
-      value: 
-      objectReference: {fileID: 1454377360465952005, guid: b819bf66ac2f143a3948edfd3d3cf889, type: 3}
-    - target: {fileID: 3697795700650398116, guid: 2d56c0cd16b644ae69d654a860d320fb, type: 3}
-      propertyPath: playerInput
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3697795700650398116, guid: 2d56c0cd16b644ae69d654a860d320fb, type: 3}
-      propertyPath: pauseFirstSelected
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 4154200137339630098, guid: 2d56c0cd16b644ae69d654a860d320fb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.52895
@@ -417,18 +401,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2678870444408319765, guid: fe9653eba776744b49625b7b19ee7cc0, type: 3}
-      propertyPath: m_Url
-      value: https://einarfriffi.github.io/MonkeyGame/Video/Logo_Animation_With_Electricity_Surge.mp4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2678870444408319765, guid: fe9653eba776744b49625b7b19ee7cc0, type: 3}
-      propertyPath: m_VideoClip
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2678870444408319765, guid: fe9653eba776744b49625b7b19ee7cc0, type: 3}
-      propertyPath: m_DataSource
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2678870444408319765, guid: fe9653eba776744b49625b7b19ee7cc0, type: 3}
       propertyPath: m_TargetCamera
       value: 
       objectReference: {fileID: 2070304731}
@@ -476,10 +448,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Video Player
       objectReference: {fileID: 0}
-    - target: {fileID: 7813011812012098816, guid: fe9653eba776744b49625b7b19ee7cc0, type: 3}
-      propertyPath: customClip
-      value: 
-      objectReference: {fileID: 32900000, guid: 869ab5d3cb89a458fbe72c4e2b23cae8, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

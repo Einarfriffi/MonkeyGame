@@ -457,7 +457,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Your time: 01:47:09'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 32a4212034764fe418560d9a6b0b774d, type: 2}
   m_sharedMaterial: {fileID: 5003532059940237457, guid: 32a4212034764fe418560d9a6b0b774d, type: 2}
@@ -578,6 +578,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38f5986eb701f429c9b2b28f883aa4c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  panelRoot: {fileID: 819056863684020676}
+  firstSelected: {fileID: 6013853132767019178}
+  closeAction: {fileID: 0}
   pauseMenu: {fileID: 6495760880270321323}
 --- !u!1 &6599194666228420658
 GameObject:
@@ -706,7 +709,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Best time: 01:32:17'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 32a4212034764fe418560d9a6b0b774d, type: 2}
   m_sharedMaterial: {fileID: 5003532059940237457, guid: 32a4212034764fe418560d9a6b0b774d, type: 2}
@@ -785,6 +788,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8109278559271214337}
     m_Modifications:
+    - target: {fileID: 1046564889375822770, guid: d135555ab49a1174987b126ac07a1d9d, type: 3}
+      propertyPath: m_Colors.m_NormalColor.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1046564889375822770, guid: d135555ab49a1174987b126ac07a1d9d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -887,6 +894,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8677368261592459348, guid: d135555ab49a1174987b126ac07a1d9d, type: 3}
   m_PrefabInstance: {fileID: 6769854408711115544}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6013853132767019178 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1046564889375822770, guid: d135555ab49a1174987b126ac07a1d9d, type: 3}
+  m_PrefabInstance: {fileID: 6769854408711115544}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1001 &6981948324397836528
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -973,6 +991,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 579816627609039145, guid: c742ecb817049aa49b55154c2468673b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3315854099988671693, guid: c742ecb817049aa49b55154c2468673b, type: 3}
+      propertyPath: m_Colors.m_NormalColor.a
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3315854099988671693, guid: c742ecb817049aa49b55154c2468673b, type: 3}

@@ -835,17 +835,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1032368928756171060, guid: b819bf66ac2f143a3948edfd3d3cf889, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1454377360465952005, guid: b819bf66ac2f143a3948edfd3d3cf889, type: 3}
       propertyPath: m_Name
       value: HUDCanvas (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 1454377360465952005, guid: b819bf66ac2f143a3948edfd3d3cf889, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5945326904067214460, guid: b819bf66ac2f143a3948edfd3d3cf889, type: 3}
       propertyPath: m_Pivot.x
@@ -12366,21 +12358,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5003051828814192092, guid: f90c91915dce7c2408c4855c9c78c8ef, type: 3}
-      propertyPath: sfxSource
-      value: 
-      objectReference: {fileID: 624911901}
     - target: {fileID: 6357216078509650405, guid: f90c91915dce7c2408c4855c9c78c8ef, type: 3}
       propertyPath: m_Name
       value: PauseMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 6357216078509650405, guid: f90c91915dce7c2408c4855c9c78c8ef, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7888107975922198597, guid: f90c91915dce7c2408c4855c9c78c8ef, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -40947,69 +40927,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2613613973313234801, guid: 88df90d02b1981341b5b3747865661d5, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2613613973313234801, guid: 88df90d02b1981341b5b3747865661d5, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2613613973313234801, guid: 88df90d02b1981341b5b3747865661d5, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2613613973313234801, guid: 88df90d02b1981341b5b3747865661d5, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2613613973313234801, guid: 88df90d02b1981341b5b3747865661d5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2613613973313234801, guid: 88df90d02b1981341b5b3747865661d5, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4278505328489086375, guid: 88df90d02b1981341b5b3747865661d5, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6357216078509650405, guid: 88df90d02b1981341b5b3747865661d5, type: 3}
       propertyPath: m_Name
       value: DeathMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 6357216078509650405, guid: 88df90d02b1981341b5b3747865661d5, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6357216078509650405, guid: 88df90d02b1981341b5b3747865661d5, type: 3}
-      propertyPath: m_TagString
-      value: DeathUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 8054542345764018823, guid: 88df90d02b1981341b5b3747865661d5, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8054542345764018823, guid: 88df90d02b1981341b5b3747865661d5, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8054542345764018823, guid: 88df90d02b1981341b5b3747865661d5, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8054542345764018823, guid: 88df90d02b1981341b5b3747865661d5, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8054542345764018823, guid: 88df90d02b1981341b5b3747865661d5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8054542345764018823, guid: 88df90d02b1981341b5b3747865661d5, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -41085,10 +41005,6 @@ PrefabInstance:
     - target: {fileID: 1097596230531687574, guid: d8780810fa1d941778680a5cf66d5dbe, type: 3}
       propertyPath: m_Name
       value: LevelLoader
-      objectReference: {fileID: 0}
-    - target: {fileID: 3349822126730733363, guid: d8780810fa1d941778680a5cf66d5dbe, type: 3}
-      propertyPath: objectsToEnableAfterCountdown.Array.size
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3349822126730733363, guid: d8780810fa1d941778680a5cf66d5dbe, type: 3}
       propertyPath: 'objectsToEnableAfterCountdown.Array.data[0]'
