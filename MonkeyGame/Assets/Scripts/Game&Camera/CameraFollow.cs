@@ -3,6 +3,75 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField] private Transform target;
+    [SerializeField] private Rigidbody2D targetRb;
+
+    [Header("Limits")]
+    [SerializeField] private float minX;
+    [SerializeField] private float maxX;
+    [SerializeField] private float minY = 8f;
+
+    [Header("Vertical Dead Zone")]
+    [SerializeField] private float verticalDeadZone = 1f;
+
+    [Header("Y Smoothing")]
+    [Tooltip("Slower = smoother upward movement")]
+    [SerializeField] private float upwardSmoothTime = 0.2f;
+
+    [Tooltip("Faster = camera catches falling quickly")]
+    [SerializeField] private float downwardSmoothTime = 0.05f;
+
+    private Vector3 _offset;
+    private float _yVelocity;
+
+    void Start()
+    {
+        _offset = transform.position - target.position;
+    }
+
+    void LateUpdate()
+    {
+        Vector3 desired = target.position + _offset;
+
+        // Snap X
+        desired.x = Mathf.Clamp(desired.x, minX, maxX);
+
+        // Vertical dead zone
+        float deltaY = desired.y - transform.position.y;
+        if (Mathf.Abs(deltaY) < verticalDeadZone)
+        {
+            desired.y = transform.position.y;
+            _yVelocity = 0f;
+        }
+
+        desired.y = Mathf.Max(desired.y, minY);
+
+        // Choose smooth time based on vertical velocity
+        float smoothTime =
+            targetRb.linearVelocity.y < 0f ? downwardSmoothTime : upwardSmoothTime;
+
+        float smoothY = Mathf.SmoothDamp(
+            transform.position.y,
+            desired.y,
+            ref _yVelocity,
+            smoothTime
+        );
+
+        transform.position = new Vector3(
+            desired.x,
+            smoothY,
+            transform.position.z
+        );
+    }
+}
+
+
+
+// OLD Camera code
+/* using UnityEngine;
+
+public class CameraFollow : MonoBehaviour
+{
+    [SerializeField] private Transform target;
 
     [Header("Horizontal limits")]
     [SerializeField] private float minX;
@@ -60,4 +129,4 @@ public class CameraFollow : MonoBehaviour
             smoothTime
         );
     }
-}
+} */
