@@ -63,11 +63,13 @@ public class melon_missile_launcher : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float laserLockVolume = 0.4f;
 
     private AudioSource laserLockSource;
+    private PlayerMovement playerMovement;
 
     void Start()
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         player = playerObj.transform;
+        playerMovement = playerObj.GetComponent<PlayerMovement>();
 
         // have correct direction -1 = left / 1 = right
         float yRot = transform.eulerAngles.y;
@@ -89,6 +91,7 @@ public class melon_missile_launcher : MonoBehaviour
         laserLockSource.playOnAwake = false;
         laserLockSource.volume = laserLockVolume * (SFXManager.instance != null ? SFXManager.instance.MasterVolume : 1f);
         laserLockSource.spatialBlend = 0f; // 2D sound
+
     }
 
     // Update is called once per frame
@@ -109,6 +112,19 @@ public class melon_missile_launcher : MonoBehaviour
 
     private void LauncherLogic()
     {
+        if (playerMovement != null && playerMovement.dead)
+{
+        // hard stop everything related to lock/laser
+        if (laserLockSource != null && laserLockSource.isPlaying)
+            laserLockSource.Stop();
+
+        if (laser != null) laser.SetActive(false);
+
+        missile_time = betweenTimeMissile;
+        laser_off_time = 0f;
+        RotateLauncherback();
+        return;
+}
         bool lockedOn = false;
         float dist = Vector3.Distance(player.position, transform.position);
         if (dist > view_dist)
