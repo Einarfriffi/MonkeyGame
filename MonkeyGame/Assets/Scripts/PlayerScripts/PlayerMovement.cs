@@ -132,6 +132,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("VFX")]
     [Tooltip("paricle prefab to spawn at player feet on jump input")]
     public ParticleSystem jumpSmokePartical;
+    public GameObject deathEffect;
 
     [Tooltip("Empty game object for spawn position on jump particle")]
     public Transform particleSpawnPoint;
@@ -187,7 +188,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (dead) return;
+        if (dead)
+        {
+            Instantiate(deathEffect, transform.position, Quaternion.identity);
+            return;
+        }
         AimAtMouse();
     }
 

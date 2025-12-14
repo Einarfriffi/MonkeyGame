@@ -12220,6 +12220,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3346194565245483552, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
+      propertyPath: deathEffect
+      value: 
+      objectReference: {fileID: 5313569715796620052, guid: 83aeca6d3bde38540971e5319251270b, type: 3}
     - target: {fileID: 6717379132692717810, guid: 20fdb95ef5a274b088dbb9f9c98ebbd3, type: 3}
       propertyPath: m_Name
       value: NewMonkey
