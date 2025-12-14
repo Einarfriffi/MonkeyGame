@@ -240,6 +240,10 @@ public class GameManager : MonoBehaviour
         string formattedRun = levelHUD.FormatTime(runSeconds);
 
         string levelID = SceneManager.GetActiveScene().name;
+
+        // record into leaderboard
+        LeaderBoard.SubmitTime(levelID, runSeconds);
+        
         string key = $"BestTime_{levelID}";
         float prevBest = PlayerPrefs.GetFloat(key, float.PositiveInfinity);
 

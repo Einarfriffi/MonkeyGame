@@ -515,17 +515,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 3894555639452986201}
     m_Modifications:
     - target: {fileID: 1046564889375822770, guid: d135555ab49a1174987b126ac07a1d9d, type: 3}
-      propertyPath: m_Colors.m_NormalColor.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1046564889375822770, guid: d135555ab49a1174987b126ac07a1d9d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 4899502307790373566}
-    - target: {fileID: 1046564889375822770, guid: d135555ab49a1174987b126ac07a1d9d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Home
-      objectReference: {fileID: 0}
     - target: {fileID: 7631747876054807780, guid: d135555ab49a1174987b126ac07a1d9d, type: 3}
       propertyPath: m_Name
       value: HomeButton
