@@ -11,17 +11,24 @@ public class SceneManagerScript : MonoBehaviour
 
     void Update()
     {
+        bool shouldTransition = false;
+
         if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
         {
-            if (!string.IsNullOrEmpty(sceneNameOnEnter))
-            {
-                // FADE instead of instantly loading
-                fader.FadeToNextScene(sceneNameOnEnter);
-            }
-            else
-            {
-                Debug.LogWarning("SceneManagerScript: sceneNameOnEnter is empty!");
-            }
+            shouldTransition = true;
+        }
+
+        if (Mouse.current != null &&
+            (Mouse.current.leftButton.wasPressedThisFrame ||
+             Mouse.current.rightButton.wasPressedThisFrame ||
+             Mouse.current.middleButton.wasPressedThisFrame))
+        {
+            shouldTransition = true;
+        }
+
+        if (shouldTransition && !string.IsNullOrEmpty(sceneNameOnEnter))
+        {
+            fader.FadeToNextScene(sceneNameOnEnter);
         }
     }
 
