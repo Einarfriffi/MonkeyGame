@@ -79,4 +79,16 @@ public class SFXManager : MonoBehaviour
         if (loopingSource != null && loopingSource.isPlaying)
             loopingSource.Stop();
     }
+
+    public void PauseLoop()
+    {
+        if (loopingSource != null && loopingSource.isPlaying)
+            loopingSource.Pause();
+    }
+
+    public void ResumeLoop()
+    {
+        if (loopingSource != null && !loopingSource.isPlaying)
+            loopingSource.UnPause();
+    }
 }

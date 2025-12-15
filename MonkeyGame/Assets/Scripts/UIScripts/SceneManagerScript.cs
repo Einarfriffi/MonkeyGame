@@ -11,7 +11,7 @@ public class SceneManagerScript : MonoBehaviour
 
     void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.enterKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
         {
             if (!string.IsNullOrEmpty(sceneNameOnEnter))
             {

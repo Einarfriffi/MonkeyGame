@@ -35,6 +35,7 @@ bool listening = false;
         pauseMenu.SetActive(true);
         Time.timeScale = 0;
         MusicManager.Instance.PauseMusic();
+        if (SFXManager.instance != null) SFXManager.instance.PauseLoop();
     }
 
     public void Resume()
@@ -46,10 +47,12 @@ bool listening = false;
         pauseMenu.SetActive(false);
         Time.timeScale = 1;
         MusicManager.Instance.ResumeMusic();
+        if (SFXManager.instance != null) SFXManager.instance.ResumeLoop();
     }
 
     public void Home()
     {
+        if (SFXManager.instance != null) SFXManager.instance.StopLoop();
         SceneManager.LoadScene("MainMenu");
         Time.timeScale = 1;
         MusicManager.Instance.ResumeMusic();
@@ -57,6 +60,7 @@ bool listening = false;
 
     public void Restart()
     {
+        if (SFXManager.instance != null) SFXManager.instance.StopLoop();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1;
         MusicManager.Instance.ResumeMusic();
