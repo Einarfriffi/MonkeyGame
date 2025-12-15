@@ -1,5 +1,6 @@
 using UnityEngine;
-using UnityEngine.InputSystem;   // new input system
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class SceneManagerScript : MonoBehaviour
 {
@@ -9,8 +10,39 @@ public class SceneManagerScript : MonoBehaviour
     [Header("Assign your UIFader here")]
     public UIFader fader;
 
+    [Header("Disable auto-transition in these scenes")]
+    public string[] scenesToDisableAutoTransition = { "Settings", "MainMenu" };
+
+    [Header("Back Navigation (ESC key)")]
+    public bool enableEscapeBack = false;
+    public string escapeBackScene = "MainMenu";
+
+    private bool autoTransitionEnabled = true;
+
+    void Start()
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+        foreach (string sceneName in scenesToDisableAutoTransition)
+        {
+            if (currentScene.Equals(sceneName, System.StringComparison.OrdinalIgnoreCase))
+            {
+                autoTransitionEnabled = false;
+                Debug.Log($"Auto-transition disabled in {currentScene}");
+                break;
+            }
+        }
+    }
+
     void Update()
     {
+        if (enableEscapeBack && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            LoadSceneByName(escapeBackScene);
+            return;
+        }
+
+        if (!autoTransitionEnabled) return;
+
         bool shouldTransition = false;
 
         if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
@@ -32,7 +64,6 @@ public class SceneManagerScript : MonoBehaviour
         }
     }
 
-    // For UI buttons (optional)
     public void LoadSceneByName(string sceneName)
     {
         fader.FadeToNextScene(sceneName);
