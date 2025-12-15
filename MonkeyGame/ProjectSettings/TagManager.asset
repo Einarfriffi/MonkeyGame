@@ -8,17 +8,26 @@ TagManager:
   - missile
   - DeathUI
   - Win
+  - Tag 4 Vine
+  - Vine
+  - Music
+  - SFX
+  - Shield
+  - WeakSpot
+  - bullet
+  - TutorialDone
+  - WinScreen
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - Background
-  - 
-  - 
-  - 
+  - Wall
+  - Projectile
+  - Player
   - 
   - laser_ignore
   - 
@@ -28,8 +37,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - enemy
+  - player
   - 
   - 
   - 
@@ -42,11 +51,17 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: 'Background '
+    uniqueID: 371288357
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: 'Background '
-    uniqueID: 371288357
+  - name: Main Menu
+    uniqueID: 2374545657
+    locked: 0
+  - name: shadowBlocks
+    uniqueID: 169503443
     locked: 0
   m_RenderingLayers:
   - Default

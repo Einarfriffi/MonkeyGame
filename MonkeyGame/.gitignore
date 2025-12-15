@@ -129,3 +129,25 @@ Assets/StreamingAssets/aa/*
 
 # Plastic SCM
 .plastic/
+
+
+# =========================
+# Bezi (Unity AI assistant)
+# =========================
+
+# If Bezi creates a hidden folder at repo root
+/.bezi/
+/.bezi-*
+
+# If Bezi installs files into Assets (common for Unity plugins)
+/Assets/**/Bezi*/
+/Assets/**/Bezi Sidekick*/
+/Assets/**/BeziSidekick*/
+
+# If Bezi is an embedded UPM package under Packages
+/Packages/com.bezi*/
+/Packages/*bezi*/
+
+# If it writes project settings files (rare, but safe)
+/ProjectSettings/*Bezi*
+/.bezisidekick/
