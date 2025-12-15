@@ -4,40 +4,36 @@ using TMPro;
 
 public class LevelIntro : MonoBehaviour
 {
-    // text to display for countdown
     [Header("UI Elements")]
     public TextMeshProUGUI countdownText;
 
-    // length of countdown
     [Header("Settings")]
     public float countdownTime = 3f;
 
-    // enables all scene objects when countdown is done
     [Header("Gameplay Elements")]
     public GameObject[] objectsToEnableAfterCountdown;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // make sure compenents are assigned
         if (countdownText == null)
         {
             countdownText = GetComponentInChildren<TextMeshProUGUI>();
         }
-        // Pause game while countdown going
-        GameManager.Instance.PauseGame();
-        
-        // Call level start countdown
+
+        if (GameManager.Instance != null && GameManager.Instance.playerInput != null)
+        {
+            GameManager.Instance.playerInput.DeactivateInput();
+        }
+
+        var playerMovement = Object.FindFirstObjectByType<PlayerMovement>(FindObjectsInactive.Include);
+        if (playerMovement != null)
+        {
+            playerMovement.canAim = false;
+        }
+
         StartCoroutine(CountdownAndStart());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    // Coutdown for delayed level start
     IEnumerator CountdownAndStart()
     {
         float currentTime = countdownTime;
@@ -46,26 +42,38 @@ public class LevelIntro : MonoBehaviour
         {
             countdownText.text = Mathf.Ceil(currentTime).ToString();
             yield return new WaitForSecondsRealtime(1f);
-            currentTime --;
+            currentTime--;
         }
 
         countdownText.text = "GO!";
         yield return new WaitForSecondsRealtime(0.5f);
 
-        // hide countdown ui
         countdownText.gameObject.SetActive(false);
-        GameManager.Instance.EnablePausing();
 
-        // activate all scene game objects (need to assign each in LeveLoader)
         foreach (GameObject obj in objectsToEnableAfterCountdown)
         {
             obj.SetActive(true);
         }
 
-        // Start Level
         GameManager.Instance.StartGame();
 
-        // Start Stopwatch timer
+        if (GameManager.Instance != null && GameManager.Instance.playerInput != null)
+        {
+            GameManager.Instance.playerInput.ActivateInput();
+        }
+
+        var playerMovement = Object.FindFirstObjectByType<PlayerMovement>(FindObjectsInactive.Include);
+        if (playerMovement != null)
+        {
+            playerMovement.canAim = true;
+        }
+
+        var pauseMenu = Object.FindFirstObjectByType<PauseMenu>(FindObjectsInactive.Include);
+        if (pauseMenu != null)
+        {
+            pauseMenu.EnablePausing();
+        }
+
         Object.FindFirstObjectByType<levelHUD>()?.StartTimer();
     }
 }

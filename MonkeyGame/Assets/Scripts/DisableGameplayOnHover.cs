@@ -1,20 +1,21 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DisableGameplayOnHover : MonoBehaviour
+public class DisableGameplayOnHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public void OnPointerEnter(PointerEventData _) => GameManager.Instance?.playerInput?.DeactivateInput();
-    public void OnPointerExit(PointerEventData _) => GameManager.Instance?.playerInput?.ActivateInput();
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        
+        if (GameManager.Instance != null && GameManager.Instance.playerInput != null)
+        {
+            GameManager.Instance.playerInput.DeactivateInput();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnPointerExit(PointerEventData eventData)
     {
-        
+        if (GameManager.Instance != null && GameManager.Instance.playerInput != null)
+        {
+            GameManager.Instance.playerInput.ActivateInput();
+        }
     }
 }

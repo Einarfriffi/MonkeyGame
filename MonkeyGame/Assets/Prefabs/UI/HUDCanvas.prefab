@@ -155,6 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::levelHUD
   levelText: {fileID: 113786607103363799}
   timerText: {fileID: 7617519234770369137}
+  timerPanel: {fileID: 8701697518643793257}
 --- !u!1 &1694810809161255535
 GameObject:
   m_ObjectHideFlags: 0
