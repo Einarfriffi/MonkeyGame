@@ -2625,6 +2625,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SceneManagerScript
   sceneNameOnEnter: MainMenu
   fader: {fileID: 1847207747}
+  scenesToDisableAutoTransition:
+  - Settings
+  - MainMenu
+  enableEscapeBack: 1
+  escapeBackScene: MainMenu
 --- !u!114 &1847207747
 MonoBehaviour:
   m_ObjectHideFlags: 0

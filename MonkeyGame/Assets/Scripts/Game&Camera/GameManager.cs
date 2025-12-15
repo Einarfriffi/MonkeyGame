@@ -21,19 +21,6 @@ public class GameManager : MonoBehaviour
     private levelHUD levelHUD;
     private bool startInUIMode = true;
 
-    // pause
-    [SerializeField] private UnityEngine.UI.Selectable pauseFirstSelected;
-
-    private bool isPaused = false;
-    private bool canPause = false;
-
-    // call when countdown finish / level begins
-    public void EnablePausing() => canPause = true;
-    public void DisablePausing() => canPause = false;
-
-
-
-
     void Awake()
     {
         // Iniciate Singleton Instance
@@ -189,6 +176,19 @@ public class GameManager : MonoBehaviour
     {
         if (playerInput != null)
             playerInput.enabled = false;
+        
+        var hud = FindFirstObjectByType<levelHUD>(FindObjectsInactive.Include);
+        if (hud != null)
+        {
+            hud.StopTimer();
+            hud.HidePauseButton();
+        }
+
+        var pauseMenu = FindFirstObjectByType<PauseMenu>(FindObjectsInactive.Include);
+        if (pauseMenu != null)
+        {
+            pauseMenu.DisablePausing();
+        }
 
         if (deathPanel != null)
         {
@@ -236,7 +236,16 @@ public class GameManager : MonoBehaviour
         if (hud != null)
         {
             runSeconds = hud.StopAndGetTime();
+            hud.HidePauseButton();
         }
+
+        var pauseMenu = FindFirstObjectByType<PauseMenu>(FindObjectsInactive.Include);
+        if (pauseMenu != null)
+        {
+            pauseMenu.DisablePausing();
+        }
+
+        
         string formattedRun = levelHUD.FormatTime(runSeconds);
 
         string levelID = SceneManager.GetActiveScene().name;
@@ -281,63 +290,5 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         Time.timeScale = 1f;
-    }
-
-    // Freeze game time
-    public void PauseGame()
-    {
-        Time.timeScale = 0f;
-    }
-
-    public void TryOpenPauseFromHotKey()
-    {
-        if (isPaused)
-        {
-            ResumeFromPause();
-            return;
-        }
-
-        if (!canPause) return;
-        PauseFromGameplay();
-    }
-
-    public void PauseFromGameplay()
-    {
-        if (isPaused) return;
-        isPaused = true;
-
-        // turn of player input
-        if (playerInput != null)
-            playerInput.DeactivateInput();
-
-        Time.timeScale = 0f;
-
-        var pm = FindFirstObjectByType<PauseMenu>(FindObjectsInactive.Include);
-        if (pm != null)
-            pm.Pause();
-        
-        // default button
-        if (pauseFirstSelected != null && UnityEngine.EventSystems.EventSystem.current != null)
-        {
-            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
-            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(pauseFirstSelected.gameObject);
-        }
-    }
-
-    public void ResumeFromPause()
-    {
-        if (!isPaused) return;
-        isPaused = false;
-
-        var pm = FindFirstObjectByType<PauseMenu>(FindObjectsInactive.Include);
-        if (pm != null) pm.Resume();
-
-        Time.timeScale = 1f;
-
-        // Re-enable player input
-        if (playerInput != null) playerInput.ActivateInput();
-
-        if (UnityEngine.EventSystems.EventSystem.current != null)
-            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
     }
 }

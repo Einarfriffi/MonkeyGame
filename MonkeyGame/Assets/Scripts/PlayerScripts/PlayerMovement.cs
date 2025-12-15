@@ -107,6 +107,9 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("If true, only inherit horizontal velocity")]
     public bool inheritHorizontalOnly = true;
 
+    [HideInInspector]
+    public bool canAim = true;
+
     //AUDIO
 
     [Header("Sound Effects")]
@@ -213,12 +216,6 @@ public class PlayerMovement : MonoBehaviour
         if (Time.timeScale == 0f) return;
         if (context.performed) fireHeld = true;
         else if (context.canceled) fireHeld = false;
-    }
-
-    public void OnPause(UnityEngine.InputSystem.InputAction.CallbackContext ctx)
-    {
-        if (!ctx.performed) return;
-        GameManager.Instance?.TryOpenPauseFromHotKey();
     }
 
     //Jump Partical
@@ -457,7 +454,7 @@ public class PlayerMovement : MonoBehaviour
         if (other.gameObject.CompareTag("Hazards"))
         {
             dead = true;
-            // TODO: add animation
+            HideVisuals();
             GameManager.Instance.ShowDeathScreen();
         }
 
@@ -478,7 +475,7 @@ public class PlayerMovement : MonoBehaviour
         if (other.CompareTag("Hazards"))
         {
             dead = true;
-            // TODO: add animation
+            HideVisuals();
             GameManager.Instance.ShowDeathScreen();
         }
     }
@@ -602,6 +599,8 @@ public class PlayerMovement : MonoBehaviour
     private void AimAtMouse()
     {
         if (Time.timeScale == 0) return;
+        if (!canAim) return;
+
         Vector3 mouseScreenPos = Mouse.current.position.ReadValue();
         Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(mouseScreenPos);
 
@@ -707,6 +706,14 @@ public class PlayerMovement : MonoBehaviour
 
         if (projectileLifetime > 0f) Destroy(go, projectileLifetime);
 
+    }
+
+    private void HideVisuals()
+    {
+        if (visualTransform != null)
+        {
+            visualTransform.gameObject.SetActive(false);
+        }
     }
 
     private void OnDrawGizmosSelected()
