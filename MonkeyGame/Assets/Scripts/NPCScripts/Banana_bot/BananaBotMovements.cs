@@ -411,7 +411,7 @@ public class BananaBotMovements : MonoBehaviour
 
         // play death sound
         // TODO UNCOMMENT LINE BELOW
-        //SFXManager.instance.PlaySoundEffect(dyingSoundClip, transform, dyingSoundVolume);
+        SFXManager.instance.PlaySoundEffect(dyingSoundClip, transform, dyingSoundVolume);
 
         // explosion VFX
         Instantiate(ExplosionPreFab, transform.position, Quaternion.identity);

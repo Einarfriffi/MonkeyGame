@@ -317,7 +317,7 @@ public class melon_missile_launcher : MonoBehaviour
         // play death sound
         // TODO UNCOMMENT LINE BELOW
         // play death sound
-        //SFXManager.instance.PlaySoundEffect(dyingSoundClip, transform, 0.6f);
+        SFXManager.instance.PlaySoundEffect(dyingSoundClip, transform, 0.6f);
 
         Instantiate(ExplosionPreFab, transform.position, Quaternion.identity);
         Destroy(mainGameObject);
