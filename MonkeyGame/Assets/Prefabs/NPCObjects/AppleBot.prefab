@@ -75,8 +75,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d034d7fd09a9df44484f102088e5063b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AppleBotController
-  viewDistance: 7
+  viewDistance: 9
   maxAngle: 80
+  scanAngle: 30
+  attackTime: 1.5
+  timeBeforeAttack: 0.5
+  graceSpotTime: 0.2
   scanSpeed: 40
   rotationLerpSpeed: 6
   scanResumeDelay: 0.75
@@ -84,7 +88,15 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 1049224
-  offSettPlayerTransForm: 1.5
+  scannerLight: {fileID: 2791137971001372251}
+  baseColor: {r: 1, g: 0.050980393, b: 0.050980393, a: 1}
+  spotColor: {r: 0, g: 0.3296814, b: 1, a: 1}
+  angryColor: {r: 0, g: 0.5507972, b: 1, a: 1}
+  beamMaxSize: 45
+  beamMinSize: 35
+  fallOffGrowRate: 0.02
+  intensityGrowRate: 0.02
+  offSettPlayerTransForm: 0.8
 --- !u!1 &3689218748634918907
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,14 +209,14 @@ MonoBehaviour:
   m_ShadowsEnabled: 1
   m_ShadowIntensity: 1
   m_ShadowSoftness: 1
-  m_ShadowSoftnessFalloffIntensity: 0.463
+  m_ShadowSoftnessFalloffIntensity: 0.5
   m_ShadowVolumeIntensityEnabled: 1
   m_ShadowVolumeIntensity: 1
   m_LocalBounds:
     m_Center: {x: 0, y: -0.00000011920929, z: 0}
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 15
-  m_PointLightOuterAngle: 80
+  m_PointLightOuterAngle: 45
   m_PointLightInnerRadius: 9
   m_PointLightOuterRadius: 9
   m_ShapeLightParametricSides: 5
