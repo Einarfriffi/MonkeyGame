@@ -15,6 +15,15 @@ public class SettingsMenuManager : MonoBehaviour
         {
             GoBack();
         }
+        
+        if (Gamepad.current != null)
+        {
+            if (Gamepad.current.buttonEast.wasPressedThisFrame || 
+                Gamepad.current.startButton.wasPressedThisFrame)
+            {
+                GoBack();
+            }
+        }
     }
 
     public void ChangeGraphicsQuality(int index)

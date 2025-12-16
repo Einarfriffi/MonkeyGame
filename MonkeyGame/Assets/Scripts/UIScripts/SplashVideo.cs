@@ -38,14 +38,38 @@ public class SplashVideo : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+{
+    bool shouldSkip = false;
+    
+    if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
     {
-        // Any Key can skip video
-        if(Keyboard.current.anyKey.wasPressedThisFrame)
+        shouldSkip = true;
+    }
+    
+    if (Gamepad.current != null)
+    {
+        if (Gamepad.current.buttonSouth.wasPressedThisFrame ||
+            Gamepad.current.buttonEast.wasPressedThisFrame ||
+            Gamepad.current.buttonWest.wasPressedThisFrame ||
+            Gamepad.current.buttonNorth.wasPressedThisFrame ||
+            Gamepad.current.startButton.wasPressedThisFrame ||
+            Gamepad.current.selectButton.wasPressedThisFrame ||
+            Gamepad.current.leftShoulder.wasPressedThisFrame ||
+            Gamepad.current.rightShoulder.wasPressedThisFrame ||
+            Gamepad.current.leftTrigger.wasPressedThisFrame ||
+            Gamepad.current.rightTrigger.wasPressedThisFrame)
         {
-            videoPlayer.Stop();
-            StartCoroutine(FadeToBlack());
+            shouldSkip = true;
         }
     }
+    
+    if (shouldSkip)
+    {
+        videoPlayer.Stop();
+        StartCoroutine(FadeToBlack());
+    }
+}
+
 
     // Start transition fade
     void OnVideoEnd(VideoPlayer vp)

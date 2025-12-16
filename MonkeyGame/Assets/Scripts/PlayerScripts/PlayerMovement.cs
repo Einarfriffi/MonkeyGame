@@ -164,11 +164,15 @@ public class PlayerMovement : MonoBehaviour
     private bool fireHeld;
     private float nextFireTime;
     public bool dead = false;
+    private Vector2 aimInput = Vector2.right;
     private float wallCoyoteLeft = 0f;
     private float wallCoyoteRight = 0f;
     private bool wallCoyoteConsumedLeft = false, wallCoyoteConsumedRight = false;
     private int lastWallSideTouched = 0;
     private float wallJumpControlTimer = 0f;
+    private bool usingArrowAim = false;
+    private Vector2 stickAimInput = Vector2.zero;
+    private bool usingStickAim = false;
 
 
 
@@ -216,6 +220,40 @@ public class PlayerMovement : MonoBehaviour
         if (Time.timeScale == 0f) return;
         if (context.performed) fireHeld = true;
         else if (context.canceled) fireHeld = false;
+    }
+
+    public void OnAim(InputAction.CallbackContext context)
+    {
+        Vector2 input = context.ReadValue<Vector2>();
+
+        if (input.sqrMagnitude > 0.01f)
+        {
+            aimInput = input.normalized;
+            fireHeld = true;
+            usingArrowAim = true;
+            usingStickAim = false;
+        }
+        else
+        {
+            fireHeld = false;
+            usingArrowAim = false;
+        }
+    }
+
+    public void OnStickAim(InputAction.CallbackContext context)
+    {
+        Vector2 input = context.ReadValue<Vector2>();
+
+        if (input.sqrMagnitude > 0.01f)
+        {
+            stickAimInput = input;
+            usingStickAim = true;
+            usingArrowAim = false;
+        }
+        else
+        {
+            usingStickAim = false;
+        }
     }
 
     //Jump Partical
@@ -596,117 +634,136 @@ public class PlayerMovement : MonoBehaviour
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
 
-    private void AimAtMouse()
-    {
-        if (Time.timeScale == 0) return;
-        if (!canAim) return;
+private void AimAtMouse()
+{
+    if (Time.timeScale == 0) return;
+    if (!canAim) return;
 
+    Vector2 direction;
+    
+    if (usingArrowAim)
+    {
+        direction = aimInput;
+    }
+    else if (usingStickAim)
+    {
+        direction = stickAimInput.normalized;
+    }
+    else
+    {
         Vector3 mouseScreenPos = Mouse.current.position.ReadValue();
         Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(mouseScreenPos);
-
-        // aim direction
-        Vector2 direction = mouseWorldPos - handTransform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        // det dir based on mouse X
-        float playerDirection = mouseWorldPos.x < transform.position.x ? -1f : 1f;
-
-        // flip visual's scale
-        if (isTouchingWall)
+        direction = mouseWorldPos - handTransform.position;
+        
+        if (direction.sqrMagnitude < 0.0001f)
         {
-            float tempdir;
-            if (wallContactDirection == -1f) // left
-            {
-                Debug.Log("wall LEFT");
-                tempdir = -wallContactDirection;
-            }
-            else // right
-            {
-                Debug.Log("wall Right");
-                tempdir = -wallContactDirection;
-            }
-            visualTransform.localScale = new Vector3(tempdir, 1f, 1f);
-            Vector3 localPos = visualTransform.localPosition;
-            // Mirror pos offset
-            float offsetRight = 0f;
-            float offsetLeft = 0.65f;
-
-            localPos.x = (tempdir > 0) ? offsetRight : offsetLeft;
-            visualTransform.localPosition = localPos;
-
-            if (wallContactDirection == 1f)
-                angle += 180f;
-            handTransform.rotation = Quaternion.Euler(0f, 0f, angle);
+            direction = Vector2.right;
         }
         else
         {
-            visualTransform.localScale = new Vector3(playerDirection, 1f, 1f);
-            Vector3 localPos = visualTransform.localPosition;
-            // Mirror pos offset
-            float offsetRight = 0f;
-            float offsetLeft = 0.65f;
-
-            localPos.x = (playerDirection > 0) ? offsetRight : offsetLeft;
-            visualTransform.localPosition = localPos;
-
-            // if player flipped, invert angle to mirror aiming
-            if (playerDirection == -1f)
-                angle += 180f;
-            handTransform.rotation = Quaternion.Euler(0f, 0f, angle);
+            direction = direction.normalized;
         }
-        /*  // if player flipped, invert angle to mirror aiming
-         if (playerDirection == -1f)
-             angle += 180f;
-         handTransform.rotation = Quaternion.Euler(0f, 0f, angle); */
-
     }
 
-    private void SpawnProjectile()
+    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+    float playerDirection = direction.x < 0 ? -1f : 1f;
+
+    if (isTouchingWall)
     {
-        if (projectilePrefab == null) return;
+        float tempdir;
+        if (wallContactDirection == -1f)
+        {
+            tempdir = -wallContactDirection;
+        }
+        else
+        {
+            tempdir = -wallContactDirection;
+        }
+        visualTransform.localScale = new Vector3(tempdir, 1f, 1f);
+        Vector3 localPos = visualTransform.localPosition;
+        float offsetRight = 0f;
+        float offsetLeft = 0.65f;
 
-        Transform spawn = muzzleTransform != null ? muzzleTransform : handTransform;
+        localPos.x = (tempdir > 0) ? offsetRight : offsetLeft;
+        visualTransform.localPosition = localPos;
 
-        // aim toward mouse, but only use Direction
+        if (wallContactDirection == 1f)
+            angle += 180f;
+        handTransform.rotation = Quaternion.Euler(0f, 0f, angle);
+    }
+    else
+    {
+        visualTransform.localScale = new Vector3(playerDirection, 1f, 1f);
+        Vector3 localPos = visualTransform.localPosition;
+        float offsetRight = 0f;
+        float offsetLeft = 0.65f;
+
+        localPos.x = (playerDirection > 0) ? offsetRight : offsetLeft;
+        visualTransform.localPosition = localPos;
+
+        if (playerDirection == -1f)
+            angle += 180f;
+        handTransform.rotation = Quaternion.Euler(0f, 0f, angle);
+    }
+}
+
+
+
+private void SpawnProjectile()
+{
+    if (projectilePrefab == null) return;
+
+    Transform spawn = muzzleTransform != null ? muzzleTransform : handTransform;
+
+    Vector2 dir;
+    
+    if (usingArrowAim)
+    {
+        dir = aimInput.normalized;
+    }
+    else if (usingStickAim)
+    {
+        dir = stickAimInput.normalized;
+    }
+    else
+    {
         Vector2 mouseScreen = Mouse.current.position.ReadValue();
-
-        // project mouse onto the same Z plane as the muzzle
         float planeZ = spawn.position.z - mainCamera.transform.position.z;
         Vector3 mouseWorld = mainCamera.ScreenToWorldPoint(new Vector3(mouseScreen.x, mouseScreen.y, planeZ));
-
-        // normalized 2D direction from muzzle to mouse
-        Vector2 dir = (Vector2)(mouseWorld - spawn.position);
+        
+        dir = (Vector2)(mouseWorld - spawn.position);
         if (dir.sqrMagnitude < 0.0001f) dir = (Vector2)spawn.right;
         else dir = dir.normalized;
-
-        // small forward offset
-        Vector3 spawnPos = spawn.position + (Vector3)(dir * 0.15f);
-
-        GameObject go = Instantiate(
-            projectilePrefab,
-            spawnPos,
-            Quaternion.FromToRotation(Vector2.right, dir)
-        );
-
-        var prb = go.GetComponent<Rigidbody2D>();
-        if (prb != null)
-        {
-            prb.gravityScale = projectileGravityScale;
-            // inherit player, but remove the component along the aim direction
-            Vector2 inherited = rb.linearVelocity;
-            if (inheritHorizontalOnly) inherited = new Vector2(inherited.x, 0f);
-
-            // Split inherited into along-aim and perpendicular components
-            float along = Vector2.Dot(inherited, dir);
-            Vector2 inheritedPerp = inherited - dir * along;
-
-            // Final: exact projectileSpeed along aim, plus perpendicular carry scaled to taste
-            prb.linearVelocity = dir * projectileSpeed + inheritedPerp * projectileInheritVelocity;
-        }
-
-        if (projectileLifetime > 0f) Destroy(go, projectileLifetime);
-
     }
+
+    Vector3 spawnPos = spawn.position + (Vector3)(dir * 0.15f);
+
+    GameObject go = Instantiate(
+        projectilePrefab,
+        spawnPos,
+        Quaternion.FromToRotation(Vector2.right, dir)
+    );
+
+    var prb = go.GetComponent<Rigidbody2D>();
+    if (prb != null)
+    {
+        prb.gravityScale = projectileGravityScale;
+        Vector2 inherited = rb.linearVelocity;
+        if (inheritHorizontalOnly) inherited = new Vector2(inherited.x, 0f);
+
+        float along = Vector2.Dot(inherited, dir);
+        Vector2 alongVec = dir * along;
+        Vector2 perpVec = inherited - alongVec;
+        Vector2 finalInherit = perpVec + alongVec * projectileInheritVelocity;
+
+        prb.linearVelocity = dir * projectileSpeed + finalInherit;
+    }
+
+    Destroy(go, projectileLifetime);
+}
+
+
+
 
     private void HideVisuals()
     {

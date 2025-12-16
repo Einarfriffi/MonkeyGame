@@ -4,10 +4,20 @@
 **Developer:** Big Banana Incorporated  
 **Website:** https://einarfriffi.itch.io/bananabotbeatdown
 
-## Notes
+## 🎮 Controls
 
-- Use **A** for left and **D** for right.
-- Use **Spacebar once** for jumping and **twice** for double jumping.
-- Aiming is controlled with **the mouse** and **leftclicking** shoots.
+### Controller
+- **Left Stick** — Move
+- **Right Stick** — Aim
+- **A / X** — Jump
+- **Right Trigger** — Shoot
+- **Start** — Pause
+- **B / O** — Go Back
 
-Assets used in this project are listed in `ATTRIBUTION.txt`.
+### Keyboard
+- **WASD / Arrow Keys** — Move
+- **Arrow Keys** — Aim & Shoot
+- **Space** — Jump
+- **Escape** — Pause
+
+Assets used in this project are listed in [Attribution doc](ATTRIBUTION.txt).

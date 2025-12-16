@@ -34,35 +34,64 @@ public class SceneManagerScript : MonoBehaviour
     }
 
     void Update()
+{
+    if (enableEscapeBack)
     {
-        if (enableEscapeBack && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        bool shouldGoBack = false;
+        
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            shouldGoBack = true;
+        }
+        
+        if (Gamepad.current != null && Gamepad.current.buttonEast.wasPressedThisFrame)
+        {
+            shouldGoBack = true;
+        }
+        
+        if (shouldGoBack)
         {
             LoadSceneByName(escapeBackScene);
             return;
         }
+    }
 
-        if (!autoTransitionEnabled) return;
+    if (!autoTransitionEnabled) return;
 
-        bool shouldTransition = false;
+    bool shouldTransition = false;
 
-        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
+    if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
+    {
+        shouldTransition = true;
+    }
+
+    if (Mouse.current != null &&
+        (Mouse.current.leftButton.wasPressedThisFrame ||
+         Mouse.current.rightButton.wasPressedThisFrame ||
+         Mouse.current.middleButton.wasPressedThisFrame))
+    {
+        shouldTransition = true;
+    }
+
+    if (Gamepad.current != null)
+    {
+        if (Gamepad.current.buttonSouth.wasPressedThisFrame ||
+            Gamepad.current.buttonEast.wasPressedThisFrame ||
+            Gamepad.current.buttonWest.wasPressedThisFrame ||
+            Gamepad.current.buttonNorth.wasPressedThisFrame ||
+            Gamepad.current.startButton.wasPressedThisFrame ||
+            Gamepad.current.selectButton.wasPressedThisFrame)
         {
             shouldTransition = true;
-        }
-
-        if (Mouse.current != null &&
-            (Mouse.current.leftButton.wasPressedThisFrame ||
-             Mouse.current.rightButton.wasPressedThisFrame ||
-             Mouse.current.middleButton.wasPressedThisFrame))
-        {
-            shouldTransition = true;
-        }
-
-        if (shouldTransition && !string.IsNullOrEmpty(sceneNameOnEnter))
-        {
-            fader.FadeToNextScene(sceneNameOnEnter);
         }
     }
+
+    if (shouldTransition && !string.IsNullOrEmpty(sceneNameOnEnter))
+    {
+        fader.FadeToNextScene(sceneNameOnEnter);
+    }
+}
+
 
     public void LoadSceneByName(string sceneName)
     {
