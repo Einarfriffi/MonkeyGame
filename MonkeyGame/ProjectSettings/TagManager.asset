@@ -17,6 +17,7 @@ TagManager:
   - bullet
   - TutorialDone
   - WinScreen
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -62,6 +63,12 @@ TagManager:
     locked: 0
   - name: shadowBlocks
     uniqueID: 169503443
+    locked: 0
+  - name: ground
+    uniqueID: 2597952621
+    locked: 0
+  - name: front
+    uniqueID: 4244132921
     locked: 0
   m_RenderingLayers:
   - Default
