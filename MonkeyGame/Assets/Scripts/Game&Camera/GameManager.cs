@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 {
     // Game manager vars
     public static GameManager Instance { get; private set; }
+    public float lastCompletedTime { get; private set; }
     public PlayerInput playerInput;
     public int currentLevel = 1;
     public GameObject deathPanel;
@@ -238,6 +239,8 @@ public class GameManager : MonoBehaviour
             runSeconds = hud.StopAndGetTime();
             hud.HidePauseButton();
         }
+        
+        lastCompletedTime = runSeconds;
 
         var pauseMenu = FindFirstObjectByType<PauseMenu>(FindObjectsInactive.Include);
         if (pauseMenu != null)

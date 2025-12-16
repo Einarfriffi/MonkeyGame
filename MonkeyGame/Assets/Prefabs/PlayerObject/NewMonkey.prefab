@@ -601,6 +601,42 @@ MonoBehaviour:
         m_CallState: 1
     m_ActionId: 05c8340b-bbd8-4ef8-8d17-a3ff921eb620
     m_ActionName: 'Player/Fire[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1e5f939a-9030-490c-a91c-3afaee099a2f
+    m_ActionName: 'Player/Pause[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3346194565245483552}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: OnAim
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4a7e7aea-d96a-4664-a978-0587fdcfd281
+    m_ActionName: 'Player/Aim[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3346194565245483552}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: OnStickAim
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 27f38c92-f04a-418f-807a-32ef18c612b9
+    m_ActionName: 'Player/StickAim[/XInputControllerWindows/rightStick]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -653,6 +689,7 @@ MonoBehaviour:
   projectileLifetime: 3
   projectileInheritVelocity: 1
   inheritHorizontalOnly: 1
+  canAim: 1
   jumpSoundClip: {fileID: 8300000, guid: e2ede26c13e824d2f8f9eb620847bdb4, type: 3}
   jumpVolume: 1
   doubleJumpSoundClip: {fileID: 8300000, guid: 5325f70b568574d0398211e8a2cede19, type: 3}
@@ -669,3 +706,4 @@ MonoBehaviour:
   deathEffect: {fileID: 5313569715796620052, guid: 83aeca6d3bde38540971e5319251270b, type: 3}
   particleSpawnPoint: {fileID: 1853327203512325994}
   animator: {fileID: 4414859380414990587}
+  dead: 0

@@ -170,6 +170,9 @@ public class PlayerMovement : MonoBehaviour
     private bool wallCoyoteConsumedLeft = false, wallCoyoteConsumedRight = false;
     private int lastWallSideTouched = 0;
     private float wallJumpControlTimer = 0f;
+    private bool usingArrowAim = false;
+    private Vector2 stickAimInput = Vector2.zero;
+    private bool usingStickAim = false;
 
 
 
@@ -222,8 +225,35 @@ public class PlayerMovement : MonoBehaviour
     public void OnAim(InputAction.CallbackContext context)
     {
         Vector2 input = context.ReadValue<Vector2>();
+
         if (input.sqrMagnitude > 0.01f)
+        {
             aimInput = input.normalized;
+            fireHeld = true;
+            usingArrowAim = true;
+            usingStickAim = false;
+        }
+        else
+        {
+            fireHeld = false;
+            usingArrowAim = false;
+        }
+    }
+
+    public void OnStickAim(InputAction.CallbackContext context)
+    {
+        Vector2 input = context.ReadValue<Vector2>();
+
+        if (input.sqrMagnitude > 0.01f)
+        {
+            stickAimInput = input;
+            usingStickAim = true;
+            usingArrowAim = false;
+        }
+        else
+        {
+            usingStickAim = false;
+        }
     }
 
     //Jump Partical
@@ -604,14 +634,38 @@ public class PlayerMovement : MonoBehaviour
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
 
-    private void AimAtMouse()
+private void AimAtMouse()
 {
     if (Time.timeScale == 0) return;
     if (!canAim) return;
 
-    Vector2 direction = aimInput;
-    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+    Vector2 direction;
+    
+    if (usingArrowAim)
+    {
+        direction = aimInput;
+    }
+    else if (usingStickAim)
+    {
+        direction = stickAimInput.normalized;
+    }
+    else
+    {
+        Vector3 mouseScreenPos = Mouse.current.position.ReadValue();
+        Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(mouseScreenPos);
+        direction = mouseWorldPos - handTransform.position;
+        
+        if (direction.sqrMagnitude < 0.0001f)
+        {
+            direction = Vector2.right;
+        }
+        else
+        {
+            direction = direction.normalized;
+        }
+    }
 
+    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
     float playerDirection = direction.x < 0 ? -1f : 1f;
 
     if (isTouchingWall)
@@ -653,13 +707,35 @@ public class PlayerMovement : MonoBehaviour
     }
 }
 
-    private void SpawnProjectile()
+
+
+private void SpawnProjectile()
 {
     if (projectilePrefab == null) return;
 
     Transform spawn = muzzleTransform != null ? muzzleTransform : handTransform;
 
-    Vector2 dir = aimInput.normalized;
+    Vector2 dir;
+    
+    if (usingArrowAim)
+    {
+        dir = aimInput.normalized;
+    }
+    else if (usingStickAim)
+    {
+        dir = stickAimInput.normalized;
+    }
+    else
+    {
+        Vector2 mouseScreen = Mouse.current.position.ReadValue();
+        float planeZ = spawn.position.z - mainCamera.transform.position.z;
+        Vector3 mouseWorld = mainCamera.ScreenToWorldPoint(new Vector3(mouseScreen.x, mouseScreen.y, planeZ));
+        
+        dir = (Vector2)(mouseWorld - spawn.position);
+        if (dir.sqrMagnitude < 0.0001f) dir = (Vector2)spawn.right;
+        else dir = dir.normalized;
+    }
+
     Vector3 spawnPos = spawn.position + (Vector3)(dir * 0.15f);
 
     GameObject go = Instantiate(
@@ -685,6 +761,8 @@ public class PlayerMovement : MonoBehaviour
 
     Destroy(go, projectileLifetime);
 }
+
+
 
 
     private void HideVisuals()

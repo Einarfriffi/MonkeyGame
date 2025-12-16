@@ -8,6 +8,13 @@
         "com.unity.nuget.newtonsoft-json": "3.2.1"
       }
     },
+    "com.lootlocker.lootlockersdk": {
+      "version": "https://github.com/LootLocker/unity-sdk.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "ab461c17eefabc3fdcfb9bc771dfa8addce93deb"
+    },
     "com.unity.2d.animation": {
       "version": "12.0.2",
       "depth": 0,
