@@ -41,12 +41,13 @@ public class missile_controller : MonoBehaviour
         // Add velocity in the missile's forward direction (right side)
         rb.linearVelocity += acceleration * Time.fixedDeltaTime * (Vector2)transform.right;
 
+
         // Limit speed
         rb.linearVelocity = Vector2.ClampMagnitude(rb.linearVelocity, maxSpeed);
         if (Vector2.Distance(transform.position, startPos) >= maxRange)
         {
             if (explosionClip != null)
-            SFXManager.instance.PlaySoundEffect(explosionClip, transform, explosionVolume);
+                SFXManager.instance.PlaySoundEffect(explosionClip, transform, explosionVolume);
 
             Destroy(this.gameObject);
             Instantiate(Explosion, transform.position, Quaternion.identity);
@@ -81,7 +82,7 @@ public class missile_controller : MonoBehaviour
         Instantiate(Explosion, transform.position, Quaternion.identity);
 
         if (explosionClip != null)
-                SFXManager.instance.PlaySoundEffect(explosionClip, transform, explosionVolume);
+            SFXManager.instance.PlaySoundEffect(explosionClip, transform, explosionVolume);
 
         Destroy(gameObject);
     }
